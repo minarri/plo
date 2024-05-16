@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/validator/validator.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
+import 'package:plo/common/widgets/custom_button.dart';
+import 'package:plo/common/widgets/custom_screen.dart';
+import 'package:plo/common/widgets/custom_text_input_box.dart';
 import 'package:plo/common/widgets/my_widgets.dart';
-import 'package:plo/services/api_service.dart';
-import 'package:plo/vertification_code.dart';
+import 'package:plo/model/erro_handling/error_handler.dart';
 import 'package:plo/views/sign_up_screen_view/provider/signup_provider.dart';
+import 'package:plo/views/sign_up_screen_view/sign_up_screen_controller.dart';
+import 'package:plo/views/sign_up_screen_view/verification_code.dart';
+import 'package:plo/views/splash_screen/splash_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -37,33 +42,28 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
         .setEmailAndPassword(_email, _password, _passwordRetype);
   }
 
-  // Function to send verification code to email
-  void sendVertCodeToEmail() {
+  void _sendVerifyCodeToEmail() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
-
       _setProvider();
-
-      //Make API call to get OTP
-      EmailAPIService.otpLogin(_email.text).then((response) {
-        //If API response contains data, navigate to VertCodeScreen
-        if (response.data != null) {
-          setState(() {
-            _isLoading = false; // Hide loading indicator
-          });
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: ((context) => VertCodeScreen(
-                    emailcontroller: _email,
-                    otpHash: response.data!,
-                  )),
-            ),
-          );
-        }
+      var res = await sendVerifyCodeToEmail(_email);
+      res.fold(
+          (errorMessage) => ErrorHandler().showSnackBar(context, errorMessage),
+          (response) {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => VerifyCodeScreen(
+                  emailcontroller: _email,
+                  otpHash: response.data!,
+                )),
+          ),
+        );
       });
     }
   }
@@ -71,79 +71,73 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   static const SizedBox defaultSpacing = SizedBox(height: 20);
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-        appBar: const BackButtonAppBar(),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-            child: Form(
-              key: _formKey,
-              child: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //나중에 plo로고로 대체해야 합니다.
-                      const Icon(
-                        Icons.person,
-                        size: 80,
-                      ),
-
-                      const Text(
-                        '회원가입',
-                        style: TextStyle(fontSize: 24),
-                      ),
-
-                      defaultSpacing,
-
-                      textInputBox(
-                          text: '학교 이메일',
-                          controller: _email,
-                          validator: (value) =>
-                              Validator.validatePSUEmail(value)),
-
-                      defaultSpacing,
-
-                      passwordInputBox(
-                        text: '비밀번호',
-                        controller: _password,
-                        passwordVisible: _isPasswordVisible,
-                        onPressed: () => setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        }),
-                        validator: (value) => Validator.validatePassword(value),
-                      ),
-
-                      defaultSpacing,
-
-                      passwordInputBox(
-                        text: '비밀번호 확인',
-                        controller: _passwordRetype,
-                        passwordVisible: _isPasswordVisible,
-                        onPressed: () => setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        }),
-                        validator: (value) =>
-                            Validator.isSamePassword(value, _password.text),
-                      ),
-
-                      const SizedBox(height: 90),
-                      _isLoading
-                          ? const CircularProgressIndicator()
-                          : ButtonBox(
-                              text: '인증번호 보내기',
-                              boxWidth: 190,
-                              boxHeight: 60,
-                              buttonFunc: sendVertCodeToEmail),
-
-                      const SizedBox(height: 30),
-                    ]),
-              ),
+    if (_isLoading) {
+      return const SplashScreen();
+    }
+    return CustomInitialScreen(
+      appBar: const BackButtonAppBar(),
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      body: Form(
+        key: _formKey,
+        child: Center(
+          child: Column(children: [
+            //나중에 plo로고로 대체해야 합니다.
+            const Icon(
+              Icons.person,
+              size: 80,
             ),
-          ),
+
+            const Text(
+              '회원가입',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+
+            defaultSpacing,
+
+            textInputBox(
+                text: '학교 이메일',
+                controller: _email,
+                validator: (value) => Validator.validatePSUEmail(value)),
+
+            defaultSpacing,
+
+            passwordInputBox(
+              text: '비밀번호',
+              controller: _password,
+              passwordVisible: _isPasswordVisible,
+              onPressed: () => setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              }),
+              validator: (value) => Validator.validatePassword(value),
+            ),
+
+            defaultSpacing,
+
+            passwordInputBox(
+              text: '비밀번호 확인',
+              controller: _passwordRetype,
+              passwordVisible: _isPasswordVisible,
+              onPressed: () => setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              }),
+              validator: (value) =>
+                  Validator.isSamePassword(value, _password.text),
+            ),
+
+            const SizedBox(height: 90),
+
+            CustomButton(
+              text: '인증번호 보내기',
+              onPressed: _sendVerifyCodeToEmail,
+            ),
+            /*
+                ButtonBox(
+                    text: '인증번호 보내기',
+                    boxWidth: 190,
+                    boxHeight: 60,
+                    buttonFunc: _sendVerifyCodeToEmail),
+                */
+          ]),
         ),
       ),
     );

@@ -1,3 +1,7 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/widgets/custom_alert_box.dart';
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/settings_screen/likedpost_screen.dart';
@@ -5,12 +9,8 @@ import 'package:plo/views/settings_screen/mypost_screen.dart';
 import 'package:plo/views/settings_screen/provider/user_provider.dart';
 import 'package:plo/views/settings_screen/savedpost_screen.dart';
 import 'package:plo/views/settings_screen/settings_controller.dart';
-import 'package:plo/views/settings_screen/widgets/alert_dialogue.dart';
 import 'package:plo/views/settings_screen/widgets/list_button_widget.dart';
 import 'package:plo/views/settings_screen/widgets/modal_bottom_sheet.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -203,7 +203,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             Icons.logout_outlined,
                             size: 33,
                           ),
-                          callback: () => showYesOrNoAlertDialogue(
+                          callback: () => AlertBox.showYesOrNoAlertDialogue(
                                   context, "로그아웃 하시겠습니까?", () {
                                 AuthMethods().signOut();
                                 goToSignInScreen();
@@ -215,7 +215,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             size: 33,
                           ),
                           callback: () {
-                            showYesOrNoAlertDialogue(
+                            AlertBox.showYesOrNoAlertDialogue(
                                 context, "정말로 계정을 삭제하시겠습니까?", () {
                               final result = deleteUserAccount();
                               if (result.toString() ==

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/validator/validator.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
-import 'package:plo/common/widgets/my_widgets.dart';
+import 'package:plo/common/widgets/custom_button.dart';
+import 'package:plo/common/widgets/custom_text_input_box.dart';
 import 'package:plo/views/settings_screen/provider/user_provider.dart';
 import 'package:plo/views/settings_screen/settings_controller.dart';
 import 'package:plo/views/settings_screen/settings_screen.dart';
@@ -64,11 +65,9 @@ class _ProfileModifyScreenState extends ConsumerState<ProfileModifyScreen> {
                 const SizedBox(height: 50),
                 _isLoading
                     ? const CircularProgressIndicator()
-                    : ButtonBox(
-                        text: '변경사항 저장',
-                        boxWidth: 190,
-                        boxHeight: 60,
-                        buttonFunc: () {
+                    : CustomButton(
+                        text: "변경사항 저장",
+                        onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
                               _isLoading = true;
@@ -85,7 +84,7 @@ class _ProfileModifyScreenState extends ConsumerState<ProfileModifyScreen> {
                               _isLoading = false;
                             });
                           }
-                        }),
+                        })
               ],
             ),
           ),

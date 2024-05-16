@@ -1,14 +1,12 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/model/erro_handling/error_handling_auth.dart';
 import 'package:plo/model/types/enum_type.dart';
 import 'package:plo/repository/firebasestoroage_respository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -51,7 +49,7 @@ class AuthMethods {
     return res;
   }
 
-  Future<String> signiInUserWithEmail(String email, String password) async {
+  Future<String> signInUserWithEmail(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return ReturnTypeENUM.success.toString();

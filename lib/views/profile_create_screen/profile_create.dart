@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plo/common/validator/validator.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
+import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/my_widgets.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/repository/auth_repository.dart';
@@ -182,32 +183,29 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                       ),
                       //확인 버튼
                       Padding(
-                        padding: const EdgeInsets.only(top: 40.0),
-                        child: sizedButtonWithShadow(
-                          shadowOffset: const Offset(0, 1),
-                          radius: 20.0,
-                          onPressed: () async {
-                            if (formKey.currentState!.validate()) {
-                              await auth.signUpUser(
-                                email: email,
-                                password: password,
-                                nickname: nickname.text,
-                                grade: grade.text,
-                                major: major.text,
-                                file: profilePic,
-                              );
-                              Navigator.push(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignInScreen(),
-                                ),
-                              );
-                            }
-                          },
-                          buttonText: '확인',
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(top: 40.0),
+                          child: CustomButton(
+                            text: "확인",
+                            onPressed: () async {
+                              if (formKey.currentState!.validate()) {
+                                await auth.signUpUser(
+                                  email: email,
+                                  password: password,
+                                  nickname: nickname.text,
+                                  grade: grade.text,
+                                  major: major.text,
+                                  file: profilePic,
+                                );
+                                Navigator.push(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignInScreen(),
+                                  ),
+                                );
+                              }
+                            },
+                          )),
                     ],
                   ),
                 ),

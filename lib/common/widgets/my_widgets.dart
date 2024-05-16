@@ -3,93 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Widget NumInputBox(BuildContext context, TextEditingController textController,
-    {bool? wrongInput = false}) {
-  return Material(
-    elevation: 5,
-    shadowColor: const Color.fromARGB(200, 0, 0, 0),
-    child: Container(
-      width: 75,
-      decoration: BoxDecoration(
-        border: Border.all(
-            width: 1, color: wrongInput! ? Colors.red : Colors.black),
-      ),
-      child: TextField(
-        controller: textController,
-        maxLength: 1,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        style: const TextStyle(fontSize: 50),
-        decoration: const InputDecoration(counterText: ''),
-        showCursor: false,
-        onChanged: (value) {
-          if (value.length == 1) {
-            FocusScope.of(context).nextFocus();
-          }
-          if (value.isEmpty) {
-            FocusScope.of(context).previousFocus();
-          }
-        },
-        onTap: () => FocusScope.of(context),
-      ),
-    ),
-  );
-}
 
-// commentation needed
-Widget textInputBox(
-    {required String text,
-    double fontSize = 20,
-    required TextEditingController controller,
-    required String? Function(String?)? validator}) {
-  return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    Text(
-      text,
-      style: const TextStyle(fontSize: 20),
-    ),
-    TextFormField(
-        decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(6),
-              borderSide: const BorderSide(color: Colors.black, width: 1),
-            ),
-            contentPadding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0)),
-        controller: controller,
-        keyboardType: TextInputType.emailAddress,
-        style: TextStyle(fontSize: fontSize),
-        validator: validator)
-  ]);
-}
-
-Container ButtonBox(
-    {required String text,
-    Color? color = const Color.fromARGB(255, 204, 231, 255),
-    double? boxWidth = 220,
-    double? boxHeight = 50,
-    Function()? buttonFunc,
-    bool? wrongInput = false}) {
-  return Container(
-    height: boxHeight,
-    width: boxWidth,
-    child: OutlinedButton(
-      onPressed: buttonFunc,
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        side: const BorderSide(color: Colors.transparent),
-        backgroundColor: color,
-        shadowColor: const Color.fromARGB(200, 0, 0, 0),
-        elevation: 5,
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontSize: 20,
-          color: Color.fromARGB(255, 0, 0, 0),
-        ),
-      ),
-    ),
-  );
-}
 
 Widget alertInputBox(
     {required BuildContext context,
@@ -111,40 +25,6 @@ Widget alertInputBox(
   );
 }
 
-Widget passwordInputBox(
-    {required String text,
-    double? fontSize = 20,
-    required TextEditingController controller,
-    required bool passwordVisible,
-    required Function() onPressed,
-    required String? Function(String?)? validator}) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        text,
-        style: const TextStyle(fontSize: 20),
-      ),
-      TextFormField(
-          obscureText: !passwordVisible,
-          controller: controller,
-          keyboardType: TextInputType.visiblePassword,
-          style: TextStyle(fontSize: fontSize),
-          decoration: InputDecoration(
-              suffixIcon: IconButton(
-                  icon: Icon(
-                    passwordVisible ? Icons.visibility_off : Icons.visibility,
-                  ),
-                  onPressed: onPressed),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
-                borderSide: const BorderSide(color: Colors.black, width: 1),
-              ),
-              contentPadding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0)),
-          validator: validator),
-    ],
-  );
-}
 
 PopupMenuItem<Object> dropMenuItem({
   required dynamic val,

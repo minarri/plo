@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SelectedFileNotifier extends StateNotifier<File?> {
   SelectedFileNotifier() : super(null);
   final db = FirebaseFirestore.instance;
+  
 
   //
   void setFile(File? file) {

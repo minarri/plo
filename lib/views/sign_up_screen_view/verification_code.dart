@@ -2,22 +2,25 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
+import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/my_widgets.dart';
-import 'package:plo/services/api_service.dart';
-import 'package:plo/views/profile_create_screen/profile_create.dart';
+import 'package:plo/model/erro_handling/error_handler.dart';
+import 'package:plo/views/Terms_of_service_screen/terms_of_service_screen.dart';
+import 'package:plo/views/sign_up_screen_view/sign_up_screen_controller.dart';
+import 'package:plo/views/sign_up_screen_view/widgets/num_input_box.dart';
 
-class VertCodeScreen extends StatefulWidget {
-  VertCodeScreen(
+class VerifyCodeScreen extends StatefulWidget {
+  VerifyCodeScreen(
       {super.key, required this.emailcontroller, required this.otpHash});
 
   final TextEditingController emailcontroller;
   String otpHash;
 
   @override
-  State<VertCodeScreen> createState() => _VertCodeScreenState();
+  State<VerifyCodeScreen> createState() => _VerifyCodeScreenState();
 }
 
-class _VertCodeScreenState extends State<VertCodeScreen> {
+class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
   bool invalidVertCode = false;
   int resendTime = 180;
   late Timer countdownTimer;
@@ -29,7 +32,7 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
   @override
   void initState() {
     super.initState();
-    startTimer();
+    _startTimer();
   }
 
   @override
@@ -42,26 +45,26 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
   }
 
   // Function to start the countdown timer
-  void startTimer() {
+  void _startTimer() {
     countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         resendTime -= 1;
       });
       if (resendTime < 1) {
-        stopTimer();
+        _stopTimer();
       }
     });
   }
 
   // Function to stop the countdown timer
-  void stopTimer() {
+  void _stopTimer() {
     if (countdownTimer.isActive) {
       countdownTimer.cancel();
     }
   }
 
   // Function to convert seconds to '0:00' format
-  convSecToMin(int seconds) {
+  _convSecToMin(int seconds) {
     String minutesStr = (seconds ~/ 60).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
 
@@ -69,22 +72,22 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
   }
 
   // Function to verify the entered verification code
-  void verifyVertCode() {
+  void _verifyVerifyCode() async {
     final vertCode = txt1.text + txt2.text + txt3.text + txt4.text;
-    EmailAPIService.verifyOTP(
-            widget.emailcontroller.text, widget.otpHash, vertCode)
-        .then((response) {
-      if (resendTime != 0 &&
-          response.data != null &&
-          response.data == "Success") {
-        stopTimer();
+    var res = await verifyVerifyCode(
+        widget.emailcontroller, widget.otpHash, vertCode);
+    res.fold(
+        (errorMessage) => ErrorHandler().showSnackBar(context, errorMessage),
+        (response) {
+      if (resendTime != 0 && response.data == "Success") {
+        _stopTimer();
         setState(() {
           invalidVertCode = false;
         });
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProfileCreate(),
+            builder: (context) => const TermsOfServiceScreen(),
           ),
         );
       } else {
@@ -95,7 +98,7 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
     });
   }
 
-  resendVertCode() {
+  void _resendVerifyCode() async {
     showDialog<String>(
         context: context,
         builder: (BuildContext context) => alertInputBox(
@@ -103,8 +106,11 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
               title: "알림",
               content: "이메일이 다시 발송되었습니다.",
             ));
-    EmailAPIService.otpLogin(widget.emailcontroller.text).then((res) {
-      widget.otpHash = res.data!;
+    var res = await sendVerifyCodeToEmail(widget.emailcontroller);
+    res.fold(
+        (errorMessage) => ErrorHandler().showSnackBar(context, errorMessage),
+        (response) {
+      widget.otpHash = response.data!;
     });
   }
 
@@ -128,7 +134,10 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
                 ),
                 const Text(
                   '학교인증',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
                 const SizedBox(height: 30),
@@ -140,7 +149,7 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
                     ),
                     if (resendTime >= 0)
                       Text(
-                        convSecToMin(resendTime),
+                        _convSecToMin(resendTime),
                         style: const TextStyle(
                           color: Color(0xFF3A6DF2),
                           fontSize: 16,
@@ -177,11 +186,11 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
                         //resend opt code
                         invalidVertCode = false;
                         if (countdownTimer.isActive) {
-                          stopTimer();
+                          _stopTimer();
                         }
                         resendTime = 180; //set to 3 mins
-                        startTimer();
-                        resendVertCode();
+                        _startTimer();
+                        _resendVerifyCode();
                       },
                       child: const Text(
                         '다시 요청',
@@ -194,11 +203,7 @@ class _VertCodeScreenState extends State<VertCodeScreen> {
                   ],
                 ),
                 const SizedBox(height: 90),
-                ButtonBox(
-                    text: '인증 완료',
-                    boxWidth: 160,
-                    boxHeight: 61,
-                    buttonFunc: verifyVertCode)
+                CustomButton(text: '인증완료', onPressed: _verifyVerifyCode)
               ],
             ),
           ),
