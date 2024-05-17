@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Appbar with backbutton
 class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BackButtonAppBar({this.title, super.key})
       : preferredSize = const Size.fromHeight(kToolbarHeight);
@@ -11,7 +12,6 @@ class BackButtonAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
       elevation: 0,
       leading: BackButton(
         color: const Color(0xFF000000),

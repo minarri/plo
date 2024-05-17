@@ -14,7 +14,7 @@ class LoginWithEmailController extends StateNotifier<AsyncValue<void>> {
   Future<String> loginWithEmail() async {
     final result = await ref
         .watch(authRepository)
-        .signiInUserWithEmail(_emailController.text, _passwordController.text);
+        .signInUserWithEmail(_emailController.text, _passwordController.text);
     return result;
   }
 }

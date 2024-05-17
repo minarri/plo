@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
-import 'package:plo/common/widgets/my_widgets.dart';
+import 'package:plo/common/widgets/custom_button.dart';
+import 'package:plo/common/widgets/custom_screen.dart';
+import 'package:plo/views/Terms_of_service_screen/provider/terms_provider.dart';
 import 'package:plo/views/Terms_of_service_screen/term1.dart';
 import 'package:plo/views/Terms_of_service_screen/term2.dart';
 import 'package:plo/views/Terms_of_service_screen/term3.dart';
-import 'package:plo/views/Terms_of_service_screen/terms_provider.dart';
+import 'package:plo/views/Terms_of_service_screen/widgets/checkbox_widget.dart';
 import 'package:plo/views/profile_create_screen/profile_create.dart';
 
 class TermsOfServiceScreen extends ConsumerStatefulWidget {
@@ -51,225 +54,132 @@ class _TermsOfServiceScreenState extends ConsumerState<TermsOfServiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final termInfo = ref.watch(termsInfoProvider);
-
-    return Scaffold(
+    return CustomInitialScreen(
       appBar: const BackButtonAppBar(),
-      body: SingleChildScrollView(
-        child: Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              //나중에 plo로고로 대체해야 합니다.
-              const Icon(
-                Icons.person,
-                size: 80,
-              ),
-              const Text(
-                '약관동의',
-                style: TextStyle(fontSize: 24),
-              ),
-              const SizedBox(height: 50),
-              Row(
-                children: [
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
-                      value: _allIsChecked,
-                      checkColor: Colors.black,
-                      activeColor: const Color.fromARGB(255, 204, 231, 255),
-                      onChanged: (value) {
-                        setState(() {
-                          _allIsChecked = value;
-                          if (_allIsChecked!) {
-                            checkAll();
-                          } else {
-                            uncheckAll();
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  const Text("약관 전체동의",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
-                ],
-              ),
-              const SizedBox(height: 20),
-              Container(
-                height: 1.0,
-                color: Colors.black,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
-                      value: _firstIsChecked,
-                      checkColor: Colors.black,
-                      activeColor: const Color.fromARGB(255, 204, 231, 255),
-                      onChanged: (value) {
-                        setState(() {
-                          _firstIsChecked = value;
-                          if (_allIsChecked! && _firstIsChecked == false) {
-                            _allIsChecked = false;
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Term1(),
-                            ));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("어쩌고 저쩌고 동의1",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 75, 74, 74))),
-                          Text("(필수)",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: termInfo['checkbox1']!
-                                      ? const Color.fromARGB(255, 75, 74, 74)
-                                      : Colors.red)),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 28,
-                            color: Color.fromARGB(255, 75, 74, 74),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
-                      value: _secondIsChecked,
-                      checkColor: Colors.black,
-                      activeColor: const Color.fromARGB(255, 204, 231, 255),
-                      onChanged: (value) {
-                        setState(() {
-                          _secondIsChecked = value;
-                          if (_allIsChecked! && _secondIsChecked == false) {
-                            _allIsChecked = false;
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Term2(),
-                            ));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text("어쩌고 저쩌고 동의2",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 75, 74, 74))),
-                          Text("(필수)",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: termInfo["checkbox2"]!
-                                      ? const Color.fromARGB(255, 75, 74, 74)
-                                      : Colors.red)),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            size: 28,
-                            color: Color.fromARGB(255, 75, 74, 74),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Transform.scale(
-                    scale: 2,
-                    child: Checkbox(
-                      value: _thridIsChecked,
-                      checkColor: Colors.black,
-                      activeColor: const Color.fromARGB(255, 204, 231, 255),
-                      onChanged: (value) {
-                        setState(() {
-                          _thridIsChecked = value;
-                          if (_allIsChecked! && _thridIsChecked == false) {
-                            _allIsChecked = false;
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Term3(),
-                            ));
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("어쩌고 저쩌고 동의3",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 75, 74, 74))),
-                          Text("(선택)",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 75, 74, 74))),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 28,
-                            color: Color.fromARGB(255, 75, 74, 74),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 50),
-              ButtonBox(
-                  text: "다음",
-                  boxHeight: 60,
-                  boxWidth: 160,
-                  buttonFunc: validateCheckBox)
-            ]),
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        //나중에 plo로고로 대체해야 합니다.
+        const Icon(
+          Icons.person,
+          size: 80,
+        ),
+        const Text(
+          '약관동의',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
           ),
         ),
-      ),
+        const SizedBox(height: 50),
+        Row(
+          children: [
+            Transform.scale(
+              scale: 2,
+              child: Checkbox(
+                value: _allIsChecked,
+                checkColor: Colors.black,
+                activeColor: const Color.fromARGB(255, 204, 231, 255),
+                onChanged: (value) {
+                  setState(() {
+                    _allIsChecked = value;
+                    if (_allIsChecked!) {
+                      checkAll();
+                    } else {
+                      uncheckAll();
+                    }
+                  });
+                },
+              ),
+            ),
+            const SizedBox(width: 5),
+            const Text("약관 전체동의",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))
+          ],
+        ),
+        const SizedBox(height: 10),
+        const Divider(
+          color: CupertinoColors.systemGrey5,
+          thickness: 5,
+        ),
+
+        CheckBoxWidget(
+          id: 1,
+          title: "어쩌고 저쩌고 동의",
+          subtitle: "(필수)",
+          checkBox: Checkbox(
+            value: _firstIsChecked,
+            checkColor: Colors.black,
+            activeColor: const Color.fromARGB(255, 204, 231, 255),
+            onChanged: (value) {
+              setState(() {
+                _firstIsChecked = value;
+                if (_allIsChecked! && _firstIsChecked == false) {
+                  _allIsChecked = false;
+                }
+              });
+            },
+          ),
+          callback: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Term1(),
+                ));
+          },
+        ),
+        CheckBoxWidget(
+          id: 2,
+          title: "어쩌고 저쩌고 동의2",
+          subtitle: "(필수)",
+          checkBox: Checkbox(
+            value: _secondIsChecked,
+            checkColor: Colors.black,
+            activeColor: const Color.fromARGB(255, 204, 231, 255),
+            onChanged: (value) {
+              setState(() {
+                _secondIsChecked = value;
+                if (_allIsChecked! && _secondIsChecked == false) {
+                  _allIsChecked = false;
+                }
+              });
+            },
+          ),
+          callback: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Term2(),
+                ));
+          },
+        ),
+        CheckBoxWidget(
+          title: "어쩌고 저쩌고 동의3",
+          subtitle: "(선택)",
+          checkBox: Checkbox(
+            value: _thridIsChecked,
+            checkColor: Colors.black,
+            activeColor: const Color.fromARGB(255, 204, 231, 255),
+            onChanged: (value) {
+              setState(() {
+                _thridIsChecked = value;
+                if (_allIsChecked! && _thridIsChecked == false) {
+                  _allIsChecked = false;
+                }
+              });
+            },
+          ),
+          callback: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Term3(),
+                ));
+          },
+        ),
+
+        const SizedBox(height: 50),
+        CustomButton(text: "다음", onPressed: validateCheckBox),
+      ]),
     );
   }
 }
