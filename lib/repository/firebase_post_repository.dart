@@ -72,6 +72,19 @@ class FirebasePostRepository {
       return null;
     }
   }
+  Future<PostModel?> fetchPostByPostUid(String pid) async {
+  try {
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await FirebaseFirestore.instance.collection(FirebaseConstants.postcollectionName).doc(pid).get();
+    if(documentSnapshot.exists) {
+      return PostModel().fromJson(documentSnapshot.data()!);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    logToConsole("Fetch by singlePost error: ${error.toString()}");
+    return null;
+  }
+}
 }
 
 final firebasePostRepository = Provider<FirebasePostRepository>((ref) {

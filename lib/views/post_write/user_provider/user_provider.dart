@@ -14,11 +14,13 @@ class UserProvider extends StateNotifier<UserModel?> {
   }
 
   Future<bool> updateUserFromFirebase() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
     final user = await ref.watch(firebaseUserRepository).fetchUser();
     if (user != null) {
-      // print("CurrentUserProvider: profileImageUrl : ${user.profileImgUrl}");
+      logToConsole("User fetched from Firebase: ${user.userNickname}"); 
       state = user;
+    } else {
+      logToConsole("No user data returned from Firebase");
     }
     return true;
   }

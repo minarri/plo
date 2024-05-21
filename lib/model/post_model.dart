@@ -5,19 +5,20 @@ import 'package:plo/model/types/category_type.dart';
 import 'package:http/http.dart';
 
 class PostModelFieldNameConstants {
-  static const pid = "pid";
-  static const uploadUserUid = "uid";
-  static const userNickname = "userNickname";
-  static const userProfileURL = "userProfileURL";
-  static const category = "category";
-  static const postContent = "postContent";
-  static const postTitle = "postTitle";
-  static const contentImageUrlList = "contentImageURL";
-  static const postLikes = "postLikes";
-  static const isPostImageBool = "istPostImageBool";
-  static const uploadTime = "uploadTime";
-  static const postViewList = "postViewList";
-  static const postViewListLength = "postViewListLength";
+  static const String pid = "pid";
+  static const String uploadUserUid = "uid";
+  static const String userNickname = "userNickname";
+  static const String userProfileURL = "userProfileURL";
+  static const String category = "category";
+  static const String postContent = "postContent";
+  static const String postTitle = "postTitle";
+  static const String contentImageUrlList = "contentImageURL";
+  static const String postLikes = "postLikes";
+  static const String isPostImageBool = "istPostImageBool";
+  static const String uploadTime = "uploadTime";
+  static const String postViewList = "postViewList";
+  static const String postViewListLength = "postViewListLength";
+  static const String showWarning = "ShowWarning";
 }
 
 class PostModel {
@@ -34,22 +35,23 @@ class PostModel {
   final CategoryType category;
   final List<String> postViewList;
   final int postViewListLength;
+  final bool showWarning;
 
-  PostModel({
-    this.pid = ErrorReplacementConstants.notSetString,
-    this.uploadUserUid = ErrorReplacementConstants.notSetString,
-    this.userNickname = ErrorReplacementConstants.notSetString,
-    this.userProfileURL = ErrorReplacementConstants.notSetString,
-    this.postTitle = ErrorReplacementConstants.notSetString,
-    this.postContent = ErrorReplacementConstants.notSetString,
-    this.contentImageUrlList = const [],
-    this.postLikes = 0,
-    this.uploadTime,
-    this.isPostImageBool = false,
-    this.category = CategoryType.information,
-    this.postViewList = const [],
-    this.postViewListLength = 0,
-  });
+  PostModel(
+      {this.pid = ErrorReplacementConstants.notSetString,
+      this.uploadUserUid = ErrorReplacementConstants.notSetString,
+      this.userNickname = ErrorReplacementConstants.notSetString,
+      this.userProfileURL = ErrorReplacementConstants.notSetString,
+      this.postTitle = ErrorReplacementConstants.notSetString,
+      this.postContent = ErrorReplacementConstants.notSetString,
+      this.contentImageUrlList = const [],
+      this.postLikes = 0,
+      this.uploadTime,
+      this.isPostImageBool = false,
+      this.category = CategoryType.information,
+      this.postViewList = const [],
+      this.postViewListLength = 0,
+      this.showWarning = false});
 
   Map<String, Object?> toJson() {
     return {
@@ -63,9 +65,10 @@ class PostModel {
       PostModelFieldNameConstants.postLikes: postLikes,
       PostModelFieldNameConstants.uploadTime: uploadTime,
       PostModelFieldNameConstants.isPostImageBool: isPostImageBool,
-      PostModelFieldNameConstants.category: category,
+      PostModelFieldNameConstants.category: category.toString(),
       PostModelFieldNameConstants.postViewList: postViewList,
       PostModelFieldNameConstants.postViewListLength: postViewListLength,
+      PostModelFieldNameConstants.showWarning: showWarning,
     };
   }
 
@@ -87,28 +90,30 @@ class PostModel {
                   .toList();
 
       return PostModel(
-          pid: json[PostModelFieldNameConstants.pid] ??
-              ErrorReplacementConstants.notFoundString,
-          uploadUserUid: json[PostModelFieldNameConstants.uploadUserUid] ??
-              ErrorReplacementConstants.notFoundString,
-          userNickname: json[PostModelFieldNameConstants.userNickname] ??
-              ErrorReplacementConstants.notFoundString,
-          userProfileURL: json[PostModelFieldNameConstants.userProfileURL] ??
-              ErrorReplacementConstants.notFoundString,
-          postTitle: json[PostModelFieldNameConstants.postTitle] ??
-              ErrorReplacementConstants.notFoundString,
-          postContent: json[PostModelFieldNameConstants.postContent] ??
-              ErrorReplacementConstants.notFoundString,
-          contentImageUrlList: convertedcontentImageUrlList,
-          uploadTime: json[PostModelFieldNameConstants.uploadTime],
-          isPostImageBool:
-              json[PostModelFieldNameConstants.isPostImageBool] ?? false,
-          category: CategoryType.stringToCategory(
-              json[PostModelFieldNameConstants.category]),
-          postLikes: json[PostModelFieldNameConstants.postLikes] ?? 0,
-          postViewList: convertedPostViewList,
-          postViewListLength:
-              json[PostModelFieldNameConstants.postViewList] ?? -1);
+        pid: json[PostModelFieldNameConstants.pid] ??
+            ErrorReplacementConstants.notFoundString,
+        uploadUserUid: json[PostModelFieldNameConstants.uploadUserUid] ??
+            ErrorReplacementConstants.notFoundString,
+        userNickname: json[PostModelFieldNameConstants.userNickname] ??
+            ErrorReplacementConstants.notFoundString,
+        userProfileURL: json[PostModelFieldNameConstants.userProfileURL] ??
+            ErrorReplacementConstants.notFoundString,
+        postTitle: json[PostModelFieldNameConstants.postTitle] ??
+            ErrorReplacementConstants.notFoundString,
+        postContent: json[PostModelFieldNameConstants.postContent] ??
+            ErrorReplacementConstants.notFoundString,
+        contentImageUrlList: convertedcontentImageUrlList,
+        uploadTime: json[PostModelFieldNameConstants.uploadTime],
+        isPostImageBool:
+            json[PostModelFieldNameConstants.isPostImageBool] ?? false,
+        category: CategoryType.stringToCategory(
+            json[PostModelFieldNameConstants.category]),
+        postLikes: json[PostModelFieldNameConstants.postLikes] ?? 0,
+        postViewList: convertedPostViewList,
+        postViewListLength:
+            json[PostModelFieldNameConstants.postViewList] ?? -1,
+        showWarning: json[PostModelFieldNameConstants.showWarning] ?? false,
+      );
     } catch (error) {
       logToConsole('PostModel fromJson Error: ${error.toString()}');
       return null;
@@ -128,6 +133,7 @@ class PostModel {
       CategoryType? category,
       int? postLikes,
       List<String>? postViewList,
+      bool? showWarning,
       int? postViewListLength}) {
     return PostModel(
         pid: pid ?? this.pid,
@@ -142,7 +148,8 @@ class PostModel {
         category: category ?? this.category,
         postLikes: postLikes ?? this.postLikes,
         postViewList: postViewList ?? this.postViewList,
-        postViewListLength: postViewListLength ?? this.postViewListLength);
+        postViewListLength: postViewListLength ?? this.postViewListLength,
+        showWarning: showWarning ?? this.showWarning);
   }
 
   @override
