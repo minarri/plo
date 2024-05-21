@@ -21,15 +21,15 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   final SwiperController _swiperController = SwiperController();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  final TextEditingController _categoryController = TextEditingController();
+  // final TextEditingController _categoryController = TextEditingController();
   final Ref ref;
   CreatePostController(this.ref) : super(const AsyncLoading()) {
     _init();
   }
   get swiperController => _swiperController;
-  get titleController => _titleController;
+  TextEditingController get titleController => _titleController;
   get contentController => _contentController;
-  get categoryController => _categoryController;
+  // get categoryController => _categoryController;
 
   _init() async {
     state = const AsyncLoading();
@@ -39,7 +39,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
           ref.read(createEditPostStateProvider).editPostInformation!;
       _titleController.text = postStateModel.postTitle;
       _contentController.text = postStateModel.postContent;
-      _categoryController.text = postStateModel.category.toString();
+      // _categoryController.text = postStateModel.category.toString();
     }
     state = const AsyncData(null);
   }
@@ -47,7 +47,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   initAllFieldforEdit(CreateEditPostModel editPostInformation) {
     _titleController.text = editPostInformation.postTitle;
     _contentController.text = editPostInformation.postContent;
-    _categoryController.text = editPostInformation.category.toString();
+    // _categoryController.text = editPostInformation.category.toString();
   }
 
   void movetoEnd() {
@@ -60,7 +60,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         ref.read(createEditPostStateProvider).photos.length - 1;
   }
 
-  pickMultipleImagesFromGallery() async {
+  void pickMultipleImagesFromGallery() async {
     final result = await ref
         .watch(imagePickerRepositoryProvider)
         .pickMultipleImageFromGallery();
@@ -92,7 +92,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
     ref.read(imageLoadingProvider.notifier).state = false;
   }
 
-  pickImageFromCamera() async {
+  void pickImageFromCamera() async {
     if (ref.read(createEditPostStateProvider).photos.length >= 6) {
       state = AsyncError("6개 이상의 사진은 업로드 할 수 없습니다", StackTrace.current);
     } else {
@@ -119,22 +119,25 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
     ref.read(imageLoadingProvider.notifier).state = false;
   }
 
-  Future<bool> uploadPost({required GlobalKey<FormState> formkey}) async {
+  Future<bool> uploadPost({required GlobalKey<FormState> formKey}) async {
     try {
-      if (!formkey.currentState!.validate()) {
+      if (!formKey.currentState!.validate()) {
         return false;
       }
+      //controller: title and content
       final postState = ref.read(createEditPostStateProvider);
 
-      if (postState.postContent.isEmpty) {
-        state = AsyncError("게시물 내용은 빈칸으로 올릴 수 없습니다", StackTrace.current);
-        state = const AsyncData(null);
-        return false;
-      } else if (postState.postTitle.isEmpty) {
+      if (postState.postTitle.isEmpty) {
         state = AsyncError("게시물 제목을 작성해주세요", StackTrace.current);
         state = const AsyncData(null);
         return false;
       }
+      if (postState.postContent.isEmpty) {
+        state = AsyncError("게시물 내용은 빈칸으로 올릴 수 없습니다", StackTrace.current);
+        state = const AsyncData(null);
+        return false;
+      }
+
       final isForEdit = postState.isForEdit;
       if (ref.read(currentUserProvider.notifier).mounted == false ||
           ref.read(currentUserProvider) == null) {
@@ -142,7 +145,12 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         state = const AsyncData(null);
         return false;
       }
+      print(
+          'currentUserProvider.notifier.mounted: ${ref.read(currentUserProvider.notifier).mounted}');
+      print('currentUserProvider value: ${ref.read(currentUserProvider)}');
+
       final user = ref.read(currentUserProvider)!;
+
       final String pid =
           isForEdit ? postState.editPostInformation!.pid : const Uuid().v1();
       final photos = postState.photos;

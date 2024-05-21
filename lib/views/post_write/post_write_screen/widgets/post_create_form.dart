@@ -24,26 +24,36 @@ class CreateEditPostFormWidget extends ConsumerWidget {
             const Text("제목"),
             defaultSpacing,
             TextFormField(
-                controller: ref
-                    .watch(createEditPostStateController.notifier)
-                    .titleController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.black),
-                  ),
-                  hintText: "제목",
+              controller: ref
+                  .watch(createEditPostStateController.notifier)
+                  .titleController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.black),
                 ),
-                maxLength: 50,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                validator: (value) {
-                  return Validator.titleValidator(value);
-                }),
+                hintText: "제목",
+              ),
+              maxLength: 50,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              validator: (value) {
+                return Validator.titleValidator(value);
+              },
+              onChanged: (value) {
+                ref
+                    .read(createEditPostStateProvider.notifier)
+                    .updateTitle(value);
+              },
+               onTapOutside: (event) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+            ),
             defaultSpacing,
             const Text("카테고리"),
             DropdownButtonHideUnderline(
               child: DropdownButton2(
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.black),
                 buttonStyleData: ButtonStyleData(
                   decoration: BoxDecoration(
                     border: Border.all(),
@@ -76,15 +86,31 @@ class CreateEditPostFormWidget extends ConsumerWidget {
                   ),
                 ),
                 items: CategoryType.values
-                    .sublist(0, CategoryType.values.length - 1)
+                    .sublist(0, CategoryType.values.length)
                     .map(
                       (categories) => DropdownMenuItem(
-                          alignment: Alignment.centerLeft,
-                          value: categories.toString(),
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(10),
-                          )),
+                        alignment: Alignment.centerLeft,
+                        value: categories.toString(),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        categories.toString(),
+                                      ),
+                                    ]),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     )
                     .toList(),
                 onChanged: (value) {
@@ -102,21 +128,33 @@ class CreateEditPostFormWidget extends ConsumerWidget {
             const Text("내용"),
             defaultSpacing,
             TextFormField(
-                controller: ref
-                    .watch(createEditPostStateController.notifier)
-                    .contentController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.black),
-                  ),
-                  hintText: "내용",
+              controller: ref
+                  .read(createEditPostStateController.notifier)
+                  .contentController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: Colors.black),
                 ),
-                maxLength: 500,
-                maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                validator: (value) {
-                  return Validator.contentValidator(value);
-                }),
+                hintText: "내용",
+              ),
+              maxLength: 500,
+              minLines: 2,
+              maxLines: 10,
+              keyboardType: TextInputType.multiline,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              validator: (value) {
+                return Validator.contentValidator(value);
+              },
+              onChanged: (value) {
+                ref
+                    .read(createEditPostStateProvider.notifier)
+                    .updateContent(value);
+              },
+              onTapOutside: (event) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+            ),
           ],
         ));
   }

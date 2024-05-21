@@ -26,7 +26,7 @@ class MainPostListProvider extends StateNotifier<List<PostModel>> {
   }
 }
 
-final mainListProvier =
+final mainListProvider =
     StateNotifierProvider.autoDispose<MainPostListProvider, List<PostModel>>(
         (ref) {
   return MainPostListProvider();

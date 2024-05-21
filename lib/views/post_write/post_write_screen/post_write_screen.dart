@@ -47,7 +47,7 @@ class _CreateEditPostScreenState extends ConsumerState<CreateEditPostScreen> {
 
     return Scaffold(
         appBar: BackButtonAppBar(
-            title: postState.isForEdit ? "Edit Post" : "Sell Post"),
+            title: postState.isForEdit ? "Edit Post" : "Write Post"),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -65,9 +65,9 @@ class _CreateEditPostScreenState extends ConsumerState<CreateEditPostScreen> {
                             const Center(child: CircularProgressIndicator()));
                     final result = await ref
                         .read(createEditPostStateController.notifier)
-                        .uploadPost(formkey: _formKey);
+                        .uploadPost(formKey: _formKey);
                     if (result == true) {
-                      ref.refresh(postListController);
+                      ref.refresh(mainpostListController);
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     } else {

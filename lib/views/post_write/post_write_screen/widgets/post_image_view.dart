@@ -36,7 +36,7 @@ class _ImageViewWidgetState
             : photos.isEmpty
                 ? const Center(
                     child: Icon(
-                      Icons.camera,
+                      Icons.camera_alt,
                     ),
                   )
                 : InkWell(
@@ -76,6 +76,7 @@ class _ImageViewWidgetState
                 ),
               )),
         ),
+        SizedBox(height:10),
       ElevatedButton(
           onPressed: () {
             showModalBottomSheet(
