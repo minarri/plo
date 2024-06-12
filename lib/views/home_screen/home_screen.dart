@@ -24,7 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), side: BorderSide()),
+                borderRadius: BorderRadius.circular(20), side: const BorderSide()),
             onPressed: () async {
               final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
               if (isNotSignedUser) {
@@ -35,7 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      CreateEditPostScreen(),
+                      const CreateEditPostScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     var begin = const Offset(0, 1);
@@ -52,8 +52,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.all(8),
+            child: const Padding(
+              padding: EdgeInsets.all(8),
               child: Icon(
                 Icons.home,
                 color: Colors.white,
