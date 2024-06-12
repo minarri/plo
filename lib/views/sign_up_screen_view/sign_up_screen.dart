@@ -5,7 +5,6 @@ import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/custom_screen.dart';
 import 'package:plo/common/widgets/custom_text_input_box.dart';
-import 'package:plo/common/widgets/my_widgets.dart';
 import 'package:plo/model/erro_handling/error_handler.dart';
 import 'package:plo/views/sign_up_screen_view/provider/signup_provider.dart';
 import 'package:plo/views/sign_up_screen_view/sign_up_screen_controller.dart';

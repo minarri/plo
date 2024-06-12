@@ -41,13 +41,10 @@ class Validator {
   }
 
   static String? validateNickName(String? nickname) {
-    SelectedFileNotifier pfpCtrler = SelectedFileNotifier();
+    //SelectedFileNotifier profile = SelectedFileNotifier();
 
     if (nickname == null || nickname.isEmpty) {
       return ErrorMessageConstants.emptyStringError;
-    } else if (pfpCtrler.checkDuplicate(nickname) as bool == false) {
-      print('duplicate nickname');
-      return ErrorMessageConstants.duplicateNicknameMessage;
     } else {
       return null;
     }

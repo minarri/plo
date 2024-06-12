@@ -7,6 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class FirebaseAuthRepository {
   static const repoName = 'FirebaseAuthRepository';
   final FirebaseAuth firebase = FirebaseAuth.instance;
+
+  // return the currently logged in user. If the user does not exist (non_logged in_user) then returns NULL
   User? getCurrentUser() {
     return firebase.currentUser;
   }
