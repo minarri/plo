@@ -85,6 +85,17 @@ class FirebasePostRepository {
     return null;
   }
 }
+ Future<bool> deletePostbyPid(String pid) async {
+    try {
+      await FirebaseFirestore.instance.collection(FirebaseConstants.postcollectionName).doc(pid).delete();
+      return true;
+    } catch(e) {
+      logToConsole("There was an error deleting the post ${e.toString()}");
+      return false;
+
+    }
+
+  }
 }
 
 final firebasePostRepository = Provider<FirebasePostRepository>((ref) {

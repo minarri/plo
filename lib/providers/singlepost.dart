@@ -29,6 +29,5 @@ final singlePostProvider = StateNotifierProvider.family
   ref.onDispose(() {
     logToConsole("Single Post disposed");
   });
-  return SinglePostProvider(
-      firebasePostRepository: ref.watch(firebasePostRepository), post: post);
+  return SinglePostProvider(firebasePostRepository: ref.watch(firebasePostRepository), post: post);
 });

@@ -28,7 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: FloatingActionButton(
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), side: BorderSide()),
+                borderRadius: BorderRadius.circular(20), side: const BorderSide()),
             onPressed: () async {
               if (ref.watch(logInVerifyProvider) == false) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -38,7 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               Navigator.of(context).push(
                 PageRouteBuilder(
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      CreateEditPostScreen(),
+                      const CreateEditPostScreen(),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     var begin = const Offset(0, 1);

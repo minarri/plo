@@ -3,9 +3,11 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plo/common/widgets/pagination.dart';
+import 'package:plo/common/widgets/image_handler.dart';
+import 'package:plo/common/widgets/style_widgets.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/providers/singlepost.dart';
+import 'package:plo/views/postdetail_screen/postpicture_view.dart';
 
 class PostDetail extends ConsumerWidget {
   final PostModel postKey;
@@ -18,15 +20,20 @@ class PostDetail extends ConsumerWidget {
       height: 400,
       child: Swiper(
         loop: false,
-        pagination: StyleWidgets.defaultPagination(baseColor: Colors.grey),
+        pagination: StyleWidgets.DefaultPagination(baseColor: Colors.grey),
         itemCount: post.contentImageUrlList.length,
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ))
-            }
-          )
-        }
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => PostDetailPhotoview(
+                        photoUrl: post.contentImageUrlList,
+                        initialIndex: index)));
+              },
+              child: ImageHandlerWidget(
+                imageUrl: post.contentImageUrlList[index],
+              ));
+        },
       ),
     );
   }
