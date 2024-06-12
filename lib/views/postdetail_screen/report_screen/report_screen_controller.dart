@@ -5,6 +5,8 @@ import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/post_report_model.dart';
 import 'package:plo/model/types/report_type.dart';
+import 'package:plo/model/types/return_type.dart';
+import 'package:plo/repository/firebase_report_repository.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 
 class ReportPostController extends StateNotifier<AsyncValue<void>> {
@@ -30,10 +32,19 @@ class ReportPostController extends StateNotifier<AsyncValue<void>> {
         pid: post.pid,
         uploadUserUid: post.uploadUserUid,
         reportingUserUid: user!.userUid,
+        reportType: reportType,
         uploadTime: Timestamp.now(),
         etcDescription: etcDescription,
         reportDetail: reportDescription ?? "",
       );
-      final reportUplodresult = await ref.watch(firebaase)
+      final reportUplodresult = await ref.watch(firebaseReportRepositoryProvider).uploadPostReportModelToFirebase(report, post);
+      if((reportUplodresult is SuccessReturnType  && reportUplodresult.isSuccess != true) || reportUplodresult is ErrorReturnType) {
+        return false;
+      }
+      return true;
     }
 }
+
+final reportPostControllerProvider = StateNotifierProvider.autoDispose<ReportPostController, AsyncValue<void>> ((ref) {
+  return ReportPostController(ref);
+});
