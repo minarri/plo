@@ -1,7 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
-import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
+import 'package:plo/providers/login_verification_provider.dart';
+import 'package:plo/repository/firebase_auth_repository.dart';
+import 'package:plo/views/search_posts_screen/search_posts.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -19,15 +22,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.white,
-      child: SafeArea(
-        child: Scaffold(
-          floatingActionButton: FloatingActionButton(
+      child: Stack(children: [
+        Align(
+          alignment: Alignment.bottomRight,
+          child: FloatingActionButton(
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20), side: const BorderSide()),
             onPressed: () async {
-              final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
-              if (isNotSignedUser) {
+              if (ref.watch(logInVerifyProvider) == false) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("로그인을 해야 글을 작성 할 수 있습니다.")));
                 return;
@@ -61,13 +64,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-          body: Column(
-            children: const [
-              Expanded(child: MainItemList()),
-            ]
-          )
         ),
-      ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const SearchPosts();
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
     );
+
+    // body: const Column(
+    //   children: [
+    //     //Expanded(child: MainPostList()),
+    //   ],
+    // ),
   }
 }

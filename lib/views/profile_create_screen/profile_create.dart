@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,12 +9,14 @@ import 'package:plo/common/validator/validator.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/my_widgets.dart';
+import 'package:plo/constants/error_message_constants.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/repository/image_picker_repository.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/profile_create_screen/profile_create_controller.dart';
 import 'package:plo/views/sign_up_screen_view/provider/signup_provider.dart';
+import 'package:plo/views/sign_up_screen_view/sign_up_screen_controller.dart';
 
 class ProfileCreate extends ConsumerStatefulWidget {
   const ProfileCreate({super.key});
@@ -69,9 +72,9 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
   Widget build(BuildContext context) {
     //local 객체들 for holding each user inputs temporarily
     //final user = FirebaseAuth.instance.currentUser;
-    final signupInfo = ref.watch(signUpInfoProvider);
-    final email = signupInfo['email'] ?? '';
-    final password = signupInfo['password'] ?? '';
+    final signUpInfo = ref.watch(signUpInfoProvider);
+    final email = signUpInfo['email'] ?? '';
+    final password = signUpInfo['password'] ?? '';
     File? profilePic = ref.watch(selectedFile);
     //Front-end codes
     return Scaffold(
@@ -183,11 +186,14 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                       ),
                       //확인 버튼
                       Padding(
-                          padding: const EdgeInsets.only(top: 40.0),
-                          child: CustomButton(
-                            text: "확인",
-                            onPressed: () async {
-                              if (formKey.currentState!.validate()) {
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: CustomButton(
+                          text: "확인",
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              try {
+                                SelectedFileNotifier()
+                                    .checkDuplicate(nickname.text);
                                 await auth.signUpUser(
                                   email: email,
                                   password: password,
@@ -203,9 +209,14 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                                     builder: (context) => const SignInScreen(),
                                   ),
                                 );
+                                print('succeed');
+                              } catch (err) {
+                                print('failed');
                               }
-                            },
-                          )),
+                            }
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
