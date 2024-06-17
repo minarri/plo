@@ -64,14 +64,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
           ),
-<<<<<<< HEAD
-=======
-          body: Column(
-            children: const [
-              Expanded(child: MainPostList()),
-            ]
-          )
->>>>>>> for_merge
         ),
         Align(
           alignment: Alignment.bottomLeft,
