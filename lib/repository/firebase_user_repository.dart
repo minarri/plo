@@ -12,6 +12,7 @@ class FirebaseUserRepository {
   void _logHelper(String typeofAction, String funcitonName) {
     log("Firestore was Used ($typeofAction) in $funcitonName in FirebaseUserRepository");
   }
+  User? get currentUser => _auth.currentUser;
 
   User? get currentUser => _auth.currentUser;
   
