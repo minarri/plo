@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
@@ -63,7 +64,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
           body: Column(
             children: const [
-              Expanded(child: MainItemList()),
+              Expanded(child: MainPostList()),
             ]
           )
         ),
