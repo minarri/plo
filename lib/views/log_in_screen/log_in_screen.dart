@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_screen.dart';
 import 'package:plo/model/types/enum_type.dart';
-import 'package:plo/providers/login_verification_provider.dart';
+import 'package:plo/common/providers/login_verification_provider.dart';
 import 'package:plo/views/forgot_password/forgot_password_screen.dart';
 import 'package:plo/views/home_screen/home_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_controller.dart';

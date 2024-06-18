@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/functions.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
-import 'package:plo/providers/singlepost.dart';
+import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
