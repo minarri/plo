@@ -6,7 +6,7 @@ import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
 import 'package:plo/common/widgets/modal_bottomsheet/modal_bottom_icon.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/state_model/create_edit_post_model.dart';
-import 'package:plo/providers/singlepost.dart';
+import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/services/delete_service.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
 

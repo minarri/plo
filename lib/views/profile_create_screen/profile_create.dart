@@ -191,28 +191,25 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                           text: "확인",
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              try {
-                                SelectedFileNotifier()
-                                    .checkDuplicate(nickname.text);
-                                await auth.signUpUser(
-                                  email: email,
-                                  password: password,
-                                  nickname: nickname.text,
-                                  grade: grade.text,
-                                  major: major.text,
-                                  file: profilePic,
-                                );
-                                Navigator.push(
-                                  // ignore: use_build_context_synchronously
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignInScreen(),
-                                  ),
-                                );
-                                print('succeed');
-                              } catch (err) {
-                                print('failed');
-                              }
+                              SelectedFileNotifier()
+                                  .checkNickNameDupsThenSignUp(
+                                email,
+                                password,
+                                nickname.text,
+                                grade.text,
+                                major.text,
+                                profilePic,
+                              );
+                              Navigator.push(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignInScreen(),
+                                ),
+                              );
+                              print('succeed');
+                            } else {
+                              print('failed');
                             }
                           },
                         ),
