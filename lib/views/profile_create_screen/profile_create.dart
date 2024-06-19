@@ -48,9 +48,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
     } else if (source == null) {
       //기본 프로필 옵션 선택 시
       image = null;
-      setState(() {
-        image = null;
-      });
+      ref.watch(selectedFile.notifier).setFile(null);
       return;
     }
     else {
