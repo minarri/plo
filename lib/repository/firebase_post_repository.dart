@@ -44,7 +44,7 @@ class FirebasePostRepository {
       final QuerySnapshot querySnapshot;
 
       if (lastPostUploadTime == null) {
-        querySnapshot = await FirebaseFirestore.instance
+        querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
             .where(PostModelFieldNameConstants.category,
                 whereIn: [CategoryType.information.toString()])
@@ -52,7 +52,7 @@ class FirebasePostRepository {
             .limit(amountFetch)
             .get();
       } else {
-        querySnapshot = await FirebaseFirestore.instance
+        querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
             .where(PostModelFieldNameConstants.category,
                 whereIn: [CategoryType.general.toString()])
@@ -74,7 +74,7 @@ class FirebasePostRepository {
   }
   Future<PostModel?> fetchPostByPostUid(String pid) async {
   try {
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await FirebaseFirestore.instance.collection(FirebaseConstants.postcollectionName).doc(pid).get();
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(pid).get();
     if(documentSnapshot.exists) {
       return PostModel().fromJson(documentSnapshot.data()!);
     } else {
@@ -87,7 +87,7 @@ class FirebasePostRepository {
 }
  Future<bool> deletePostbyPid(String pid) async {
     try {
-      await FirebaseFirestore.instance.collection(FirebaseConstants.postcollectionName).doc(pid).delete();
+      await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(pid).delete();
       return true;
     } catch(e) {
       logToConsole("There was an error deleting the post ${e.toString()}");
