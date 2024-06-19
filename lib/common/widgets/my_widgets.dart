@@ -93,17 +93,13 @@ Widget pfpStack({
 }) {
   return Stack(
     children: [
-      pfpImage != null
-          ? CircleAvatar(
+      
+          CircleAvatar(
               radius: 62,
               backgroundColor: Colors.transparent,
-              backgroundImage: FileImage(pfpImage),
-            )
-          : CircleAvatar(
-              radius: 62,
-              backgroundColor: Colors.transparent,
-              backgroundImage: bgImage,
+              backgroundImage: pfpImage != null ? FileImage(pfpImage) : bgImage,
             ),
+          
       Positioned(
         right: -1,
         bottom: 0,
