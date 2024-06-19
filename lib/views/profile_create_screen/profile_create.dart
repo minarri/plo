@@ -16,7 +16,6 @@ import 'package:plo/repository/image_picker_repository.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/profile_create_screen/profile_create_controller.dart';
 import 'package:plo/views/sign_up_screen_view/provider/signup_provider.dart';
-import 'package:plo/views/sign_up_screen_view/sign_up_screen_controller.dart';
 
 class ProfileCreate extends ConsumerStatefulWidget {
   const ProfileCreate({super.key});
@@ -39,17 +38,23 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
   TextEditingController major = TextEditingController();
 
   //프로필 사진 카메라/앨범에서 가져오는 function - ImageSource source --> 카메라 or 앨범
-  Future<void> selectImage(ImageSource source) async {
+  Future<void> selectImage(ImageSource? source) async {
     final pickedImage = ref.watch(imagePickerRepositoryProvider);
     ReturnType result;
     if (source == ImageSource.camera) {
       result = await pickedImage.pickImageFromCamera();
     } else if (source == ImageSource.gallery) {
       result = await pickedImage.pickImageFromGallery();
-    } else {
+    } else if (source == null) {
       //기본 프로필 옵션 선택 시
-      result =
-          const AssetImage('assets/images/profile_default.png') as ReturnType;
+      image = null;
+      setState(() {
+        image = null;
+      });
+      return;
+    }
+    else {
+      result = ErrorReturnType(message: "Invalid image Source");
     }
     if (result is SuccessReturnType && result.data != null) {
       File file = result.data;
@@ -128,8 +133,9 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                     } else if (value == 'default') {
                       image = null;
                       //어떤 value를 전달하는것이 아님. if/else 문을 위한 parameter pass
-                      selectImage(ImageSource.values as ImageSource);
+                      selectImage(null);
                     }
+                    
                   },
                 ),
                 //"프로필 설정"
