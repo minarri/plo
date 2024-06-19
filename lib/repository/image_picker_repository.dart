@@ -107,6 +107,7 @@ class ImagePickerRepository {
       return false;
     }
   }
+  
 }
 
 final imagePickerRepositoryProvider =

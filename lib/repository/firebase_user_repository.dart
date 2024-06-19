@@ -13,6 +13,7 @@ class FirebaseUserRepository {
     log("Firestore was Used ($typeofAction) in $funcitonName in FirebaseUserRepository");
   }
   User? get currentUser => _auth.currentUser;
+  
   Future<bool> uploadUserModel(UserModel user) async {
     try {
       await FirebaseFirestore.instance
