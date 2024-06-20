@@ -30,7 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20), side: const BorderSide()),
             onPressed: () async {
-              if (ref.watch(logInVerifyProvider) == false) {
+              if (!ref.watch(logInVerifyProvider) == false) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("로그인을 해야 글을 작성 할 수 있습니다.")));
                 return;
@@ -78,6 +78,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               );
             },
+            
           ),
         ),
       ]),
