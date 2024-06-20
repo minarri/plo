@@ -8,15 +8,11 @@ import 'package:plo/views/home_screen/home_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/splash_screen/splash_screen.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  } catch (e) {
-    debugPrint("Error initializing Firebase: $e");
-  }
+  await Firebase.initializeApp(    options: DefaultFirebaseOptions.currentPlatform
+);
 
   runApp(
     const ProviderScope(
@@ -24,6 +20,7 @@ void main() async {
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -41,12 +38,9 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
           }
-          if(snapshot.hasError) {
+          if (snapshot.hasError) {
             return const Scaffold(
-              body: Center(
-                child:Text("There has been an error")
-              )
-            );
+                body: Center(child: Text("There has been an error")));
           }
           if (snapshot.hasData) {
             return const SignInScreen();

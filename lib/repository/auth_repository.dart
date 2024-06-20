@@ -12,6 +12,9 @@ class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  User? getCurrentUser(){
+    return _auth.currentUser;
+  }
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -31,8 +34,8 @@ class AuthMethods {
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        String photoUrl = await StorageMethods()
-            .uploadProfileImageToStorage('profilePics', file!, false);
+        String photoUrl = file != null ? await StorageMethods()
+            .uploadProfileImageToStorage('profilePics', file, false) : "https://firebasestorage.googleapis.com/v0/b/project-plo.appspot.com/o/profilePics%2Fprofile_default.png?alt=media&token=46c5a927-ba2c-4901-9a2e-d3f7c60aca2e";
         //이런 방식으로 하면 doc uid가 자동으로 auth uid로 생성이 됨
         _firestore.collection('users').doc(cred.user!.uid).set({
           'grade': grade,
