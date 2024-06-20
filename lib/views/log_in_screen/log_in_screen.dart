@@ -71,7 +71,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 Navigator.of(context).pop();
 
                 if (result == ReturnTypeENUM.success.toString()) {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const HomeScreen(),
