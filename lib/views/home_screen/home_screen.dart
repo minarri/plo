@@ -26,6 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Align(
           alignment: Alignment.bottomRight,
           child: FloatingActionButton(
+            heroTag: "buttton1",
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20), side: const BorderSide()),
@@ -68,6 +69,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         Align(
           alignment: Alignment.bottomLeft,
           child: FloatingActionButton(
+            heroTag: "buttton2",
             onPressed: () async {
               Navigator.push(
                 context,
