@@ -1,9 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
 import 'package:plo/common/providers/login_verification_provider.dart';
-import 'package:plo/repository/firebase_auth_repository.dart';
 import 'package:plo/views/search_posts_screen/search_posts.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -28,7 +26,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           child: FloatingActionButton(
             backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), side: const BorderSide()),
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide()),
             onPressed: () async {
               if (!ref.watch(logInVerifyProvider) == false) {
                 ScaffoldMessenger.of(context).showSnackBar(
