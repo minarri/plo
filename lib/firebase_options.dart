@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'project-plo.appspot.com',
     iosBundleId: 'com.example.plo',
   );
+
 }
