@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plo/common/widgets/custom_app_bar.dart';
 
 // 검색어
 String searchText = '';
@@ -39,9 +40,13 @@ class SearchPostsState extends State<SearchPosts> {
     return MaterialApp(
       title: 'MemoApp', // 앱의 아이콘 이름
       home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Search Example'), // 앱 상단바 설정
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   title: Text('Search Example'), // 앱 상단바 설정
+        // ),
+        appBar: BackButtonAppBar(
+          title: "Search Example",
+          
         ),
         body: Column(
           children: <Widget>[
