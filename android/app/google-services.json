@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "360266895523",
+    "project_id": "project-plo",
+    "storage_bucket": "project-plo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360266895523:android:4a887f08c52422b2bcef16",
+        "android_client_info": {
+          "package_name": "com.example.plo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB26PKbBSOqwTWZd6jLeuv1mqQ-dNOZrB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360266895523:android:852c6858e6955589bcef16",
+        "android_client_info": {
+          "package_name": "com.example.profile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB26PKbBSOqwTWZd6jLeuv1mqQ-dNOZrB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
