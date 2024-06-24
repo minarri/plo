@@ -1,35 +1,11 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//  File? _pickedImageFile;
-//  class ImagePickerRepository {
-//   Future<File?>  pickImageFromGallery() async {
 
-//       final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 50, maxWidth: 150);
-//       if (pickedImage ==null) {
-//         return null ;
-//       }
-//       _pickedImageFile = File(pickedImage.path);
-//       return _pickedImageFile;
-//   }
-
-//   Future<File?> pickImageFromCamera() async {
-
-//     final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 50, maxWidth: 150);
-//     if (pickedImage == null) {
-//       return null ;
-//     }
-//     _pickedImageFile = File(pickedImage.path);
-//     return _pickedImageFile;
-//   }
-//  }
-// for picking up image from camera
 class ImagePickerRepository {
   Future<ReturnType<File?>> pickImageFromGallery() async {
     final ImagePicker imagePicker = ImagePicker();
@@ -107,7 +83,6 @@ class ImagePickerRepository {
       return false;
     }
   }
-  
 }
 
 final imagePickerRepositoryProvider =

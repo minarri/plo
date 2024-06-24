@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +7,6 @@ import 'package:plo/common/validator/validator.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/my_widgets.dart';
-import 'package:plo/constants/error_message_constants.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/repository/image_picker_repository.dart';
@@ -50,8 +47,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
       image = null;
       ref.watch(selectedFile.notifier).setFile(null);
       return;
-    }
-    else {
+    } else {
       result = ErrorReturnType(message: "Invalid image Source");
     }
     if (result is SuccessReturnType && result.data != null) {
@@ -133,7 +129,6 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                       //어떤 value를 전달하는것이 아님. if/else 문을 위한 parameter pass
                       selectImage(null);
                     }
-                    
                   },
                 ),
                 //"프로필 설정"
@@ -203,17 +198,24 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                                 grade.text,
                                 major.text,
                                 profilePic,
-                              );
-                              Navigator.push(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignInScreen(),
-                                ),
-                              );
-                              print('succeed');
-                            } else {
-                              print('failed');
+                              )
+                                  .then((value) {
+                                if (value == true) {
+                                  // success dialog pop up
+                                  Navigator.push(
+                                    // ignore: use_build_context_synchronously
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignInScreen(),
+                                    ),
+                                  );
+                                  print('succeed');
+                                } else {
+                                  // failed dialog pop up
+                                  print('failed');
+                                }
+                              });
                             }
                           },
                         ),
