@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:plo/common/validator/validator.dart';
-import 'package:plo/common/widgets/custom_app_bar.dart';
-import 'package:plo/common/widgets/custom_button.dart';
-import 'package:plo/common/widgets/my_widgets.dart';
-import 'package:plo/model/types/return_type.dart';
-import 'package:plo/repository/auth_repository.dart';
-import 'package:plo/repository/image_picker_repository.dart';
-import 'package:plo/views/log_in_screen/log_in_screen.dart';
-import 'package:plo/views/profile_create_screen/profile_create_controller.dart';
-import 'package:plo/views/sign_up_screen_view/provider/signup_provider.dart';
+import 'package:plo/common/utils/log_util.dart';
+import '../../common/validator/validator.dart';
+import '../../common/widgets/custom_app_bar.dart';
+import '../../common/widgets/custom_button.dart';
+import '../../common/widgets/my_widgets.dart';
+import '../../model/types/return_type.dart';
+import '../../repository/auth_repository.dart';
+import '../../repository/image_picker_repository.dart';
+import '../../views/log_in_screen/log_in_screen.dart';
+import '../../views/profile_create_screen/profile_create_controller.dart';
+import '../../views/sign_up_screen_view/provider/signup_provider.dart';
 
 class ProfileCreate extends ConsumerStatefulWidget {
   const ProfileCreate({super.key});
@@ -210,10 +211,10 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                                           const SignInScreen(),
                                     ),
                                   );
-                                  print('succeed');
+                                  logToConsole('User profile create succeed');
                                 } else {
                                   // failed dialog pop up
-                                  print('failed');
+                                  logToConsole('User profile create failed');
                                 }
                               });
                             }
