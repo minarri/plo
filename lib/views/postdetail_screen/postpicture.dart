@@ -1,12 +1,12 @@
-/*
+
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/widgets/image_handler.dart';
 import 'package:plo/common/widgets/style_widgets.dart';
 import 'package:plo/model/post_model.dart';
-import 'package:plo/providers/singlepost.dart';
 import 'package:plo/views/postdetail_screen/postpicture_view.dart';
 
 class PostDetail extends ConsumerWidget {
@@ -39,4 +39,3 @@ class PostDetail extends ConsumerWidget {
   }
 }
 
-*/
