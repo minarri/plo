@@ -1,0 +1,158 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/singlepost.dart';
+import 'package:plo/common/widgets/custom_alert_box.dart';
+import 'package:plo/common/widgets/custom_button.dart';
+import 'package:plo/model/post_model.dart';
+import 'package:plo/model/types/report_type.dart';
+import 'package:plo/views/postdetail_screen/report_screen/report_screen_controller.dart';
+import 'package:plo/views/postdetail_screen/report_screen/reportsuccessPage.dart';
+
+final selectedReportTypeProvider =
+    StateProvider.autoDispose<ReportType>((ref) => ReportType.values.first);
+
+class ReportFormWidget extends ConsumerStatefulWidget {
+  final PostModel postKey;
+  final ScrollController scrollController;
+  const ReportFormWidget(
+      {super.key, required this.postKey, required this.scrollController});
+
+  @override
+  ConsumerState<ReportFormWidget> createState() => _ReportFormWidgetState();
+}
+
+class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final etcDescriptionController = TextEditingController();
+  final reportDescriptionController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    ReportType selectedReportType = ref.watch(selectedReportTypeProvider);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("신고 하는 이유가 무엇인가요?",
+            style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 10),
+        ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: ReportType.values.length,
+          padding: EdgeInsets.zero,
+          itemBuilder: (context, index) {
+            final reportType = ReportType.values[index];
+            return RadioListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                activeColor: Color.fromRGBO(244, 244, 244, 1),
+                title: Text(reportType.getDescription(),
+                    style: Theme.of(context).textTheme.bodyMedium),
+                value: reportType,
+                groupValue: selectedReportType,
+                onChanged: (value) {
+                  ref.watch(selectedReportTypeProvider.notifier).state = value!;
+                });
+          },
+        ),
+        if (selectedReportType == ReportType.etc)
+          TextField(
+            controller: etcDescriptionController,
+            maxLines: 3,
+            maxLength: 40,
+            decoration: InputDecoration(
+              hintText: "신고하는 이유를 여기다가 적어주세요.",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+        const Divider(),
+        const SizedBox(height: 10),
+        Form(
+          key: formKey,
+          child: TextFormField(
+              style: Theme.of(context).textTheme.bodyMedium,
+              maxLength: 200,
+              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+              controller: reportDescriptionController,
+              minLines: 8,
+              maxLines: 8,
+              onTapOutside: (event) {
+                FocusScope.of(context).unfocus();
+              },
+              onTap: () async {
+                await Future.delayed(Duration(milliseconds: 400));
+                widget.scrollController.animateTo(
+                    widget.scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOut);
+              },
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(
+                hintText: "신고하시는 이유을 여기다가 적어주세요",
+                focusColor: Colors.transparent,
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              )),
+        ),
+        const SizedBox(height: 10),
+        Align(
+          alignment: Alignment.center,
+          child: CustomButton(
+            text: "신고하기",
+            onPressed: () => showReportPopUp(context, selectedReportType, ref),
+          ),
+        ),
+        const KeyboardPaddingWidget(),
+      ],
+    );
+  }
+
+  void showReportPopUp(BuildContext context, ReportType selectedReportType,
+      WidgetRef ref) async {
+    bool? isConfirmed =
+        await AlertBox.showYesOrNoAlertDialogue(context, "진짜로 신고 하시겠습니까?");
+    if (isConfirmed = true) {
+      final post = ref.watch(singlePostProvider(widget.postKey));
+      BuildContext loadingContext = context;
+      showDialog(
+        barrierDismissible: false,
+        context: loadingContext,
+        builder: (__) => CircularProgressIndicator(),
+      );
+      final result = await ref
+          .watch(reportPostControllerProvider.notifier)
+          .uploadReport(
+              reportType: selectedReportType,
+              post: post,
+              formkey: formKey,
+              etcDescription: etcDescriptionController.text,
+              reportDescription: reportDescriptionController.text);
+      Navigator.of(loadingContext).pop();
+      if (result == false)
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("신고를 하는 도중에 에레거 났습니다")));
+      if (result == true)
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const ReportSuccessPage()));
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+}
+
+class KeyboardPaddingWidget extends StatelessWidget {
+  const KeyboardPaddingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+    return Container(
+      padding: EdgeInsets.only(
+        bottom: bottomInset,
+      ),
+    );
+  }
+}

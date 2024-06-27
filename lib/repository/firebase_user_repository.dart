@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class FirebaseUserRepository {
   final _auth = FirebaseAuth.instance;
   final usercollectionName = FirebaseConstants.usercollectionName;
+  final _firebase = FirebaseFirestore.instance;
   void _logHelper(String typeofAction, String funcitonName) {
     log("Firestore was Used ($typeofAction) in $funcitonName in FirebaseUserRepository");
   }
@@ -16,7 +17,7 @@ class FirebaseUserRepository {
   
   Future<bool> uploadUserModel(UserModel user) async {
     try {
-      await FirebaseFirestore.instance
+      await _firebase
           .collection(usercollectionName)
           .doc(user.userUid)
           .set(user.toJson());
@@ -30,7 +31,7 @@ class FirebaseUserRepository {
 
   Future<UserModel?> fetchUser() async {
     try {
-      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+      DocumentSnapshot documentSnapshot = await _firebase
           .collection(usercollectionName)
           .doc(_auth.currentUser!.uid)
           .get();
@@ -44,6 +45,21 @@ class FirebaseUserRepository {
       }
     } catch (error) {
       log("UserRepository uploadUserModel error: $error ");
+      return null;
+    }
+  }
+
+  Future<UserModel?> fetchUserbyUid(String userUid) async {
+    try {
+      DocumentSnapshot documentSnapshot = await _firebase.collection(usercollectionName).doc(userUid).get();
+      if (documentSnapshot.exists) {
+        UserModel? jsonUserconverted = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        return jsonUserconverted;
+      } else {
+        return null;
+      }
+    } catch (error) {
+      log("UserRepository fetchUserbyUid Error Occurred");
       return null;
     }
   }
