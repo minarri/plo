@@ -44,7 +44,7 @@ class MainPostListController extends StateNotifier<AsyncValue<void>> {
         return;
       }
       if (posts.length < amountFetch) _isPostAllLoaded = true;
-      ref.read(mainListProvider.notifier).setPostList(posts);
+      ref.read(mainPostListProvider.notifier).setPostList(posts);
     } catch (error) {
       state = AsyncValue.error(error, StackTrace.current);
     } finally {
@@ -54,7 +54,7 @@ class MainPostListController extends StateNotifier<AsyncValue<void>> {
 
   Future<void> _fetchMorePosts() async {
     try {
-      final lastPostUploadTime = ref.read(mainListProvider).last.uploadTime!;
+      final lastPostUploadTime = ref.read(mainPostListProvider).last.uploadTime!;
       List<PostModel>? posts = await postRepository.fetchPost(
           lastPostUploadTime: lastPostUploadTime, amountFetch: amountFetch);
       if (posts == null) {
@@ -63,7 +63,7 @@ class MainPostListController extends StateNotifier<AsyncValue<void>> {
         if (posts.length < amountFetch) {
           _isPostAllLoaded = true;
         }
-        ref.read(mainListProvider.notifier).addListenToPostList(posts);
+        ref.read(mainPostListProvider.notifier).addListenToPostList(posts);
       }
     } catch (error) {
       state = AsyncValue.error(error, StackTrace.current);

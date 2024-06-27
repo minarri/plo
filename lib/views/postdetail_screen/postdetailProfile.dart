@@ -32,7 +32,7 @@ class PostDetailProfileWidget extends ConsumerWidget {
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
-                    //have to add viewProfileScreen to the TestScreen
+                    //have to add viewMyProfileScreen to the TestScreen
                     MaterialPageRoute(builder: (context) => TestScreen()));
               },
               child: Row(
