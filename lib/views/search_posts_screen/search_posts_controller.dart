@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/utils/log_util.dart';
 
 class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   Ref ref;
@@ -8,18 +9,20 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   }
 
   _init() async {
-    state = const AsyncLoading();
-    //final searchHistory = await ref.watch(sharedPreferenceRepositoryProvider).loadSearchHistory();
-    //if (searchHistory != null) ref.read(searchHistoryListProvider.notifier).setList(searchHistory);
+    // state = const AsyncLoading();
     state = const AsyncData(null);
+  }
+
+  void setSearchQuery(String query) {
+    searchQuery = query;
   }
 }
 
-final searchItemsControllerProvider =
+final searchPostsControllerProvider =
     StateNotifierProvider.autoDispose<SearchPostsController, AsyncValue<void>>(
         (ref) {
   ref.onDispose(() {
-    //log("SearchItemsController disposed");
+    logToConsole("SearchPostsController disposed");
   });
   return SearchPostsController(ref);
 });
