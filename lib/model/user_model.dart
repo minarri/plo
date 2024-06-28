@@ -9,6 +9,7 @@ class UserModelNameConstants {
   static const grade = 'grade';
   static const major = 'major';
   static const profileImageUrl = "profileImageUrl";
+  static const likedPosts = "likedPosts";
 }
 
 class UserModel {
@@ -19,6 +20,7 @@ class UserModel {
   final String major;
   final String grade;
   final String profileImageUrl;
+  final List<String> likedPosts;
   UserModel(
       {this.userUid = ErrorReplacementConstants.notSetString,
       this.email = ErrorReplacementConstants.notSetString,
@@ -26,7 +28,8 @@ class UserModel {
       this.userNickname = ErrorReplacementConstants.notFoundString,
       this.grade = ErrorReplacementConstants.notFoundString,
       this.major = ErrorReplacementConstants.notFoundString,
-      this.profileImageUrl = ErrorReplacementConstants.notFoundString});
+      this.profileImageUrl = ErrorReplacementConstants.notFoundString,
+      this.likedPosts = const []});
   Map<String, dynamic> toJson() {
     return {
       UserModelNameConstants.userUid: userUid,
@@ -36,28 +39,54 @@ class UserModel {
       UserModelNameConstants.grade: grade,
       UserModelNameConstants.major: major,
       UserModelNameConstants.profileImageUrl: profileImageUrl,
+      UserModelNameConstants.likedPosts: likedPosts,
     };
   }
 
   static UserModel? fromJson(Map<String, dynamic> json) {
     try {
+      final List<String> likedPostsLists =
+          json[UserModelNameConstants.likedPosts] == null
+              ? const []
+              : (json[UserModelNameConstants.likedPosts] as List<dynamic>)
+                  .map((e) => e.toString())
+                  .toList();
       return UserModel(
-          userUid: json[UserModelNameConstants.userUid] ??
-              ErrorReplacementConstants.notFoundString,
-          email: json[UserModelNameConstants.email] ??
-              ErrorReplacementConstants.notFoundString,
-          userCreatedDate: json[UserModelNameConstants.userCreatedDate],
-          userNickname: json[UserModelNameConstants.userNickname] ??
-              ErrorReplacementConstants.notFoundString,
-          grade: json[UserModelNameConstants.grade] ??
-              ErrorReplacementConstants.notFoundString,
-          major: json[UserModelNameConstants.major] ??
-              ErrorReplacementConstants.notFoundString,
-          profileImageUrl: json[UserModelNameConstants.profileImageUrl] ??
-              ErrorReplacementConstants.notFoundString);
+        userUid: json[UserModelNameConstants.userUid] ??
+            ErrorReplacementConstants.notFoundString,
+        email: json[UserModelNameConstants.email] ??
+            ErrorReplacementConstants.notFoundString,
+        userCreatedDate: json[UserModelNameConstants.userCreatedDate],
+        userNickname: json[UserModelNameConstants.userNickname] ??
+            ErrorReplacementConstants.notFoundString,
+        grade: json[UserModelNameConstants.grade] ??
+            ErrorReplacementConstants.notFoundString,
+        major: json[UserModelNameConstants.major] ??
+            ErrorReplacementConstants.notFoundString,
+        profileImageUrl: json[UserModelNameConstants.profileImageUrl] ??
+            ErrorReplacementConstants.notFoundString,
+        likedPosts: likedPostsLists,
+      );
     } catch (error) {
       print("Error while converting json to User Object : ${error.toString()}");
       return null;
     }
+
+
+  }
+
+  UserModel copyWith(
+    {String? userUid, String? email, Timestamp? userCreatedDate, String? userNickname, String? grade, String? major, String? profileImageUrl, List<String>? likedPosts}
+  ) {
+    return UserModel (
+      userUid: userUid ?? this.userUid,
+      email: email ?? this.email,
+      userCreatedDate: userCreatedDate ?? this.userCreatedDate,
+      userNickname: userNickname ?? this.userNickname,
+      grade: grade ?? this.grade,
+      major: major ?? this.major,
+      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      likedPosts: likedPosts ?? this.likedPosts
+    );
   }
 }
