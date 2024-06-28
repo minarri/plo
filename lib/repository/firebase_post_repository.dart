@@ -96,6 +96,20 @@ class FirebasePostRepository {
     }
 
   }
+  Future<int> updateViews(List<String> updatedViews, PostModel post) async {
+    try {
+      await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(post.pid).update({
+        PostModelFieldNameConstants.postViewList: updatedViews,
+        PostModelFieldNameConstants.postViewListLength: updatedViews.length
+      });
+      _logHelper("update", "updatedViews");
+      return updatedViews.length;
+    }
+    catch (error){
+      logToConsole("UpdatedViews error ${error.toString()}");
+      return -1;
+    }
+  }
 }
 
 final firebasePostRepository = Provider<FirebasePostRepository>((ref) {

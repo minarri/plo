@@ -5,7 +5,7 @@ class MainPostListProvider extends StateNotifier<List<PostModel>> {
   MainPostListProvider() : super(const []);
 
   _postExistInList(PostModel post) {
-    return state.any((postInList) => postInList.pid == postInList.pid);
+    return state.any((postInList) => postInList.pid == post.pid);
   }
 
   setPostList(List<PostModel> postList) {
@@ -20,13 +20,13 @@ class MainPostListProvider extends StateNotifier<List<PostModel>> {
     if (_postExistInList(post)) {
       state = state
           .map((postInList) =>
-              (postInList.pid == postInList.pid) ? post : postInList)
+              (postInList.pid == post.pid) ? post : postInList)
           .toList();
     }
   }
 }
 
-final mainListProvider =
+final mainPostListProvider =
     StateNotifierProvider.autoDispose<MainPostListProvider, List<PostModel>>(
         (ref) {
   return MainPostListProvider();
