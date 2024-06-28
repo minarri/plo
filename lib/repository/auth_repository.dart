@@ -9,7 +9,7 @@ import 'package:plo/repository/firebasestoroage_respository.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   User? getCurrentUser() {
     return _auth.currentUser;
