@@ -141,6 +141,6 @@ class LikePostService {
   }
 }
 
-final LikedPostServiceProvider = Provider<LikePostService>((ref) {
+final likedPostServiceProvider = Provider<LikePostService>((ref) {
   return LikePostService(ref);
 });
