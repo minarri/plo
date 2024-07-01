@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class AlertBox {
   static Future<bool?> showYesOrNoAlertDialogue(
-      BuildContext context, String title) async {
+      BuildContext context, final String title) async {
     return showCupertinoModalPopup<bool?>(
       context: context,
       builder: (BuildContext context) {
