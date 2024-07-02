@@ -41,7 +41,7 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
                   size: 20, color: isLiked ? Colors.pinkAccent : Colors.grey);
             },
             countPostion: CountPostion.bottom,
-            onTap: (isLiked) async {
+            onTap: (bool isLiked) async {
               final result = await ref
                   .read(postDetailControllerProvider.notifier)
                   .toggleLike(widget.postKey, post);

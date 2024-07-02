@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/widgets/compact_post_widget.dart';
 import 'package:plo/common/widgets/custom_alert_box.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/shimmer_style.dart';
@@ -26,7 +27,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
         data: (currentUser) {
           if (currentUser == null)
             return const Icon(Icons.error_outline, size: 40);
-          return ref.watch(postUplaoderProvider(userUid)).when(
+          return ref.watch(postUploaderProvider(userUid)).when(
               error: (error, stackTrace) => Scaffold(
                     body: Center(
                       child: Text(error.toString()),
@@ -140,24 +141,36 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                               return const PostDetailUserOtherPostsErrorWidget(
                                                   message:
                                                       "게시물이 더 이상 존재하지 않습니다");
-                                            return InkWell(onTap: () async {
-                                              bool proceed = true;
-                                              if (data[index].showWarning) {
-                                                proceed = await AlertBox
-                                                        .showYesOrNoAlertDialogue(
-                                                            context,
-                                                            "Do you want to proceed?") ??
-                                                    false;
-                                                if (proceed) {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
+                                            return InkWell(
+                                                onTap: () async {
+                                                  bool proceed = true;
+                                                  if (data[index].showWarning) {
+                                                    proceed = await AlertBox
+                                                            .showYesOrNoAlertDialogue(
+                                                                context,
+                                                                "계속 하시겠습니까?") ??
+                                                        false;
+                                                    if (proceed) {
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        MaterialPageRoute(
                                                           builder: (context) {
-                                                    return PostDetail(
-                                                        postKey: data[index]);
-                                                  }));
-                                                }
-                                              }
-                                            });
+                                                            return PostDetail(
+                                                                postKey: data[
+                                                                    index]);
+                                                          },
+                                                        ),
+                                                      );
+                                                    }
+                                                  }
+                                                },
+                                                child: CompactPostWidget(
+                                                  post: data[index],
+                                                  isBlockedUser: currentUser
+                                                      .blockedUsers
+                                                      .contains(data[index]
+                                                          .uploadUserUid),
+                                                ));
                                           },
                                           itemCount: data == null
                                               ? 0

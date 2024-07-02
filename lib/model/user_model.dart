@@ -10,6 +10,7 @@ class UserModelNameConstants {
   static const major = 'major';
   static const profileImageUrl = "profileImageUrl";
   static const likedPosts = "likedPosts";
+  static const blockedUsers = "blockedUsers";
 }
 
 class UserModel {
@@ -21,10 +22,12 @@ class UserModel {
   final String grade;
   final String profileImageUrl;
   final List<String> likedPosts;
+  final List<String> blockedUsers;
   UserModel(
       {this.userUid = ErrorReplacementConstants.notSetString,
       this.email = ErrorReplacementConstants.notSetString,
       this.userCreatedDate,
+      this.blockedUsers = const [],
       this.userNickname = ErrorReplacementConstants.notFoundString,
       this.grade = ErrorReplacementConstants.notFoundString,
       this.major = ErrorReplacementConstants.notFoundString,
@@ -40,6 +43,7 @@ class UserModel {
       UserModelNameConstants.major: major,
       UserModelNameConstants.profileImageUrl: profileImageUrl,
       UserModelNameConstants.likedPosts: likedPosts,
+      UserModelNameConstants.blockedUsers: blockedUsers,
     };
   }
 
@@ -51,34 +55,45 @@ class UserModel {
               : (json[UserModelNameConstants.likedPosts] as List<dynamic>)
                   .map((e) => e.toString())
                   .toList();
+      final List<String> blockedUsersList =
+          json[UserModelNameConstants.blockedUsers] == null
+              ? const []
+              : (json[UserModelNameConstants.blockedUsers] as List<dynamic>)
+                  .map((e) => e.toString())
+                  .toList();
       return UserModel(
-        userUid: json[UserModelNameConstants.userUid] ??
-            ErrorReplacementConstants.notFoundString,
-        email: json[UserModelNameConstants.email] ??
-            ErrorReplacementConstants.notFoundString,
-        userCreatedDate: json[UserModelNameConstants.userCreatedDate],
-        userNickname: json[UserModelNameConstants.userNickname] ??
-            ErrorReplacementConstants.notFoundString,
-        grade: json[UserModelNameConstants.grade] ??
-            ErrorReplacementConstants.notFoundString,
-        major: json[UserModelNameConstants.major] ??
-            ErrorReplacementConstants.notFoundString,
-        profileImageUrl: json[UserModelNameConstants.profileImageUrl] ??
-            ErrorReplacementConstants.notFoundString,
-        likedPosts: likedPostsLists,
-      );
+          userUid: json[UserModelNameConstants.userUid] ??
+              ErrorReplacementConstants.notFoundString,
+          email: json[UserModelNameConstants.email] ??
+              ErrorReplacementConstants.notFoundString,
+          userCreatedDate: json[UserModelNameConstants.userCreatedDate],
+          userNickname: json[UserModelNameConstants.userNickname] ??
+              ErrorReplacementConstants.notFoundString,
+          grade: json[UserModelNameConstants.grade] ??
+              ErrorReplacementConstants.notFoundString,
+          major: json[UserModelNameConstants.major] ??
+              ErrorReplacementConstants.notFoundString,
+          profileImageUrl: json[UserModelNameConstants.profileImageUrl] ??
+              ErrorReplacementConstants.notFoundString,
+          likedPosts: likedPostsLists,
+          blockedUsers: blockedUsersList);
     } catch (error) {
       print("Error while converting json to User Object : ${error.toString()}");
       return null;
     }
-
-
   }
 
   UserModel copyWith(
-    {String? userUid, String? email, Timestamp? userCreatedDate, String? userNickname, String? grade, String? major, String? profileImageUrl, List<String>? likedPosts}
-  ) {
-    return UserModel (
+      {String? userUid,
+      String? email,
+      Timestamp? userCreatedDate,
+      String? userNickname,
+      String? grade,
+      String? major,
+      String? profileImageUrl,
+      List<String>? blockedUsers,
+      List<String>? likedPosts}) {
+    return UserModel(
       userUid: userUid ?? this.userUid,
       email: email ?? this.email,
       userCreatedDate: userCreatedDate ?? this.userCreatedDate,
@@ -86,7 +101,8 @@ class UserModel {
       grade: grade ?? this.grade,
       major: major ?? this.major,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
-      likedPosts: likedPosts ?? this.likedPosts
+      likedPosts: likedPosts ?? this.likedPosts,
+      blockedUsers: blockedUsers ?? this.blockedUsers,
     );
   }
 }

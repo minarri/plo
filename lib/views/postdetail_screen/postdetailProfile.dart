@@ -23,7 +23,7 @@ class PostDetailProfileWidget extends ConsumerWidget {
     final post = ref.watch(singlePostProvider(postKey));
     final currentUser = ref.read(currentUserProvider);
 
-    return ref.watch(postUplaoderProvider(post.uploadUserUid)).when(
+    return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
         // changing the loading screen to the profile loading widget
         loading: () => const PostDetailProfileLoadingWidget(),
         data: (uploader) {
