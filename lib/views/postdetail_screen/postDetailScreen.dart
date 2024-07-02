@@ -4,11 +4,11 @@ import 'package:plo/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
 
-final postUplaoderProvider =
+final postUploaderProvider =
     FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
-  final userfetched =
+  final userFetched =
       await ref.watch(firebaseUserRepository).fetchUserbyUid(userUid);
-  return userfetched;
+  return userFetched;
 });
 
 final postDetailCurrentUserFutureProvider =
