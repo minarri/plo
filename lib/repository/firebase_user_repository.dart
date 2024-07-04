@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plo/constants/firebase_contants.dart';
+import 'package:plo/model/types/return_type.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,8 +14,9 @@ class FirebaseUserRepository {
   void _logHelper(String typeofAction, String funcitonName) {
     log("Firestore was Used ($typeofAction) in $funcitonName in FirebaseUserRepository");
   }
+
   User? get currentUser => _auth.currentUser;
-  
+
   Future<bool> uploadUserModel(UserModel user) async {
     try {
       await _firebase
@@ -51,9 +53,11 @@ class FirebaseUserRepository {
 
   Future<UserModel?> fetchUserbyUid(String userUid) async {
     try {
-      DocumentSnapshot documentSnapshot = await _firebase.collection(usercollectionName).doc(userUid).get();
+      DocumentSnapshot documentSnapshot =
+          await _firebase.collection(usercollectionName).doc(userUid).get();
       if (documentSnapshot.exists) {
-        UserModel? jsonUserconverted = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        UserModel? jsonUserconverted =
+            UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
         return jsonUserconverted;
       } else {
         return null;
@@ -61,6 +65,40 @@ class FirebaseUserRepository {
     } catch (error) {
       log("UserRepository fetchUserbyUid Error Occurred");
       return null;
+    }
+  }
+
+  Future<ReturnType> blockUser(String blockingUserUid) async {
+    try {
+      bool isUserBlocked = false;
+      final DocumentSnapshot documentSnapshot = await _firebase
+          .collection(FirebaseConstants.usercollectionName)
+          .doc(_auth.currentUser!.uid)
+          .get();
+      if (documentSnapshot.exists && documentSnapshot.data() != null) {
+        final UserModel? user =
+            UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        if (user != null) {
+          List<String> blockedUsers = user.blockedUsers;
+          if (blockedUsers.contains(blockingUserUid)) {
+            blockedUsers.remove(blockingUserUid);
+            isUserBlocked = false;
+          } else {
+            blockedUsers.add(blockingUserUid);
+            isUserBlocked = true;
+          }
+          await _firebase
+              .collection(FirebaseConstants.usercollectionName)
+              .doc(_auth.currentUser!.uid)
+              .update({"blockedUsers": blockedUsers});
+          return SuccessReturnType(isSuccess: true, data: isUserBlocked);
+        }
+        return ErrorReturnType(message: "User is Null");
+      }
+      return SuccessReturnType(
+          isSuccess: false, message: "DocumentSnapshot does not exists");
+    } catch (error) {
+      return ErrorReturnType(message: error.toString(), data: error);
     }
   }
 }

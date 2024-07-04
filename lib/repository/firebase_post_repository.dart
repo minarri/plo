@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/post_model.dart';
@@ -57,7 +58,7 @@ class FirebasePostRepository {
         querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
             .where(PostModelFieldNameConstants.category,
-                whereIn: [CategoryType.general.toString()])
+                whereIn: [CategoryType.information.toString()])
             .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
             .limit(amountFetch)
             .get();
@@ -71,6 +72,73 @@ class FirebasePostRepository {
       }
       return fetchedPosts;
     } catch (error) {
+      return null;
+    }
+  }
+
+  Future<List<PostModel>?> fetchPostsSameCategory(CategoryType categoryType,
+      String excludePid, Timestamp? lastUploadedTime) async {
+    List<PostModel> postModel = [];
+
+    try {
+      final QuerySnapshot<Map<String, dynamic>> querySnapshot;
+      if (lastUploadedTime == null) {
+        querySnapshot = await firestoreinstance
+            .collection(FirebaseConstants.postcollectionName)
+            .where(PostModelFieldNameConstants.category,
+                isEqualTo: categoryType.toString())
+            .where(PostModelFieldNameConstants.pid, isNotEqualTo: excludePid)
+            .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
+            .limit(10)
+            .get();
+      } else {
+        querySnapshot = await firestoreinstance
+            .collection(FirebaseConstants.postcollectionName)
+            .where(PostModelFieldNameConstants.category,
+                isEqualTo: categoryType.toString())
+            .where(PostModelFieldNameConstants.pid, isNotEqualTo: excludePid)
+            .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
+            .limit(10)
+            .startAfter([lastUploadedTime]).get();
+      }
+      final List<PostModel> fetchedPosts = [];
+      for (int i = 0; i < querySnapshot.size; i++) {
+        final post = PostModel()
+            .fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+        if (post != null) fetchedPosts.add(post);
+      }
+      return fetchedPosts;
+    } catch (error) {
+      logToConsole(
+          "Error was caused during the fetchPostSameCategoryFunction ${error.toString()}");
+      return null;
+    }
+  }
+
+  Future<List<PostModel>?> fetchPostsSameCategoryFromOtherUsers(
+      CategoryType categoryType, String excludepid) async {
+    List<PostModel> postModels = [];
+
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await firestoreinstance
+              .collection(FirebaseConstants.postcollectionName)
+              .where(PostModelFieldNameConstants.category,
+                  isEqualTo: categoryType.toString())
+              .limit(10)
+              .get();
+      if (querySnapshot.size > 0) {
+        for (int i = 0; i < querySnapshot.size; i++) {
+          final PostModel? post = PostModel()
+              .fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+          if (post != null) postModels.add(post);
+        }
+      } else {
+        return [];
+      }
+      return postModels;
+    } catch (error) {
+      logToConsole("Error has occured ${error.toString()}");
       return null;
     }
   }
