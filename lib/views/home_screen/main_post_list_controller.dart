@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MainPostListController extends StateNotifier<AsyncValue<void>> {
-  final int amountFetch = 15;
+  final int amountFetch = 10;
   final _scrollController = ScrollController();
   bool _isPostAllLoaded = false;
   Ref ref;
@@ -54,7 +54,8 @@ class MainPostListController extends StateNotifier<AsyncValue<void>> {
 
   Future<void> _fetchMorePosts() async {
     try {
-      final lastPostUploadTime = ref.read(mainPostListProvider).last.uploadTime!;
+      final lastPostUploadTime =
+          ref.read(mainPostListProvider).last.uploadTime!;
       List<PostModel>? posts = await postRepository.fetchPost(
           lastPostUploadTime: lastPostUploadTime, amountFetch: amountFetch);
       if (posts == null) {

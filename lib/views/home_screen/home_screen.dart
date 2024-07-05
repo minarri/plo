@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
+import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/home_screen/widgets/navigator_bar.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
 import 'package:plo/views/search_posts_screen/search_posts_main.dart';
@@ -30,7 +31,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   final List<Widget> pages = [
-    const TestScreen(),
+    const MainPostList(),
     const SearchPostsMain(),
     const TestScreen(),
     const SettingsScreen()

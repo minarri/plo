@@ -107,7 +107,6 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
         SizedBox(height: 20),
         Text("${post.postContent}",
             style: Theme.of(context).textTheme.bodyLarge),
-       
       ],
     );
   }

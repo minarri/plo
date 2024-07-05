@@ -1,14 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
+import 'package:plo/common/widgets/modal_bottomsheet/modal_bottom_icon.dart';
+import 'package:plo/model/post_model.dart';
+import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet.dart';
+import 'package:plo/views/postdetail_screen/report_screen/reportScreen.dart';
 
 class PostDetailOtherUserBottomSheet extends ConsumerWidget {
+  final PostModel postKey;
+  const PostDetailOtherUserBottomSheet({super.key, required this.postKey});
+
   @override
-
-  const PostDetailOtherUserBottomSheet({super.key});
-
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      child: Text("Hello")
+    return DefaultModalBottomSheet(
+      title: "옵션",
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ModalBottomSheetIcon(
+            title: "게시물 신고하기",
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ReportScreen(postKey: postKey);
+                  },
+                ),
+              );
+            },
+          ),
+          ModalBottomSheetIcon(
+              title: "이 유저 차단하기",
+              onTap: () {
+                Navigator.of(context).pop();
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => BlockUserModalBottomsheet(
+                        uploaderUserUid: postKey.uploadUserUid));
+              })
+        ],
+      ),
     );
   }
 }

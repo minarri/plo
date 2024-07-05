@@ -44,19 +44,19 @@ class PostDetailCurrentUserBottomSheet extends ConsumerWidget {
               },
               icon: const Icon(Icons.edit)),
           ModalBottomSheetIcon(
-              title: "삭제",
-              onTap: () async {
-                Navigator.of(context).pop();
-                final isConfirmed = await AlertBox.showYesOrNoAlertDialogue(context, "정말로 삭제하시겠습니까?");
-                if(isConfirmed ?? false) {
-                  ref.watch(deleteServiceProvider).deletePost(postkey);
-                }
-                if(isConfirmed == true) {
-                  Navigator.of(context).pop();
-                }
-              },
-              
-              )
+            title: "삭제",
+            onTap: () async {
+              Navigator.of(context).pop();
+              final isConfirmed = await AlertBox.showYesOrNoAlertDialogue(
+                  context, "정말로 삭제하시겠습니까?");
+              if (isConfirmed ?? false) {
+                ref.watch(deleteServiceProvider).deletePost(postkey);
+              }
+              if (isConfirmed == true) {
+                Navigator.of(parentcontext).pop();
+              }
+            },
+          )
         ],
       ),
     );

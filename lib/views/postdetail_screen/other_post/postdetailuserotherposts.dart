@@ -7,7 +7,7 @@ import 'package:plo/common/widgets/no_more_post.dart';
 import 'package:plo/common/widgets/shimmer_style.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
-import 'package:plo/views/postdetail_screen/other_post/post_Detail_OtherPost.dart';
+import 'package:plo/views/postdetail_screen/other_post/postdetailseeotherposts.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
 import 'package:plo/views/postdetail_screen/postpicture.dart';
 import 'package:shimmer/shimmer.dart';
