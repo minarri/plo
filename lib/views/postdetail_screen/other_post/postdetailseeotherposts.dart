@@ -155,7 +155,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                                           .push(
                                                         MaterialPageRoute(
                                                           builder: (context) {
-                                                            return PostDetail(
+                                                            return PostDetailScreen(
                                                                 postKey: data[
                                                                     index]);
                                                           },

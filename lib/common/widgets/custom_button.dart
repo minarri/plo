@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback onPressed;
+  final Icon? icon;
 
-  const CustomButton({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-  }) : super(key: key);
+  const CustomButton({Key? key, this.text, required this.onPressed, this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,14 @@ class CustomButton extends StatelessWidget {
           shadowColor: const Color.fromARGB(200, 0, 0, 0),
           elevation: 5,
         ),
-        child: Text(text),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) ...[icon!],
+            SizedBox(width: 8),
+            if (text != null) Text(text!),
+          ],
+        ),
       ),
     );
   }

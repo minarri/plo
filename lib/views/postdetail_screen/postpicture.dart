@@ -1,5 +1,3 @@
-
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,9 +7,9 @@ import 'package:plo/common/widgets/style_widgets.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/views/postdetail_screen/postpicture_view.dart';
 
-class PostDetail extends ConsumerWidget {
+class PostDetailPhoto extends ConsumerWidget {
   final PostModel postKey;
-  const PostDetail({super.key, required this.postKey});
+  const PostDetailPhoto({super.key, required this.postKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,4 +36,3 @@ class PostDetail extends ConsumerWidget {
     );
   }
 }
-

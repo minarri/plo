@@ -1,8 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/singlepost.dart';
+import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
+import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
+import 'package:plo/views/postdetail_screen/post_detail_controller/post_detail_controller.dart';
+import 'package:plo/views/postdetail_screen/postdetailbuttons.dart';
+import 'package:plo/views/postdetail_screen/postdetaildescription.dart';
+import 'package:plo/views/postdetail_screen/postdetailsamecategory.dart';
+import 'package:plo/views/postdetail_screen/postpicture.dart';
 
 final postUploaderProvider =
     FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
@@ -23,6 +32,88 @@ class PostDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(body: Text("Hello"));
+    ref.watch(postDetailControllerProvider.notifier).updateViewCounts(postKey);
+
+    final state = ref.watch(postDetailControllerProvider);
+
+    final user = ref.watch(currentUserProvider);
+    final isMyPost = postKey.uploadUserUid == user!.userUid;
+    final post = ref.watch(singlePostProvider(postKey));
+
+    return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
+        data: (data) {
+          return state.isLoading
+              ? const Scaffold(
+                  body: Center(
+                  child: CircularProgressIndicator(),
+                ))
+              : Material(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: SafeArea(
+                    child: Scaffold(
+                      extendBodyBehindAppBar: true,
+                      appBar: AppBar(
+                        automaticallyImplyLeading: true,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                        actions: [
+                          PostDetailButtonsWidget(
+                              postKey: postKey, parentContext: context)
+                        ],
+                      ),
+                      body: Stack(
+                        children: [
+                          SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  PostDetailPhoto(postKey: postKey),
+                                  SizedBox(height: 5),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: PostDetailWidget(
+                                      postKey: postKey,
+                                    ),
+                                  ),
+                                  Divider(
+                                    thickness: 1,
+                                  ),
+                                  if (user!.userUid != post.uploadUserUid)
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: PostDetailUserOtherPostsWidget(
+                                        postKey: postKey,
+                                      ),
+                                    ),
+                                  if (user.userUid != post.uploadUserUid)
+                                    Divider(
+                                      thickness: 1,
+                                    ),
+                                  if (user.userUid != post.uploadUserUid)
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      child: PostDetailSameCategoryWidget(
+                                        postKey: postKey,
+                                      ),
+                                    ),
+                                  if (user.userUid != post.uploadUserUid)
+                                    Divider(
+                                      thickness: 1,
+                                    )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ));
+        },
+        error: (error, stackTrace) => Icon(Icons.error_outline),
+        loading: () => CircularProgressIndicator());
   }
 }
