@@ -6,8 +6,7 @@ class SearchPostsMain extends ConsumerStatefulWidget {
   const SearchPostsMain({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SearchPostsMainState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SearchPostsMainState();
 }
 
 class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
@@ -23,8 +22,8 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
   Widget build(BuildContext context) {
     TextEditingController searchController = TextEditingController();
     final state = ref.watch(searchPostsControllerProvider);
-    return Scaffold(
-
+    return const Scaffold(
+      // not done --> planning to bring the search results inside here
     );
   }
 }

@@ -32,7 +32,7 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
         List<String> updatedViews = post.postViewList;
         updatedViews.add(user.userUid);
         final int result = await ref
-            .watch(firebasePostRepository)
+            .watch(firebasePostRepositoryProvider)
             .updateViews(updatedViews, post);
         if (result != -1) {
           PostModel postToBeUpdated = post.update(postViewList: updatedViews);
@@ -41,11 +41,14 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
       }
     }
   }
+
   void _updatePost(PostModel postKey, PostModel postToBeUpdated) {
     ref.read(singlePostProvider(postKey).notifier).updatePost(postToBeUpdated);
 
-    if(ref.read(mainPostListProvider.notifier).mounted) {
-      ref.read(mainPostListProvider.notifier).updateSingePostInPostList(postToBeUpdated);
+    if (ref.read(mainPostListProvider.notifier).mounted) {
+      ref
+          .read(mainPostListProvider.notifier)
+          .updateSingePostInPostList(postToBeUpdated);
     }
   }
 
@@ -54,18 +57,23 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
     PostModel postToBeUpdated = post.update(postLikes: int.parse(title));
     _updatePost(postKey, postToBeUpdated);
   }
+
   Future<bool> toggleLike(PostModel postKey, PostModel post) async {
     final user = ref.read(currentUserProvider);
-    int? postLikeCountAfterUpdate = await ref.watch(likedPostServiceProvider).likedPosts(user!.userUid, post.pid);
+    int? postLikeCountAfterUpdate = await ref
+        .watch(likedPostServiceProvider)
+        .likedPosts(user!.userUid, post.pid);
 
-    PostModel postToBeUpdated = post.update(postLikes: postLikeCountAfterUpdate);
+    PostModel postToBeUpdated =
+        post.update(postLikes: postLikeCountAfterUpdate);
     _updatePost(postKey, postToBeUpdated);
     return true;
   }
 }
 
-
-final postDetailControllerProvider = StateNotifierProvider.autoDispose<PostDetailController, AsyncValue<void>>((ref) {
+final postDetailControllerProvider =
+    StateNotifierProvider.autoDispose<PostDetailController, AsyncValue<void>>(
+        (ref) {
   ref.logDisposeToConsole("postDetailControllerProvider Disposed");
   return PostDetailController(ref);
 });

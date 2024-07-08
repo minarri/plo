@@ -11,34 +11,38 @@ class DeleteService {
   DeleteService({required this.ref});
 
   void _logToConsole(String typeofAction, String FunctionName) {
-    logToConsole("Firestore was used ($typeofAction in $FunctionName in DeleteService)");
+    logToConsole(
+        "Firestore was used ($typeofAction in $FunctionName in DeleteService)");
   }
 
   Future<ReturnType> deletePost(PostModel post) async {
     try {
-      final isPhotoDeleted = await ref.watch(FirebaseImageRepositoryProvider).deletePostPhotos(post);
-      if(isPhotoDeleted != true) {
+      final isPhotoDeleted = await ref
+          .watch(FirebaseImageRepositoryProvider)
+          .deletePostPhotos(post);
+      if (isPhotoDeleted != true) {
         throw ErrorException(message: "Photo was not deleted");
       }
 
-      final isPostDeleted = await ref.watch(firebasePostRepository).deletePostbyPid(post.pid);
+      final isPostDeleted = await ref
+          .watch(firebasePostRepositoryProvider)
+          .deletePostbyPid(post.pid);
 
-      if(isPostDeleted == false) {
+      if (isPostDeleted == false) {
         logToConsole("Deleteservice deletePost Error: Error Deleting Post");
         throw ErrorException(message: "Error Deleting the post");
       }
 
       ref.refresh(mainpostListController);
       return SuccessReturnType(isSuccess: true);
-    }
-    catch (e) {
+    } catch (e) {
       logToConsole("DeleteServicePost error: $e");
       throw ErrorException(message: e.toString(), data: e);
     }
   }
 }
 
-final deleteServiceProvider   = Provider.autoDispose<DeleteService>((ref) {
+final deleteServiceProvider = Provider.autoDispose<DeleteService>((ref) {
   ref.onDispose(() => logToConsole("Delete Service dispose"));
   return DeleteService(ref: ref);
 });

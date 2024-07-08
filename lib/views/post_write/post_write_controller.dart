@@ -187,7 +187,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         );
       }
       final postUploadResult = await ref
-          .watch(firebasePostRepository)
+          .watch(firebasePostRepositoryProvider)
           .uploadPostFirebase(post, isForEdit);
       if (postUploadResult == false) {
         state = AsyncError(

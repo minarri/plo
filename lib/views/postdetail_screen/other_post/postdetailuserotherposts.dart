@@ -14,8 +14,10 @@ import 'package:shimmer/shimmer.dart';
 
 final fetchUsesOtherPostProvider = FutureProvider.autoDispose
     .family<List<PostModel>?, PostModel>((ref, post) async {
-  final futurePost = ref.watch(firebasePostRepository).fetchUsersSixOtherPosts(
-      userUid: post.uploadUserUid, excludePostUid: post.pid);
+  final futurePost = ref
+      .watch(firebasePostRepositoryProvider)
+      .fetchUsersSixOtherPosts(
+          userUid: post.uploadUserUid, excludePostUid: post.pid);
 });
 
 class PostDetailUserOtherPostsWidget extends ConsumerWidget {

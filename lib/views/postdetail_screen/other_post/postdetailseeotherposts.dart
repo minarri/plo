@@ -13,7 +13,7 @@ import 'package:plo/views/postdetail_screen/postpicture.dart';
 final postDetailFetchedAllUserPostProvider = FutureProvider.autoDispose
     .family<List<PostModel>?, String>((ref, userUid) async {
   return await ref
-      .watch(firebasePostRepository)
+      .watch(firebasePostRepositoryProvider)
       .getUsersActivePost(userUid: userUid);
 });
 

@@ -10,7 +10,7 @@ import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
 final fetchSamePostCategoryProvider = FutureProvider.autoDispose
     .family<List<PostModel>?, PostModel>((ref, post) async {
   final future = ref
-      .watch(firebasePostRepository)
+      .watch(firebasePostRepositoryProvider)
       .fetchPostsSameCategoryFromOtherUsers(post.category, post.pid);
 });
 
