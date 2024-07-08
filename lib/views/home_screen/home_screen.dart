@@ -52,9 +52,34 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           physics: NeverScrollableScrollPhysics(),
           children: pages,
         ),
-        bottomNavigationBar: NavigationBarWidget(
-          selectedIndex: _selectedIndex,
-          onTabChange: _onTabChange,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Container(
+            width: 45,
+            height: 45,
+            child: FloatingActionButton(
+              backgroundColor: Colors.black,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateEditPostScreen(),
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.add,
+                size: 28,
+                color: Colors.white,
+              ),
+            )),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.black,
+          shape: CircularNotchedRectangle(),
+          notchMargin: 5,
+          child: NavigationBarWidget(
+            selectedIndex: _selectedIndex,
+            onTabChange: _onTabChange,
+          ),
         ),
       ),
     );
