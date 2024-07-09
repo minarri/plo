@@ -1,109 +1,224 @@
+import 'package:algolia_helper_flutter/algolia_helper_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-// 검색어
-String searchText = '';
-
-// 리스트뷰에 표시할 내용
-List<String> items = ['게시물 1', '안녕하세요', '꿀강의', '동아리 구해요'];
-List<String> itemContents = [
-  'Item 1 Contents',
-  'Item 2 Contents',
-  'Item 3 Contents',
-  'Item 4 Contents'
-];
-// --> from database, await
-
-// 검색을 위해 앱의 상태를 변경해야하므로 StatefulWidget 상속
-class SearchPostsPractice extends StatefulWidget {
-  const SearchPostsPractice({Key? key}) : super(key: key);
-
-  @override
-  SearchPostsPracticeState createState() => SearchPostsPracticeState();
+void main() {
+  runApp(const AlgoliaSearchEX());
 }
 
-class SearchPostsPracticeState extends State<SearchPostsPractice> {
-  // 리스트뷰 카드 클릭 이벤트 핸들러
-  void cardClickEvent(BuildContext context, int index) {
-    String content = itemContents[index];
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ContentPage(content: content),
+class SearchMetadata {
+  final int nbHits;
+
+  const SearchMetadata(this.nbHits);
+
+  factory SearchMetadata.fromResponse(SearchResponse response) =>
+      SearchMetadata(response.nbHits);
+}
+
+class Product {
+  final String name;
+  final String image;
+
+  Product(this.name, this.image);
+
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(json['name'], json['image_urls'][0]);
+  }
+}
+
+class HitsPage {
+  const HitsPage(this.items, this.pageKey, this.nextPageKey);
+
+  final List<Product> items;
+  final int pageKey;
+  final int? nextPageKey;
+
+  factory HitsPage.fromResponse(SearchResponse response) {
+    final items = response.hits.map(Product.fromJson).toList();
+    final isLastPage = response.page >= response.nbPages;
+    final nextPageKey = isLastPage ? null : response.page + 1;
+    return HitsPage(items, response.page, nextPageKey);
+  }
+}
+
+class AlgoliaSearchEX extends StatelessWidget {
+  const AlgoliaSearchEX({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _searchTextController = TextEditingController();
+
+  final _productsSearcher = HitsSearcher(
+      applicationID: 'latency',
+      apiKey: '927c3fe76d4b52c5a2912973f35a3077',
+      indexName: 'STAGING_native_ecom_demo_products');
+
+  Stream<SearchMetadata> get _searchMetadata =>
+      _productsSearcher.responses.map(SearchMetadata.fromResponse);
+
+  final PagingController<int, Product> _pagingController =
+      PagingController(firstPageKey: 0);
+
+  Stream<HitsPage> get _searchPage =>
+      _productsSearcher.responses.map(HitsPage.fromResponse);
+
+  final GlobalKey<ScaffoldState> _mainScaffoldKey = GlobalKey();
+
+  final _filterState = FilterState();
+
+  late final _facetList = _productsSearcher.buildFacetList(
+    filterState: _filterState,
+    attribute: 'brand',
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _searchTextController.addListener(
+      () => _productsSearcher.applyState(
+        (state) => state.copyWith(
+          query: _searchTextController.text,
+          page: 0,
+        ),
       ),
     );
+    _searchPage.listen((page) {
+      if (page.pageKey == 0) {
+        _pagingController.refresh();
+      }
+      _pagingController.appendPage(page.items, page.nextPageKey);
+    }).onError((error) => _pagingController.error = error);
+    _pagingController.addPageRequestListener(
+        (pageKey) => _productsSearcher.applyState((state) => state.copyWith(
+              page: pageKey,
+            )));
+    _productsSearcher.connectFilterState(_filterState);
+    _filterState.filters.listen((_) => _pagingController.refresh());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _mainScaffoldKey,
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Search Example'),
-      ),
-      body: Column(
-        children: <Widget>[
-          // 상단 검색바
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: '검색어를 입력해주세요.',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  searchText = value;
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              // items 변수에 저장되어 있는 모든 값 출력
-              itemCount: items.length,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                // 검색 기능, 검색어가 있을 경우
-                if (searchText.isNotEmpty &&
-                    !items[index]
-                        .toLowerCase()
-                        .contains(searchText.toLowerCase())) {
-                  return const SizedBox.shrink();
-                }
-                // 검색어가 없을 경우, 모든 항목 표시
-                else {
-                  return SizedBox(
-                    height: 10,
-                    child: ListTile(
-                      title: Text(items[index]),
-                      onTap: () => cardClickEvent(context, index),
-                    ),
-                  );
-                }
-              },
-            ),
-          ),
+        title: const Text('Algolia & Flutter'),
+        actions: [
+          IconButton(
+              onPressed: () => _mainScaffoldKey.currentState?.openEndDrawer(),
+              icon: const Icon(Icons.filter_list_sharp))
         ],
       ),
-    );
-  }
-}
-
-// 선택한 항목의 내용을 보여주는 추가 페이지
-class ContentPage extends StatelessWidget {
-  final String content;
-
-  const ContentPage({Key? key, required this.content}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Content'),
+      endDrawer: Drawer(
+        child: _filters(context),
       ),
       body: Center(
-        child: Text(content),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+                height: 44,
+                child: TextField(
+                  controller: _searchTextController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Enter a search term',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                )),
+            StreamBuilder<SearchMetadata>(
+              stream: _searchMetadata,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${snapshot.data!.nbHits} hits'),
+                );
+              },
+            ),
+            Expanded(
+              child: _hits(context),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _hits(BuildContext context) => PagedListView<int, Product>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<Product>(
+          noItemsFoundIndicatorBuilder: (_) => const Center(
+                child: Text('No results found'),
+              ),
+          itemBuilder: (_, item, __) => Container(
+                color: Colors.white,
+                height: 80,
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    SizedBox(width: 50, child: Image.network(item.image)),
+                    const SizedBox(width: 20),
+                    Expanded(child: Text(item.name))
+                  ],
+                ),
+              )));
+
+  Widget _filters(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Filters'),
+        ),
+        body: StreamBuilder<List<SelectableItem<Facet>>>(
+            stream: _facetList.facets,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+              final selectableFacets = snapshot.data!;
+              return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: selectableFacets.length,
+                  itemBuilder: (_, index) {
+                    final selectableFacet = selectableFacets[index];
+                    return CheckboxListTile(
+                      value: selectableFacet.isSelected,
+                      title: Text(
+                          "${selectableFacet.item.value} (${selectableFacet.item.count})"),
+                      onChanged: (_) {
+                        _facetList.toggle(selectableFacet.item.value);
+                      },
+                    );
+                  });
+            }),
+      );
+
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    _productsSearcher.dispose();
+    _pagingController.dispose();
+    _filterState.dispose();
+    _facetList.dispose();
+    super.dispose();
   }
 }

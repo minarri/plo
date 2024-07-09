@@ -18,9 +18,7 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final searchPostsControllerProvider =
-    StateNotifierProvider.autoDispose<SearchPostsController, AsyncValue<void>>(
-        (ref) {
+final searchPostsControllerProvider = StateNotifierProvider.autoDispose<SearchPostsController, AsyncValue<void>> ((ref) {
   ref.onDispose(() {
     logToConsole("SearchPostsController disposed");
   });

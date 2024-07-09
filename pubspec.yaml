@@ -63,6 +63,9 @@ dependencies:
   cached_network_image: ^3.3.1
   google_nav_bar: ^5.0.6
   like_button: ^2.0.5
+  # for practicing algoliasearch --> used in search_screen_ex
+  algolia_helper_flutter: ^1.0.0
+  infinite_scroll_pagination: ^3.2.0
 
 dev_dependencies:
   flutter_test:

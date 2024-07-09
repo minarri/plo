@@ -78,7 +78,7 @@ class MainPostListController extends StateNotifier<AsyncValue<void>> {
 final mainpostListController =
     StateNotifierProvider.autoDispose<MainPostListController, AsyncValue<void>>(
         (ref) {
-  final postRepository = ref.watch(firebasePostRepository);
+  final postRepository = ref.watch(firebasePostRepositoryProvider);
   final userRepository = ref.watch(firebaseUserRepository);
   return MainPostListController(
       ref: ref, postRepository: postRepository, userRepository: userRepository);

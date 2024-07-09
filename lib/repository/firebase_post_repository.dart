@@ -240,8 +240,30 @@ class FirebasePostRepository {
       return null;
     }
   }
+
+  Future<List<PostModel>?> fetchMultiplePostsFromHitList(List<String> uidList) async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot;
+    PostModel? post;
+    try {
+      List<PostModel> postModels = [];
+      for (int i = 0; i < uidList.length; i++) {
+       documentSnapshot = await db.collection(FirebaseConstants.postcollectionName).doc(uidList[i]).get();
+        if (documentSnapshot.data() != null) {
+          post = PostModel().fromJson(documentSnapshot.data()!);
+          if (post != null) {
+            postModels.add(post);
+          }
+        }
+      }
+      return postModels;
+    } catch (err) {
+      logToConsole('fetchMultipleItemsFromHitList error: ${err.toString()}');
+      return null;
+    }
+  }
 }
 
-final firebasePostRepository = Provider<FirebasePostRepository>((ref) {
+final firebasePostRepositoryProvider = Provider<FirebasePostRepository>((ref) {
   return FirebasePostRepository(ref);
 });

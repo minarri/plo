@@ -4,6 +4,7 @@ import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/home_screen/widgets/navigator_bar.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
+import 'package:plo/views/search_posts_screen/search_posts_ex.dart';
 import 'package:plo/views/search_posts_screen/search_posts_main.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 import 'package:plo/views/settings_screen/settings_screen.dart';
