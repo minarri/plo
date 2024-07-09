@@ -76,7 +76,7 @@ class _ImageViewWidgetState
                 ),
               )),
         ),
-        SizedBox(height:10),
+      SizedBox(height: 10),
       ElevatedButton(
           onPressed: () {
             showModalBottomSheet(

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/firebase_options.dart';
+import 'package:plo/views/home_screen/home_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/splash_screen/splash_screen.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           })),
       home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(), 
+        stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SplashScreen();
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
                 body: Center(child: Text("There has been an error")));
           }
           if (snapshot.hasData) {
-            return const SignInScreen();
+            return const HomeScreen();
           }
           return const SignInScreen();
         },

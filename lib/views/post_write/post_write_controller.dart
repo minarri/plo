@@ -23,6 +23,10 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   final TextEditingController _contentController = TextEditingController();
   // final TextEditingController _categoryController = TextEditingController();
   final Ref ref;
+  late final createEditPostState = ref.read(createEditPostStateProvider);
+  late final createEditPostStateNotifier =
+      ref.read(createEditPostStateProvider.notifier);
+
   CreatePostController(this.ref) : super(const AsyncLoading()) {
     _init();
   }
@@ -34,13 +38,13 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   _init() async {
     state = const AsyncLoading();
 
-    if (ref.read(createEditPostStateProvider).isForEdit) {
-      final PostModel postStateModel =
-          ref.read(createEditPostStateProvider).editPostInformation!;
+    if (createEditPostState.isForEdit) {
+      final PostModel postStateModel = createEditPostState.editPostInformation!;
       _titleController.text = postStateModel.postTitle;
       _contentController.text = postStateModel.postContent;
       // _categoryController.text = postStateModel.category.toString();
     }
+    logToConsole("Create post Controller init");
     state = const AsyncData(null);
   }
 
@@ -51,13 +55,11 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   }
 
   void movetoEnd() {
-    _swiperController
-        .move(ref.read(createEditPostStateProvider).photos.length - 1);
+    _swiperController.move(createEditPostState.photos.length - 1);
   }
 
   swiperToEnd() {
-    _swiperController.index =
-        ref.read(createEditPostStateProvider).photos.length - 1;
+    _swiperController.index = createEditPostState.photos.length - 1;
   }
 
   void pickMultipleImagesFromGallery() async {
@@ -74,13 +76,13 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
     final List<File?> images = result.data as List<File?>;
 
     for (int i = 0; i < images.length; i++) {
-      if (ref.read(createEditPostStateProvider).photos.length >= 6) {
+      if (createEditPostState.photos.length >= 6) {
         state = AsyncError("6개 이상의 사진은 업로드 할 수 없습니다.", StackTrace.current);
         break;
       }
       if (images[i] != null) {
         List<Object> updatedPhotos = [
-          ...ref.read(createEditPostStateProvider).photos,
+          ...createEditPostState.photos,
           images[i]!
         ];
         ref
@@ -93,7 +95,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   }
 
   void pickImageFromCamera() async {
-    if (ref.read(createEditPostStateProvider).photos.length >= 6) {
+    if (createEditPostState.photos.length >= 6) {
       state = AsyncError("6개 이상의 사진은 업로드 할 수 없습니다", StackTrace.current);
     } else {
       final result =
@@ -107,12 +109,10 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       }
       if (result is SuccessReturnType && result.data != null) {
         List<Object> updatedPhotos = [
-          ...ref.read(createEditPostStateProvider).photos,
+          ...createEditPostState.photos,
           result.data!
         ];
-        ref
-            .read(createEditPostStateProvider.notifier)
-            .updatePhotos(updatedPhotos);
+        createEditPostStateNotifier.updatePhotos(updatedPhotos);
       }
     }
     swiperToEnd();
@@ -125,18 +125,18 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         return false;
       }
       //controller: title and content
-      final postState = ref.read(createEditPostStateProvider);
+      final postState = createEditPostState;
 
-      if (postState.postTitle.isEmpty) {
-        state = AsyncError("게시물 제목을 작성해주세요", StackTrace.current);
-        state = const AsyncData(null);
-        return false;
-      }
-      if (postState.postContent.isEmpty) {
-        state = AsyncError("게시물 내용은 빈칸으로 올릴 수 없습니다", StackTrace.current);
-        state = const AsyncData(null);
-        return false;
-      }
+      // if (postState.postTitle.isEmpty) {
+      //   state = AsyncError("게시물 제목을 작성해주세요", StackTrace.current);
+      //   state = const AsyncData(null);
+      //   return false;
+      // }
+      // if (postState.postContent.isEmpty) {
+      //   state = AsyncError("게시물 내용은 빈칸으로 올릴 수 없습니다", StackTrace.current);
+      //   state = const AsyncData(null);
+      //   return false;
+      // }
 
       final isForEdit = postState.isForEdit;
       if (ref.read(currentUserProvider.notifier).mounted == false ||

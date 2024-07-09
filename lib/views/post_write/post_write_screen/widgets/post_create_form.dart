@@ -44,7 +44,7 @@ class CreateEditPostFormWidget extends ConsumerWidget {
                     .read(createEditPostStateProvider.notifier)
                     .updateTitle(value);
               },
-               onTapOutside: (event) {
+              onTapOutside: (event) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },
             ),

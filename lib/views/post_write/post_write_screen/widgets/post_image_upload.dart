@@ -7,33 +7,28 @@ class CreateEditPostImage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      height: 130,
-          child: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-                          ListTile(
-                              leading: const Icon(Icons.camera_alt_outlined),
-                              title: const Text("카메라"),
-                              onTap: ()  {
-                                 ref
-                                    .read(createEditPostStateController.notifier)
-                                    .pickImageFromCamera();
-                                Navigator.of(context).pop;
-                              }),
-                          ListTile(
-                              leading: const Icon(Icons.photo_library),
-                              title: const Text("갤러리"),
-                              onTap: ()  {
-                                 ref
-                                    .read(createEditPostStateController.notifier)
-                                    .pickMultipleImagesFromGallery();
-                                Navigator.of(context).pop;
-                              })
-                        ]
-                
-        ),
-      ));
-    
+        height: 130,
+        child: SafeArea(
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            ListTile(
+                leading: const Icon(Icons.camera_alt_outlined),
+                title: const Text("카메라"),
+                onTap: () {
+                  ref
+                      .read(createEditPostStateController.notifier)
+                      .pickImageFromCamera();
+                  Navigator.of(context).pop;
+                }),
+            ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text("갤러리"),
+                onTap: () {
+                  ref
+                      .read(createEditPostStateController.notifier)
+                      .pickMultipleImagesFromGallery();
+                  Navigator.of(context).pop;
+                })
+          ]),
+        ));
   }
 }

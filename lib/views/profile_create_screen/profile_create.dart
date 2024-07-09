@@ -191,32 +191,60 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
                           text: "확인",
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              SelectedFileNotifier()
+                              // SelectedFileNotifier()
+                              //     .checkNickNameDupsThenSignUp(
+                              //   email,
+                              //   password,
+                              //   nickname.text,
+                              //   grade.text,
+                              //   major.text,
+                              //   profilePic,
+                              // )
+                              //     .then((value) {
+                              //   if (value == true) {
+                              //     // success dialog pop up
+                              //     Navigator.push(
+                              //       // ignore: use_build_context_synchronously
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const SignInScreen(),
+                              //       ),
+                              //     );
+                              //     logToConsole('User profile create succeed');
+                              //   } else {
+                              //     // failed dialog pop up
+                              //     logToConsole('User profile create failed');
+                              //   }
+                              // });
+                              bool isSignedUp = await ref
+                                  .watch(selectedFile.notifier)
                                   .checkNickNameDupsThenSignUp(
-                                email,
-                                password,
-                                nickname.text,
-                                grade.text,
-                                major.text,
-                                profilePic,
-                              )
-                                  .then((value) {
-                                if (value == true) {
-                                  // success dialog pop up
-                                  Navigator.push(
-                                    // ignore: use_build_context_synchronously
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignInScreen(),
-                                    ),
-                                  );
-                                  logToConsole('User profile create succeed');
-                                } else {
-                                  // failed dialog pop up
-                                  logToConsole('User profile create failed');
-                                }
-                              });
+                                      email,
+                                      password,
+                                      nickname.text,
+                                      grade.text,
+                                      major.text,
+                                      profilePic);
+                              if (isSignedUp) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignInScreen(),
+                                  ),
+                                );
+                                logToConsole(
+                                    'User Profile create Successfully into the server');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        "유저 프로필 사진 혹은 계정 생성을 하는데 실패하였습니다."),
+                                  ),
+                                );
+                                logToConsole(
+                                    "User Profile create or Upload Failed");
+                              }
                             }
                           },
                         ),
