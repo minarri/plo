@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_alert_box.dart';
+import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/views/log_in_screen/log_in_screen.dart';
 import 'package:plo/views/settings_screen/likedpost_screen.dart';

@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/log_util.dart';
+import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/erro_handling/error_handling_auth.dart';
 import 'package:plo/model/types/enum_type.dart';
+import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebasestoroage_respository.dart';
 
 class AuthMethods {
@@ -38,14 +40,30 @@ class AuthMethods {
             ? await StorageMethods()
                 .uploadProfileImageToStorage('profilePics', file, false)
             : "https://firebasestorage.googleapis.com/v0/b/project-plo.appspot.com/o/profilePics%2Fprofile_default.png?alt=media&token=46c5a927-ba2c-4901-9a2e-d3f7c60aca2e";
-        //이런 방식으로 하면 doc uid가 자동으로 auth uid로 생성이 됨
-        _firestore.collection('users').doc(cred.user!.uid).set({
-          'grade': grade,
-          'major': major,
-          'nickname': nickname,
-          'user_pfp': photoUrl,
-        });
 
+        //이런 방식으로 하면 doc uid가 자동으로 auth uid로 생성이 됨
+
+        // _firestore.collection('users').doc(cred.user!.uid).set({
+        //   'grade': grade,
+        //   'major': major,
+        //   'nickname': nickname,
+        //   'user_pfp': photoUrl,
+        // });
+        UserModel userModel = UserModel(
+            userUid: cred.user!.uid,
+            email: email,
+            userNickname: nickname,
+            userCreatedDate: Timestamp.now(),
+            grade: grade,
+            major: major,
+            profileImageUrl: photoUrl,
+            likedPosts: [],
+            blockedUsers: []);
+
+        await _firestore
+            .collection(FirebaseConstants.usercollectionName)
+            .doc(userModel.userUid)
+            .set(userModel.toJson());
         res = 'success';
       }
     } catch (err) {

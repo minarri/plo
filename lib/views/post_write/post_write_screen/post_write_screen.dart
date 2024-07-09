@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/riverpod_error.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
+import 'package:plo/common/widgets/test_appbar.dart';
 import 'package:plo/model/state_model/create_edit_post_model.dart';
 import 'package:plo/views/home_screen/main_post_list_controller.dart';
 import 'package:plo/views/post_write/post_write_controller.dart';
@@ -46,7 +47,7 @@ class _CreateEditPostScreenState extends ConsumerState<CreateEditPostScreen> {
     var postState = ref.watch(createEditPostStateProvider);
 
     return Scaffold(
-        appBar: BackButtonAppBar(
+        appBar: TestAppbarWidget(
             title: postState.isForEdit ? "Edit Post" : "Write Post"),
         body: SafeArea(
           child: Padding(

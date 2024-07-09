@@ -9,7 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FirebaseUserRepository {
   final _auth = FirebaseAuth.instance;
-  final usercollectionName = FirebaseConstants.usercollectionName;
   final _firebase = FirebaseFirestore.instance;
   void _logHelper(String typeofAction, String funcitonName) {
     log("Firestore was Used ($typeofAction) in $funcitonName in FirebaseUserRepository");
@@ -20,7 +19,7 @@ class FirebaseUserRepository {
   Future<bool> uploadUserModel(UserModel user) async {
     try {
       await _firebase
-          .collection(usercollectionName)
+          .collection(FirebaseConstants.usercollectionName)
           .doc(user.userUid)
           .set(user.toJson());
       _logHelper("Set", "uploadUserModel");
@@ -34,10 +33,10 @@ class FirebaseUserRepository {
   Future<UserModel?> fetchUser() async {
     try {
       DocumentSnapshot documentSnapshot = await _firebase
-          .collection(usercollectionName)
+          .collection(FirebaseConstants.usercollectionName)
           .doc(_auth.currentUser!.uid)
           .get();
-      _logHelper("Get", "UserModel");
+      log("Get CurrentUserModel");
       if (documentSnapshot.exists) {
         UserModel? jsontoUserConverted =
             UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
@@ -53,8 +52,10 @@ class FirebaseUserRepository {
 
   Future<UserModel?> fetchUserbyUid(String userUid) async {
     try {
-      DocumentSnapshot documentSnapshot =
-          await _firebase.collection(usercollectionName).doc(userUid).get();
+      DocumentSnapshot documentSnapshot = await _firebase
+          .collection(FirebaseConstants.usercollectionName)
+          .doc(userUid)
+          .get();
       if (documentSnapshot.exists) {
         UserModel? jsonUserconverted =
             UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
