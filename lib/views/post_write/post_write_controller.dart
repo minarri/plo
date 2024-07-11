@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/error_message_constants.dart';
+import 'package:plo/extensions/ref_dipsose.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/state_model/create_edit_post_model.dart';
 import 'package:plo/model/types/return_type.dart';
@@ -139,8 +140,8 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       // }
 
       final isForEdit = postState.isForEdit;
-      if (ref.read(currentUserProvider.notifier).mounted == false ||
-          ref.read(currentUserProvider) == null) {
+      if (!ref.watch(currentUserProvider.notifier).mounted ||
+          ref.watch(currentUserProvider) == null) {
         state = AsyncError("Debug: current user error", StackTrace.current);
         state = const AsyncData(null);
         return false;
@@ -206,6 +207,8 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
 }
 
 final createEditPostStateController =
-    StateNotifierProvider<CreatePostController, AsyncValue<void>>((ref) {
+    StateNotifierProvider.autoDispose<CreatePostController, AsyncValue<void>>(
+        (ref) {
+  ref.logDisposeToConsole("CreatePostController Disposed");
   return CreatePostController(ref);
 });

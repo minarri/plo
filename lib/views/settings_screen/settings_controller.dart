@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/types/enum_type.dart';
@@ -53,13 +54,14 @@ Future<void> deleteUserdataFromFirestore() async {
   }
 }
 
-Future<String> deleteUserAccount() async {
+Future<String> deleteUserAccount(WidgetRef ref) async {
   try {
-    deleteProfilePictureFromStorage();
+    await deleteProfilePictureFromStorage();
 
-    deleteUserdataFromFirestore();
+    await deleteUserdataFromFirestore();
 
-    AuthMethods().deleteUserAccount(); //FIXME
+    final authMethods = ref.read(authRepository);
+    await authMethods.deleteUserAccount(); //FIXME;
 
     return ReturnTypeENUM.success.toString();
   } on FirebaseAuthException catch (e) {

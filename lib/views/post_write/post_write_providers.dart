@@ -12,6 +12,7 @@ final createEditPostStateProvider = StateNotifierProvider.autoDispose<
 final createEditPostStateProviderFamily = StateNotifierProvider.autoDispose
     .family<CreateEditPostStateNotifier, CreateEditPostModel,
         CreateEditPostModel?>((ref, editPostInformation) {
+  ref.logDisposeToConsole("createOrEditPosStateProviderFamily");
   return CreateEditPostStateNotifier(editInformation: editPostInformation);
 });
 

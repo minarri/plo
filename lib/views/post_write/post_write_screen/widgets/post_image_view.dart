@@ -5,7 +5,7 @@ import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/views/post_write/post_write_controller.dart';
 import 'package:plo/views/post_write/post_write_providers.dart';
 import 'package:plo/views/post_write/post_write_screen/widgets/post_image_order.dart';
-import 'package:plo/views/post_write/post_write_screen/widgets/post_image_upload.dart';
+import 'package:plo/views/post_write/post_write_screen/widgets/post_image_bottomsheet.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,43 +25,46 @@ class _ImageViewWidgetState
     final List<Object> photos = ref.watch(createEditPostStateProvider).photos;
     final bool imageLoading = ref.watch(imageLoadingProvider);
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      Container(
-        height: 150,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(15),
+      Stack(children: [
+        Container(
+          height: 200,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: imageLoading
+              ? const Center(child: CircularProgressIndicator())
+              : photos.isEmpty
+                  ? const Center(
+                      child: Icon(
+                        Icons.camera_alt,
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                                child: const CreateEditPostImageOrderWidget());
+                          },
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Swiper(
+                            controller: ref
+                                .watch(createEditPostStateController.notifier)
+                                .swiperController,
+                            loop: false,
+                            itemCount: photos.length,
+                            itemBuilder: (context, index) =>
+                                CreateEditPostNetworkImage(
+                                    image: photos[index])),
+                      ),
+                    ),
         ),
-        child: imageLoading
-            ? const Center(child: CircularProgressIndicator())
-            : photos.isEmpty
-                ? const Center(
-                    child: Icon(
-                      Icons.camera_alt,
-                    ),
-                  )
-                : InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                              child: const CreateEditPostImageOrderWidget());
-                        },
-                      );
-                    },
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Swiper(
-                          controller: ref
-                              .watch(createEditPostStateController.notifier)
-                              .swiperController,
-                          loop: false,
-                          itemCount: photos.length,
-                          itemBuilder: (context, index) =>
-                              CreateEditPostNetworkImage(image: photos[index])),
-                    ),
-                  ),
-      ),
+      ]),
       if (photos.isNotEmpty)
         Positioned(
           bottom: 5,

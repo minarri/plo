@@ -27,8 +27,7 @@ class _ProfileState extends ConsumerState<ProfileCreate> {
   File? image; //File? 타입 객체 - 프로필 이미지 로컬에서 받는 용도
   final formKey =
       GlobalKey<FormState>(); //GlobalKey 타입 객체 - onClicked의 validation 위한 Key
-  final auth =
-      AuthMethods(); //AuthMethods 타입 객체 - 받은 유저 정보(inputs)들 authenticator에 올리기 위한 용도
+  //AuthMethods 타입 객체 - 받은 유저 정보(inputs)들 authenticator에 올리기 위한 용도
 
   //controllers - 각각 유저 input 받는 textformfield들의 validator들을 위한 controllers
   TextEditingController nickname = TextEditingController();

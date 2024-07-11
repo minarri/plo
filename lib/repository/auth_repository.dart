@@ -8,11 +8,14 @@ import 'package:plo/model/erro_handling/error_handling_auth.dart';
 import 'package:plo/model/types/enum_type.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebasestoroage_respository.dart';
+import 'package:plo/views/post_write/user_provider/user_provider.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  final Ref ref;
 
+  AuthMethods(this.ref);
   User? getCurrentUser() {
     return _auth.currentUser;
   }
@@ -64,6 +67,7 @@ class AuthMethods {
             .collection(FirebaseConstants.usercollectionName)
             .doc(userModel.userUid)
             .set(userModel.toJson());
+        ref.read(currentUserProvider.notifier).setUser(userModel);
         res = 'success';
       }
     } catch (err) {
@@ -75,6 +79,8 @@ class AuthMethods {
   Future<String> signInUserWithEmail(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      await ref.read(currentUserProvider.notifier).updateUserFromFirebase();
       return ReturnTypeENUM.success.toString();
     } on FirebaseAuthException catch (error) {
       String errorText = ErrorHandlerFunction().signInErrorToString(error);
@@ -113,5 +119,5 @@ class AuthMethods {
 }
 
 final authRepository = Provider<AuthMethods>((ref) {
-  return AuthMethods();
+  return AuthMethods(ref);
 });
