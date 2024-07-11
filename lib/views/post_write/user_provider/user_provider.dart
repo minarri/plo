@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/model/user_model.dart';
@@ -14,20 +16,28 @@ class UserProvider extends StateNotifier<UserModel?> {
   }
 
   Future<bool> updateUserFromFirebase() async {
-    await Future.delayed(Duration(seconds: 1));
-    final user = await ref.watch(firebaseUserRepository).fetchUser();
-    if (user != null) {
-      logToConsole("User fetched from Firebase: ${user.userNickname}");
-      state = user;
-    } else {
-      logToConsole("No user data returned from Firebase");
+    try {
+      await Future.delayed(Duration(seconds: 3));
+      final user = await ref.watch(firebaseUserRepository).fetchUser();
+      if (user != null) {
+        log("User fetched from Firebase: ${user.userNickname}");
+        state = user;
+        if (mounted) {
+          state = user;
+        }
+      } else {
+        log("No user data returned from Firebase");
+      }
+    } catch (e) {
+      log("Error fetching user from Firebase $e");
     }
+
     return true;
   }
 }
 
 final currentUserProvider =
-    StateNotifierProvider.autoDispose<UserProvider, UserModel?>((ref) {
+    StateNotifierProvider<UserProvider, UserModel?>((ref) {
   ref.onDispose(() {
     logToConsole("currentUserProvider disposed");
   });

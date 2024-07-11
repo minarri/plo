@@ -4,10 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SelectedFileNotifier extends StateNotifier<File?> {
-  SelectedFileNotifier() : super(null);
+  final Ref ref;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final auth = AuthMethods();
+  late final AuthMethods auth;
   //
+
+  SelectedFileNotifier(this.ref) : super(null) {
+    auth = ref.read(authRepository);
+  }
   void setFile(File? file) {
     state = file;
   }
@@ -36,4 +40,4 @@ class SelectedFileNotifier extends StateNotifier<File?> {
 }
 
 final selectedFile = StateNotifierProvider<SelectedFileNotifier, File?>(
-    (ref) => SelectedFileNotifier());
+    (ref) => SelectedFileNotifier(ref));

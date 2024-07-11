@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
 import 'package:plo/views/post_write/post_write_providers.dart';
 import 'package:plo/views/post_write/post_write_screen/widgets/post_create_images_details.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
         );
       },
       child: Container(
-        height: 150,
+        height: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -39,7 +40,7 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
               flex: 3,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: SizedBox(
+                child: Container(
                     height: double.infinity,
                     child: photo is File
                         ? Image.file(
@@ -49,9 +50,9 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                         : const Text("There is an error loading the photo")),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(width: 10),
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,51 +92,49 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SafeArea(
-        child: Center(
-          child: Expanded(
-            child: Column(
-              children: [
-                const Text("이미지 순서 선택"),
-                ReorderableListView(
-                  proxyDecorator: (child, index, animation) => Material(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: _photos
-                          .map((photo) => buildImageView(
-                              photo, _photos.indexOf(photo),
-                              isForProxy: true))
-                          .toList()[index],
+    return DefaultModalBottomSheet(
+      child: Expanded(
+        child: Column(
+          children: [
+            const Text("이미지 순서 선택"),
+            Expanded(
+              child: ReorderableListView(
+                proxyDecorator: (child, index, animation) => Material(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    child: _photos
+                        .map((photo) => buildImageView(
+                            photo, _photos.indexOf(photo),
+                            isForProxy: true))
+                        .toList()[index],
                   ),
-                  onReorder: ((oldIndex, newIndex) {
-                    if (oldIndex < newIndex) {
-                      newIndex <= -1;
-                    }
-                    final Object post = _photos.removeAt(oldIndex);
-                    _photos.insert(newIndex, post);
-                    setState(() {});
-                  }),
-                  children: _photos
-                      .map((photo) =>
-                          buildImageView(photo, _photos.indexOf(photo)))
-                      .toList(),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    ref
-                        .read(createEditPostStateProvider.notifier)
-                        .updatePhotos(_photos);
-                    Navigator.of(context).pop;
-                  },
-                  child: const Text("확인"),
-                ),
-              ],
+                onReorder: ((oldIndex, newIndex) {
+                  if (oldIndex < newIndex) {
+                    newIndex <= -1;
+                  }
+                  final Object post = _photos.removeAt(oldIndex);
+                  _photos.insert(newIndex, post);
+                  setState(() {});
+                }),
+                children: _photos
+                    .map((photo) =>
+                        buildImageView(photo, _photos.indexOf(photo)))
+                    .toList(),
+              ),
             ),
-          ),
+            ElevatedButton(
+              onPressed: () {
+                ref
+                    .read(createEditPostStateProvider.notifier)
+                    .updatePhotos(_photos);
+                Navigator.of(context).pop;
+              },
+              child: const Text("확인"),
+            ),
+          ],
         ),
       ),
     );

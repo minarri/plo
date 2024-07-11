@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
                 body: Center(child: Text("There has been an error")));
           }
           if (snapshot.hasData) {
-            return const HomeScreen();
+            return const SignInScreen();
           }
           return const SignInScreen();
         },

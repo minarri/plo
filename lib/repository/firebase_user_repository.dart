@@ -40,8 +40,11 @@ class FirebaseUserRepository {
       if (documentSnapshot.exists) {
         UserModel? jsontoUserConverted =
             UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+        log("Document exists: ${documentSnapshot.data()}");
+
         return jsontoUserConverted;
       } else {
+        log("Document does not exists");
         return null;
       }
     } catch (error) {

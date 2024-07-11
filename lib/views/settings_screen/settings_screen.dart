@@ -204,12 +204,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             Icons.logout_outlined,
                             size: 33,
                           ),
-                          callback: () {
-                            AlertBox.showYesOrNoAlertDialogue(
+                          callback: () async {
+                            bool? confirmed =
+                                await AlertBox.showYesOrNoAlertDialogue(
                               context,
                               "로그아웃 하시겠습니까?",
                             );
-                            AuthMethods().signOut();
+                            if (confirmed == true) {
+                              final authMethods = ref.read(authRepository);
+                              await authMethods.signOut();
+                            }
+                            ;
                             goToSignInScreen();
                           }),
                       ListButtonWidget(
@@ -218,21 +223,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             Icons.delete_outlined,
                             size: 33,
                           ),
-                          callback: () {
-                            AlertBox.showYesOrNoAlertDialogue(
-                                context, "정말로 계정을 삭제하시겠습니까?");
-                            final result = deleteUserAccount();
-                            if (result.toString() ==
-                                'auth/requires-recent-login') {
-                              const snackBar = SnackBar(
-                                content: Text(
-                                    '로그인 기간이 오래되어 인증정보가 만료되었습니다.\n. 로그아웃 후 다시 로그인한 다음 시도하여주시기 바랍니다.'),
-                              );
+                          callback: () async {
+                            bool? isDelete =
+                                await AlertBox.showYesOrNoAlertDialogue(
+                                    context, "정말로 계정을 삭제하시겠습니까?");
+                            if (isDelete == true) {
+                              final result = await deleteUserAccount(ref);
+                              if (result.toString() ==
+                                  'auth/requires-recent-login') {
+                                const snackBar = SnackBar(
+                                  content: Text(
+                                      '로그인 기간이 오래되어 인증정보가 만료되었습니다.\n. 로그아웃 후 다시 로그인한 다음 시도하여주시기 바랍니다.'),
+                                );
 
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
-                            } else {
-                              goToSignInScreen();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else {
+                                goToSignInScreen();
+                              }
                             }
                           }),
                     ],
