@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_alert_box.dart';
 import 'package:plo/common/widgets/loading_widgets/expanded_loading_post.dart';
 import 'package:plo/common/widgets/loading_widgets/loading_expanded_post.dart';
@@ -11,7 +10,6 @@ import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/home_screen/main_post_list_controller.dart';
 import 'package:plo/views/home_screen/main_post_list_provider.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
-import 'package:plo/views/postdetail_screen/postpicture.dart';
 
 final mainPostListCurrentUserProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
@@ -38,7 +36,7 @@ class MainPostList extends ConsumerWidget {
                 padding: const EdgeInsets.all(10),
                 child: state.isLoading
                     ? const ExpandedPostListLoadingWidget()
-                    : posts.length == 0
+                    : posts.isEmpty
                         ? const NoPostFound()
                         : ListView.separated(
                             physics: const AlwaysScrollableScrollPhysics(),
@@ -85,8 +83,8 @@ class MainPostList extends ConsumerWidget {
                           ),
               );
             },
-            error: (error, stackTrace) => Text("Unknow Error Occured"),
-            loading: () => Center(child: const CircularProgressIndicator()),
+            error: (error, stackTrace) => const Text("Unknow Error Occured"),
+            loading: () => const Center(child: CircularProgressIndicator()),
           ),
     );
   }

@@ -6,7 +6,6 @@ import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/custom_text_input_box.dart';
 import 'package:plo/views/settings_screen/provider/user_provider.dart';
 import 'package:plo/views/settings_screen/settings_controller.dart';
-import 'package:plo/views/settings_screen/settings_screen.dart';
 
 class ProfileModifyScreen extends ConsumerStatefulWidget {
   const ProfileModifyScreen({super.key});
@@ -67,19 +66,14 @@ class _ProfileModifyScreenState extends ConsumerState<ProfileModifyScreen> {
                     ? const CircularProgressIndicator()
                     : CustomButton(
                         text: "변경사항 저장",
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
                               _isLoading = true;
                             });
-                            updateEditedUserdataToFirestore(
+                            await updateEditedUserdataToFirestore(
                                 _grade.text, _major.text, _nickname.text);
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: ((context) =>
-                                      const SettingsScreen()),
-                                ));
+                            Navigator.pop(context);
                             setState(() {
                               _isLoading = false;
                             });
