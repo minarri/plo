@@ -24,20 +24,20 @@ class _NavigationBarWidget extends State<NavigationBarWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         textSize: 10,
         iconSize: 22,
-        tabs: [
-          const GButton(
+        tabs: const [
+          GButton(
             icon: (Icons.home),
             text: "홈",
           ),
-          const GButton(
+          GButton(
             icon: (Icons.search),
             text: "검색",
           ),
-          const GButton(
+          GButton(
             icon: (Icons.notifications),
-            text: "알람",
+            text: "알림",
           ),
-          const GButton(
+          GButton(
             icon: (Icons.person),
             text: "프로필",
           ),
