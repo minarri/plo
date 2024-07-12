@@ -67,7 +67,7 @@ class PostModel {
       PostModelFieldNameConstants.isPostImageBool: isPostImageBool,
       PostModelFieldNameConstants.category: category.toString(),
       PostModelFieldNameConstants.postViewList: postViewList,
-      PostModelFieldNameConstants.postViewListLength: postViewListLength,
+      PostModelFieldNameConstants.postViewListLength: postViewList.length,
       PostModelFieldNameConstants.showWarning: showWarning,
     };
   }
@@ -81,13 +81,17 @@ class PostModel {
                       as List<dynamic>)
                   .map((e) => e.toString())
                   .toList();
-      final List<String> convertedcontentImageUrlList =
+      logToConsole("convernted postViewList: $convertedPostViewList");
+
+      final List<String> convertedContentImageUrlList =
           json[PostModelFieldNameConstants.contentImageUrlList] == null
               ? const []
               : (json[PostModelFieldNameConstants.contentImageUrlList]
                       as List<dynamic>)
                   .map((e) => e.toString())
                   .toList();
+      logToConsole(
+          'Converted contentImageUrlList: $convertedContentImageUrlList');
 
       return PostModel(
         pid: json[PostModelFieldNameConstants.pid] ??
@@ -102,7 +106,7 @@ class PostModel {
             ErrorReplacementConstants.notFoundString,
         postContent: json[PostModelFieldNameConstants.postContent] ??
             ErrorReplacementConstants.notFoundString,
-        contentImageUrlList: convertedcontentImageUrlList,
+        contentImageUrlList: convertedContentImageUrlList,
         uploadTime: json[PostModelFieldNameConstants.uploadTime],
         isPostImageBool:
             json[PostModelFieldNameConstants.isPostImageBool] ?? false,
@@ -111,9 +115,96 @@ class PostModel {
         postLikes: json[PostModelFieldNameConstants.postLikes] ?? 0,
         postViewList: convertedPostViewList,
         postViewListLength:
-            json[PostModelFieldNameConstants.postViewList] ?? -1,
+            json[PostModelFieldNameConstants.postViewListLength] ?? -1,
         showWarning: json[PostModelFieldNameConstants.showWarning] ?? false,
       );
+      // final pid = json[PostModelFieldNameConstants.pid] ??
+      //     ErrorReplacementConstants.notFoundString;
+      // logToConsole('Decoded pid: $pid, type: ${pid.runtimeType}');
+
+      // final uploadUserUid = json[PostModelFieldNameConstants.uploadUserUid] ??
+      //     ErrorReplacementConstants.notFoundString;
+      // logToConsole(
+      //     'Decoded uploadUserUid: $uploadUserUid, type: ${uploadUserUid.runtimeType}');
+
+      // final userNickname = json[PostModelFieldNameConstants.userNickname] ??
+      //     ErrorReplacementConstants.notFoundString;
+      // logToConsole(
+      //     'Decoded userNickname: $userNickname, type: ${userNickname.runtimeType}');
+
+      // final userProfileURL = json[PostModelFieldNameConstants.userProfileURL] ??
+      //     ErrorReplacementConstants.notFoundString;
+      // logToConsole(
+      //     'Decoded userProfileURL: $userProfileURL, type: ${userProfileURL.runtimeType}');
+
+      // final postTitle = json[PostModelFieldNameConstants.postTitle] ??
+      //     ErrorReplacementConstants.notFoundString;
+      // logToConsole(
+      //     'Decoded postTitle: $postTitle, type: ${postTitle.runtimeType}');
+
+      // final postContent = json[PostModelFieldNameConstants.postContent] ??
+      //     ErrorReplacementConstants.notFoundString;
+      // logToConsole(
+      //     'Decoded postContent: $postContent, type: ${postContent.runtimeType}');
+
+      // final uploadTime =
+      //     json[PostModelFieldNameConstants.uploadTime] is Timestamp
+      //         ? json[PostModelFieldNameConstants.uploadTime] as Timestamp
+      //         : null;
+      // logToConsole(
+      //     'Decoded uploadTime: $uploadTime, type: ${uploadTime.runtimeType}');
+
+      // final isPostImageBool =
+      //     json[PostModelFieldNameConstants.isPostImageBool] ?? false;
+      // logToConsole(
+      //     'Decoded isPostImageBool: $isPostImageBool, type: ${isPostImageBool.runtimeType}');
+
+      // final category = CategoryType.stringToCategory(
+      //     json[PostModelFieldNameConstants.category] ?? '');
+      // logToConsole(
+      //     'Decoded category: $category, type: ${category.runtimeType}');
+
+      // final postLikes = json[PostModelFieldNameConstants.postLikes] is int
+      //     ? json[PostModelFieldNameConstants.postLikes] as int
+      //     : 0;
+      // logToConsole(
+      //     'Decoded postLikes: $postLikes, type: ${postLikes.runtimeType}');
+
+      // // Checking postViewListLength explicitly
+      // final postViewListLength;
+      // if (json[PostModelFieldNameConstants.postViewListLength] is int) {
+      //   postViewListLength =
+      //       json[PostModelFieldNameConstants.postViewListLength] as int;
+      // } else if (json[PostModelFieldNameConstants.postViewList] is List) {
+      //   postViewListLength =
+      //       (json[PostModelFieldNameConstants.postViewList] as List).length;
+      // } else {
+      //   postViewListLength = -1; // Default or error value
+      // }
+      // logToConsole(
+      //     'Decoded postViewListLength: $postViewListLength, type: ${postViewListLength.runtimeType}');
+
+      // final showWarning =
+      //     json[PostModelFieldNameConstants.showWarning] ?? false;
+      // logToConsole(
+      //     'Decoded showWarning: $showWarning, type: ${showWarning.runtimeType}');
+
+      // return PostModel(
+      //   pid: pid,
+      //   uploadUserUid: uploadUserUid,
+      //   userNickname: userNickname,
+      //   userProfileURL: userProfileURL,
+      //   postTitle: postTitle,
+      //   postContent: postContent,
+      //   contentImageUrlList: convertedContentImageUrlList,
+      //   uploadTime: uploadTime,
+      //   isPostImageBool: isPostImageBool,
+      //   category: category,
+      //   postLikes: postLikes,
+      //   postViewList: convertedPostViewList,
+      //   postViewListLength: postViewListLength,
+      //   showWarning: showWarning,
+      // );
     } catch (error) {
       logToConsole('PostModel fromJson Error: ${error.toString()}');
       return null;
