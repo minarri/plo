@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/types/enum_type.dart';
@@ -10,15 +13,12 @@ import 'package:plo/model/user.dart' as model;
 import 'package:plo/repository/auth_repository.dart';
 import 'package:plo/repository/firebasestoroage_respository.dart';
 import 'package:plo/repository/image_picker_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 
-Future<void> updateEditedUserdataToFirestore(
+Future<model.User> updateEditedUserdataToFirestore(
     String grade, String major, String nickname) async {
   try {
     // Get the reference to the document
-    DocumentReference documentReference = FirebaseFirestore.instance
+    final DocumentReference documentReference = FirebaseFirestore.instance
         .collection(FirebaseConstants.usercollectionName)
         .doc(FirebaseAuth.instance.currentUser!.uid);
 
@@ -28,8 +28,13 @@ Future<void> updateEditedUserdataToFirestore(
       "major": major,
       "nickname": nickname,
     });
+    final updatedUserDoc = await documentReference.get();
+    final updatedUser = model.User.fromSnap(updatedUserDoc);
+
+    return updatedUser;
   } catch (error) {
     logToConsole("sendEditedUserdataToFirestore: $error has occurred");
+    throw Exception("Failed to update user data: $error");
   }
 }
 

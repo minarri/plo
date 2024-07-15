@@ -24,12 +24,13 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsyncValue = ref.watch(userProvider);
+    final user = ref.watch(userInfoProvider);
 
     return Scaffold(
       body: userAsyncValue.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
-        data: (user) {
+        data: (_) {
           return Scrollbar(
             child: SingleChildScrollView(
               child: Padding(
