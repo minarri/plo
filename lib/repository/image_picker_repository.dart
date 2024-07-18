@@ -29,7 +29,9 @@ class ImagePickerRepository {
   Future<ReturnType<File?>> pickImageFromCamera() async {
     final ImagePicker imagePicker = ImagePicker();
     try {
-      XFile? file = await imagePicker.pickImage(source: ImageSource.camera);
+      XFile? file = await imagePicker.pickImage(
+        source: ImageSource.camera,
+      );
 
       if (file != null) {
         return SuccessReturnType(isSuccess: true, data: File(file.path));

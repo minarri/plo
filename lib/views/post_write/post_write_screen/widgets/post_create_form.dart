@@ -13,7 +13,7 @@ class CreateEditPostFormWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const SizedBox defaultSpacing = SizedBox(height: 10);
+    const SizedBox defaultSpacing = SizedBox(height: 5);
     final postState = ref.watch(createEditPostStateProvider);
     return Form(
         key: formKey,
@@ -65,13 +65,13 @@ class CreateEditPostFormWidget extends ConsumerWidget {
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  maxHeight: 150,
+                  maxHeight: 250,
                   useSafeArea: true,
                 ),
                 menuItemStyleData: const MenuItemStyleData(),
-                customButton: SizedBox(
+                customButton: Container(
                   width: double.infinity,
-                  height: 30,
+                  height: 50,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [

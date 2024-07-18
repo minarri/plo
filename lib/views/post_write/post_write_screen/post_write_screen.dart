@@ -55,7 +55,7 @@ class _CreateEditPostScreenState extends ConsumerState<CreateEditPostScreen> {
             child: SingleChildScrollView(
               child: Column(children: [
                 const CreateEditPostImageViewWidget(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 CreateEditPostFormWidget(formKey: _formKey),
                 TextButton(
                   onPressed: () async {
