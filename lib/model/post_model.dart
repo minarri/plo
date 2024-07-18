@@ -81,7 +81,6 @@ class PostModel {
                       as List<dynamic>)
                   .map((e) => e.toString())
                   .toList();
-      logToConsole("convernted postViewList: $convertedPostViewList");
 
       final List<String> convertedContentImageUrlList =
           json[PostModelFieldNameConstants.contentImageUrlList] == null
@@ -90,8 +89,6 @@ class PostModel {
                       as List<dynamic>)
                   .map((e) => e.toString())
                   .toList();
-      logToConsole(
-          'Converted contentImageUrlList: $convertedContentImageUrlList');
 
       return PostModel(
         pid: json[PostModelFieldNameConstants.pid] ??

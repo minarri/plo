@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:card_swiper/card_swiper.dart';
@@ -24,9 +25,6 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   final TextEditingController _contentController = TextEditingController();
   // final TextEditingController _categoryController = TextEditingController();
   final Ref ref;
-  late final createEditPostState = ref.read(createEditPostStateProvider);
-  late final createEditPostStateNotifier =
-      ref.read(createEditPostStateProvider.notifier);
 
   CreatePostController(this.ref) : super(const AsyncLoading()) {
     _init();
@@ -39,8 +37,9 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   _init() async {
     state = const AsyncLoading();
 
-    if (createEditPostState.isForEdit) {
-      final PostModel postStateModel = createEditPostState.editPostInformation!;
+    if (ref.read(createEditPostStateProvider).isForEdit) {
+      final PostModel postStateModel =
+          ref.read(createEditPostStateProvider).editPostInformation!;
       _titleController.text = postStateModel.postTitle;
       _contentController.text = postStateModel.postContent;
       // _categoryController.text = postStateModel.category.toString();
@@ -56,18 +55,22 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   }
 
   void movetoEnd() {
-    _swiperController.move(createEditPostState.photos.length - 1);
+    _swiperController
+        .move(ref.read(createEditPostStateProvider).photos.length - 1);
   }
 
   swiperToEnd() {
-    _swiperController.index = createEditPostState.photos.length - 1;
+    _swiperController.index =
+        ref.read(createEditPostStateProvider).photos.length - 1;
   }
 
   void pickMultipleImagesFromGallery() async {
+    ref.read(imageLoadingProvider.notifier).state = true;
     final result = await ref
         .watch(imagePickerRepositoryProvider)
         .pickMultipleImageFromGallery();
     if (result is ErrorReturnType) {
+      ref.read(imageLoadingProvider.notifier).state = false;
       state = AsyncError(result.message!, StackTrace.current);
       state = const AsyncData(null);
       return;
@@ -77,13 +80,13 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
     final List<File?> images = result.data as List<File?>;
 
     for (int i = 0; i < images.length; i++) {
-      if (createEditPostState.photos.length >= 6) {
+      if (ref.read(createEditPostStateProvider).photos.length >= 6) {
         state = AsyncError("6개 이상의 사진은 업로드 할 수 없습니다.", StackTrace.current);
         break;
       }
       if (images[i] != null) {
         List<Object> updatedPhotos = [
-          ...createEditPostState.photos,
+          ...ref.read(createEditPostStateProvider).photos,
           images[i]!
         ];
         ref
@@ -96,12 +99,14 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
   }
 
   void pickImageFromCamera() async {
-    if (createEditPostState.photos.length >= 6) {
+    if (ref.read(createEditPostStateProvider).photos.length >= 6) {
       state = AsyncError("6개 이상의 사진은 업로드 할 수 없습니다", StackTrace.current);
     } else {
+      ref.read(imageLoadingProvider.notifier).state = true;
       final result =
           await ref.watch(imagePickerRepositoryProvider).pickImageFromCamera();
       if (result is ErrorReturnType) {
+        ref.read(imageLoadingProvider.notifier).state = false;
         state = AsyncError(result.message!, StackTrace.current);
         state = const AsyncData(null);
         return;
@@ -110,10 +115,12 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       }
       if (result is SuccessReturnType && result.data != null) {
         List<Object> updatedPhotos = [
-          ...createEditPostState.photos,
+          ...ref.read(createEditPostStateProvider).photos,
           result.data!
         ];
-        createEditPostStateNotifier.updatePhotos(updatedPhotos);
+        ref
+            .read(createEditPostStateProvider.notifier)
+            .updatePhotos(updatedPhotos);
       }
     }
     swiperToEnd();
@@ -126,7 +133,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         return false;
       }
       //controller: title and content
-      final postState = createEditPostState;
+      final postState = ref.read(createEditPostStateProvider);
 
       // if (postState.postTitle.isEmpty) {
       //   state = AsyncError("게시물 제목을 작성해주세요", StackTrace.current);
@@ -157,10 +164,12 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       final photos = postState.photos;
       List<String>? photoUrls = await ref
           .watch(firebaseStorageProvider)
-          .uploadPostImageToStorage(photos, pid);
+          .uploadPostImageToStorage(user.userUid, photos, pid);
+      log("it is uploaded in the Storage");
       if (photoUrls == null) {
         state = AsyncError(
             ErrorMessageConstants.imageUploadError, StackTrace.current);
+        log("It is not uploading to the firebase");
         state = const AsyncData(null);
         return false;
       }

@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:plo/common/widgets/custom_button.dart';
 import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
+import 'package:plo/common/widgets/shimmer_style.dart';
+import 'package:plo/common/widgets/style_widgets.dart';
 import 'package:plo/views/post_write/post_write_providers.dart';
 import 'package:plo/views/post_write/post_write_screen/widgets/post_create_images_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/views/post_write/post_write_screen/widgets/post_image_view.dart';
 //import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CreateEditPostImageOrderWidget extends ConsumerStatefulWidget {
@@ -44,10 +49,18 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                     height: double.infinity,
                     child: photo is File
                         ? Image.file(
-                            photo,
+                            photo as File,
                             fit: BoxFit.cover,
                           )
-                        : const Text("There is an error loading the photo")),
+                        : CachedNetworkImage(
+                            imageUrl: photo as String,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                ShimmerIndividualWidget(
+                              child: Container(
+                                  color: StyleWidgets.shimmerBaseColor),
+                            ),
+                          )),
               ),
             ),
             const SizedBox(width: 10),
@@ -68,6 +81,8 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                       ),
                   ]),
             ),
+            SizedBox(width: 5),
+            const Icon(Icons.reorder_rounded),
             IconButton(
                 onPressed: () {
                   _photos.removeAt(index);
@@ -111,6 +126,10 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                         .toList()[index],
                   ),
                 ),
+                children: _photos
+                    .map((photo) =>
+                        buildImageView(photo, _photos.indexOf(photo)))
+                    .toList(),
                 onReorder: ((oldIndex, newIndex) {
                   if (oldIndex < newIndex) {
                     newIndex <= -1;
@@ -119,20 +138,16 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                   _photos.insert(newIndex, post);
                   setState(() {});
                 }),
-                children: _photos
-                    .map((photo) =>
-                        buildImageView(photo, _photos.indexOf(photo)))
-                    .toList(),
               ),
             ),
-            ElevatedButton(
+            CustomButton(
               onPressed: () {
                 ref
-                    .read(createEditPostStateProvider.notifier)
+                    .watch(createEditPostStateProvider.notifier)
                     .updatePhotos(_photos);
-                Navigator.of(context).pop;
+                Navigator.of(context).pop();
               },
-              child: const Text("확인"),
+              text: "확인",
             ),
           ],
         ),

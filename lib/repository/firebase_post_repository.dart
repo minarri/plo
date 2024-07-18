@@ -241,14 +241,18 @@ class FirebasePostRepository {
     }
   }
 
-  Future<List<PostModel>?> fetchMultiplePostsFromHitList(List<String> uidList) async {
+  Future<List<PostModel>?> fetchMultiplePostsFromHitList(
+      List<String> uidList) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot;
     PostModel? post;
     try {
       List<PostModel> postModels = [];
       for (int i = 0; i < uidList.length; i++) {
-       documentSnapshot = await db.collection(FirebaseConstants.postcollectionName).doc(uidList[i]).get();
+        documentSnapshot = await db
+            .collection(FirebaseConstants.postcollectionName)
+            .doc(uidList[i])
+            .get();
         if (documentSnapshot.data() != null) {
           post = PostModel().fromJson(documentSnapshot.data()!);
           if (post != null) {

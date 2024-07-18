@@ -20,14 +20,15 @@ class CreateEditPostImage extends ConsumerWidget {
               Navigator.of(context).pop;
             }),
         ListTile(
-            leading: const Icon(Icons.photo_library),
-            title: const Text("갤러리"),
-            onTap: () {
-              ref
-                  .read(createEditPostStateController.notifier)
-                  .pickMultipleImagesFromGallery();
-              Navigator.of(context).pop;
-            })
+          leading: const Icon(Icons.photo_library),
+          title: const Text("갤러리"),
+          onTap: () {
+            ref
+                .read(createEditPostStateController.notifier)
+                .pickMultipleImagesFromGallery();
+            Navigator.of(context).pop;
+          },
+        )
       ]),
     );
   }
