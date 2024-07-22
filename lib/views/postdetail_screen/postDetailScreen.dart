@@ -8,6 +8,7 @@ import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
 import 'package:plo/views/postdetail_screen/post_detail_controller/post_detail_controller.dart';
+import 'package:plo/views/postdetail_screen/postdetailProfile.dart';
 import 'package:plo/views/postdetail_screen/postdetailbuttons.dart';
 import 'package:plo/views/postdetail_screen/postdetaildescription.dart';
 import 'package:plo/views/postdetail_screen/postdetailsamecategory.dart';
@@ -67,9 +68,13 @@ class PostDetailScreen extends ConsumerWidget {
                             child: Container(
                               padding: EdgeInsets.all(10),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  PostDetailPhoto(postKey: postKey),
-                                  SizedBox(height: 5),
+                                  SizedBox(height: 50),
+                                  PostDetailProfileWidget(
+                                    postKey: postKey,
+                                  ),
+                                  SizedBox(height: 20),
                                   Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10),
@@ -77,6 +82,8 @@ class PostDetailScreen extends ConsumerWidget {
                                       postKey: postKey,
                                     ),
                                   ),
+                                  SizedBox(height: 5),
+                                  // PostDetailPhoto(postKey: postKey),
                                   Divider(
                                     thickness: 1,
                                   ),
