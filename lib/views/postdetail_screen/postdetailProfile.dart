@@ -36,18 +36,17 @@ class PostDetailProfileWidget extends ConsumerWidget {
                     MaterialPageRoute(builder: (context) => TestScreen()));
               },
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   DefaultProfileImageWidget(imageUrl: uploader.profileImageUrl),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Text("${uploader.userNickname}",
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.titleMedium),
-                        ],
-                      ),
+                  SizedBox(width: 10),
+                  Container(
+                    child: Column(
+                      children: [
+                        Text("작성자: ${uploader.userNickname}님",
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleMedium),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 8),

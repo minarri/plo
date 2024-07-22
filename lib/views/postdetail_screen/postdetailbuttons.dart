@@ -26,7 +26,14 @@ class PostDetailButtonsWidget extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CustomButton(
-                icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
+            const Spacer(),
+            CustomButton(
+                icon: const Icon(Icons.settings),
                 onPressed: () {
                   user!.userUid == post.uploadUserUid
                       ? showModalBottomSheet(

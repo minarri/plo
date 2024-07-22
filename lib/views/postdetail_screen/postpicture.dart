@@ -15,7 +15,7 @@ class PostDetailPhoto extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(singlePostProvider(postKey));
     return SizedBox(
-      height: 400,
+      height: 300,
       child: Swiper(
         loop: false,
         pagination: StyleWidgets.DefaultPagination(baseColor: Colors.grey),

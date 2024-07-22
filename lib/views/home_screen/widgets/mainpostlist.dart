@@ -53,22 +53,24 @@ class MainPostList extends ConsumerWidget {
                               }
                               return InkWell(
                                   onTap: () async {
+                                    bool? isConfirmed = true;
+
                                     if (posts.elementAt(index).showWarning) {
-                                      final isConfirmed = await AlertBox
+                                      isConfirmed = await AlertBox
                                           .showYesOrNoAlertDialogue(
                                               context, "계속 하시겠습니까?");
-                                      if (isConfirmed == true) {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PostDetailScreen(
-                                              postKey: posts[index],
-                                            ),
+                                    }
+                                    if (isConfirmed == true) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PostDetailScreen(
+                                            postKey: posts[index],
                                           ),
-                                        );
-                                      } else {
-                                        return;
-                                      }
+                                        ),
+                                      );
+                                    } else {
+                                      return;
                                     }
                                   },
                                   child: ExpandedPostWidget(
@@ -85,7 +87,10 @@ class MainPostList extends ConsumerWidget {
               );
             },
             error: (error, stackTrace) => const Text("Unknow Error Occured"),
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => SizedBox(
+                child: const Center(
+              child: CircularProgressIndicator(),
+            )),
           ),
     );
   }
