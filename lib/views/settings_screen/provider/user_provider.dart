@@ -1,5 +1,5 @@
-import 'package:plo/model/user.dart' as model;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/model/user.dart' as model;
 import 'package:plo/views/settings_screen/settings_controller.dart';
 
 class UserInfoNotifier extends StateNotifier<model.User> {
@@ -19,6 +19,3 @@ final userProvider = FutureProvider<model.User>((ref) async {
   ref.read(userInfoProvider.notifier).setUserdata(user);
   return user;
 });
-
-
-

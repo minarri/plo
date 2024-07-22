@@ -71,8 +71,17 @@ class _ProfileModifyScreenState extends ConsumerState<ProfileModifyScreen> {
                             setState(() {
                               _isLoading = true;
                             });
-                            await updateEditedUserdataToFirestore(
-                                _grade.text, _major.text, _nickname.text);
+                            final updatedUser =
+                                await updateEditedUserdataToFirestore(
+                                    _grade.text, _major.text, _nickname.text);
+                            ref
+                                .read(userInfoProvider.notifier)
+                                .setUserdata(updatedUser);
+
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => const HomeScreen()));
                             Navigator.pop(context);
                             setState(() {
                               _isLoading = false;
