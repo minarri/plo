@@ -6,6 +6,7 @@ import 'package:plo/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/views/postdetail_screen/homescreenbuttonwidget.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
 import 'package:plo/views/postdetail_screen/post_detail_controller/post_detail_controller.dart';
 import 'package:plo/views/postdetail_screen/postdetailProfile.dart';
@@ -54,11 +55,11 @@ class PostDetailScreen extends ConsumerWidget {
                     child: Scaffold(
                       extendBodyBehindAppBar: true,
                       appBar: AppBar(
-                        automaticallyImplyLeading: true,
+                        automaticallyImplyLeading: false,
                         elevation: 0,
                         backgroundColor: Colors.transparent,
                         actions: [
-                          PostDetailButtonsWidget(
+                          PostFloatingButton(
                               postKey: postKey, parentContext: context)
                         ],
                       ),
@@ -74,7 +75,7 @@ class PostDetailScreen extends ConsumerWidget {
                                   PostDetailProfileWidget(
                                     postKey: postKey,
                                   ),
-                                  SizedBox(height: 20),
+                                  SizedBox(height: 10),
                                   Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10),

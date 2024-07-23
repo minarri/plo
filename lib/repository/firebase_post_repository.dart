@@ -49,16 +49,18 @@ class FirebasePostRepository {
       if (lastPostUploadTime == null) {
         querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
-            .where(PostModelFieldNameConstants.category,
-                whereIn: [CategoryType.information.toString()])
+            // .where(PostModelFieldNameConstants.category, whereIn: [
+            //   CategoryType.information.toString(),
+            //   CategoryType.general.toString(),
+            // ])
             .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
             .limit(amountFetch)
             .get();
       } else {
         querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
-            .where(PostModelFieldNameConstants.category,
-                whereIn: [CategoryType.information.toString()])
+            // .where(PostModelFieldNameConstants.category,
+            //     whereIn: [CategoryType.information.toString()])
             .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
             .limit(amountFetch)
             .get();

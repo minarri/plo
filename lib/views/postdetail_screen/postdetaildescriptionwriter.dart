@@ -15,7 +15,6 @@ class PostDetailDescriptionWriterWidget extends ConsumerStatefulWidget {
 
 class _PostDetailDescriptionWriteWidgetState
     extends ConsumerState<PostDetailDescriptionWriterWidget> {
-  String selectedStatus = 'Information';
   @override
   Widget build(BuildContext context) {
     final post = ref.watch(singlePostProvider(widget.postKey));
@@ -31,8 +30,8 @@ class _PostDetailDescriptionWriteWidgetState
                       fontSize: 33, fontWeight: FontWeight.bold)),
               Tooltip(
                   message: post.category == CategoryType.information
-                      ? "Information"
-                      : "General",
+                      ? "정보 게시물"
+                      : "자유 게시물",
                   preferBelow: false,
                   triggerMode: TooltipTriggerMode.longPress,
                   showDuration: const Duration(seconds: 3),
