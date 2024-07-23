@@ -13,7 +13,7 @@ class ModalBottomSheetIcon extends StatelessWidget {
     return Column(
       children: [
         InkWell(
-          onTap: () => onTap,
+          onTap: () => onTap(),
           child: Row(
             children: [
               if (icon != null)

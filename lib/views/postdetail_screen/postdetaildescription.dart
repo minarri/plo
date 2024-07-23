@@ -132,9 +132,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
       child: Column(
         children: [
           Container(
-            constraints: BoxConstraints(
-              minHeight: 300,
-            ),
+            constraints: BoxConstraints(minHeight: 200, minWidth: 200),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,

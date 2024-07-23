@@ -18,14 +18,14 @@ class DeleteService {
   Future<ReturnType> deletePost(PostModel post) async {
     try {
       final isPhotoDeleted = await ref
-          .watch(FirebaseImageRepositoryProvider)
+          .read(FirebaseImageRepositoryProvider)
           .deletePostPhotos(post);
       if (isPhotoDeleted != true) {
         throw ErrorException(message: "Photo was not deleted");
       }
 
       final isPostDeleted = await ref
-          .watch(firebasePostRepositoryProvider)
+          .read(firebasePostRepositoryProvider)
           .deletePostbyPid(post.pid);
 
       if (isPostDeleted == false) {

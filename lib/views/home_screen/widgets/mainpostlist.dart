@@ -87,10 +87,7 @@ class MainPostList extends ConsumerWidget {
               );
             },
             error: (error, stackTrace) => const Text("Unknow Error Occured"),
-            loading: () => SizedBox(
-                child: const Center(
-              child: CircularProgressIndicator(),
-            )),
+            loading: () => const Center(child: CircularProgressIndicator()),
           ),
     );
   }

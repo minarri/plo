@@ -34,144 +34,151 @@ class PostDetailUserOtherPostsWidget extends ConsumerWidget {
                 Icons.error_outline,
                 size: 30,
               );
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return PostDetailSeeOtherPostsDetailPage(
-                            userUid: postKey.uploadUserUid,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      ref
-                          .watch(postUploaderProvider(postKey.uploadUserUid))
-                          .when(
-                            error: (error, stackTrace) => Text(
-                              error.toString(),
-                            ),
-                            loading: () => ShimmerIndividualWidget(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey[300],
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PostDetailSeeOtherPostsDetailPage(
+                              userUid: postKey.uploadUserUid,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ref
+                            .watch(postUploaderProvider(postKey.uploadUserUid))
+                            .when(
+                              error: (error, stackTrace) => Text(
+                                error.toString(),
+                              ),
+                              loading: () => ShimmerIndividualWidget(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[300],
+                                  ),
                                 ),
                               ),
-                            ),
-                            data: (user) {
-                              if (user == null)
-                                return const Text("유저를 찾을 수가 없습니다");
-                              return Expanded(
-                                child: Text(
-                                  "이 ${user.userNickname}의 다른 게시물",
-                                  textAlign: TextAlign.start,
-                                  maxLines: 1,
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              );
-                            },
-                          ),
-                      const Icon(Icons.arrow_forward_ios_rounded, size: 24),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: ref.watch(fetchUsesOtherPostProvider(postKey)).when(
-                        data: (data) {
-                          if (data == null)
-                            return const PostDetailUserOtherPostsErrorWidget(
-                              message: "다른 게시물을 가져오는데 에러가 있었습니다.",
-                            );
-                          if (data.isEmpty) return const NoMorePost();
-                          return GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 5,
-                                      mainAxisSpacing: 5),
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () async {
-                                    bool proceed = true;
-                                    if (data[index].showWarning) {
-                                      proceed = await AlertBox
-                                              .showYesOrNoAlertDialogue(
-                                                  context, "정말로 진행 하시겠습니까?") ??
-                                          false;
-                                    }
-                                    if (!proceed) return;
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return PostDetailScreen(
-                                              postKey: data[index]);
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: CompactPostWidget(
-                                    post: data[index],
-                                    isBlockedUser: user.blockedUsers
-                                        .contains(data[index].uploadUserUid),
+                              data: (user) {
+                                if (user == null)
+                                  return const Text("유저를 찾을 수가 없습니다");
+                                return Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    "이 ${user.userNickname}의 다른 게시물",
+                                    textAlign: TextAlign.start,
+                                    maxLines: 1,
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 );
                               },
-                              itemCount: data.length > 6 ? 6 : data.length);
-                        },
-                        error: (error, stackTrace) => Text(error.toString()),
-                        loading: () => GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisExtent: 6,
-                              crossAxisSpacing: 5,
-                              mainAxisSpacing: 5,
                             ),
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: ShimmerIndividualWidget(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: Colors.grey[300],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Expanded(
-                                    flex: 1,
-                                    child: ShimmerIndividualWidget(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                        const Icon(Icons.arrow_forward_ios_rounded, size: 24),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: ref.watch(fetchUsesOtherPostProvider(postKey)).when(
+                          data: (data) {
+                            if (data == null)
+                              return const PostDetailUserOtherPostsErrorWidget(
+                                message: "다른 게시물을 가져오는데 에러가 있었습니다.",
                               );
-                            },
-                            itemCount: 3),
-                      ),
-                ),
-              ],
+                            if (data.isEmpty) return const NoMorePost();
+                            return GridView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 10,
+                                        childAspectRatio: 1 / 1.5),
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () async {
+                                      bool proceed = true;
+                                      if (data[index].showWarning) {
+                                        proceed = await AlertBox
+                                                .showYesOrNoAlertDialogue(
+                                                    context,
+                                                    "정말로 진행 하시겠습니까?") ??
+                                            false;
+                                      }
+                                      if (!proceed) return;
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return PostDetailScreen(
+                                                postKey: data[index]);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: CompactPostWidget(
+                                      post: data[index],
+                                      isBlockedUser: user.blockedUsers
+                                          .contains(data[index].uploadUserUid),
+                                    ),
+                                  );
+                                },
+                                itemCount: data.length > 6 ? 6 : data.length);
+                          },
+                          error: (error, stackTrace) => Text(error.toString()),
+                          loading: () => GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      childAspectRatio: 1 / 1.5),
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Expanded(
+                                      flex: 3,
+                                      child: ShimmerIndividualWidget(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.grey[300],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Expanded(
+                                      flex: 1,
+                                      child: ShimmerIndividualWidget(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                              itemCount: 6),
+                        ),
+                  ),
+                ],
+              ),
             );
           },
           error: (error, stackTrace) => Container(

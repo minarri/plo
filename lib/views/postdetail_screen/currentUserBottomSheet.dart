@@ -13,50 +13,55 @@ import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
 final isDeletingPostProvider = StateProvider.autoDispose<bool>((ref) => false);
 
 class PostDetailCurrentUserBottomSheet extends ConsumerWidget {
-  final PostModel postkey;
-  final BuildContext parentcontext;
+  final PostModel postKey;
+  final BuildContext parentContext;
   const PostDetailCurrentUserBottomSheet(
-      {super.key, required this.postkey, required this.parentcontext});
+      {super.key, required this.postKey, required this.parentContext});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final post = ref.watch(singlePostProvider(postkey));
+    final post = ref.watch(singlePostProvider(postKey));
     return DefaultModalBottomSheet(
       title: "게시물 관리",
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ModalBottomSheetIcon(
-              title: "수정",
-              onTap: () async {
-                Navigator.of(context).pop();
-                await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CreateEditPostScreen(
-                      editPostInformation:
-                          CreateEditPostModel.initForEditItem(post),
-                    ),
-                  ),
-                );
-                await ref
-                    .watch(singlePostProvider(postkey).notifier)
-                    .updatePostFromServer();
-              },
-              icon: const Icon(Icons.edit)),
-          ModalBottomSheetIcon(
-            title: "삭제",
+            title: "수정",
             onTap: () async {
               Navigator.of(context).pop();
-              final isConfirmed = await AlertBox.showYesOrNoAlertDialogue(
-                  context, "정말로 삭제하시겠습니까?");
-              if (isConfirmed ?? false) {
-                ref.watch(deleteServiceProvider).deletePost(postkey);
-              }
-              if (isConfirmed == true) {
-                Navigator.of(parentcontext).pop();
+              final result = await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CreateEditPostScreen(
+                    editPostInformation:
+                        CreateEditPostModel.initForEditItem(post),
+                  ),
+                ),
+              );
+              if (result == true) {
+                if (context.mounted) {
+                  await ref
+                      .watch(singlePostProvider(postKey).notifier)
+                      .updatePostFromServer();
+                }
               }
             },
-          )
+            icon: const Icon(Icons.edit),
+          ),
+          ModalBottomSheetIcon(
+              title: "삭제",
+              onTap: () async {
+                Navigator.of(context).pop();
+                final isConfirmed = await AlertBox.showYesOrNoAlertDialogue(
+                    context, "정말로 삭제하시겠습니까?");
+                if (isConfirmed ?? false) {
+                  ref.read(deleteServiceProvider).deletePost(postKey);
+                }
+                if (isConfirmed == true) {
+                  Navigator.of(parentContext).pop();
+                }
+              },
+              icon: Icon(Icons.delete))
         ],
       ),
     );

@@ -43,10 +43,9 @@ class PostDetailSameCategoryWidget extends ConsumerWidget {
                             data: (data) {
                               if (data == null) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(top: 50),
+                                  padding: const EdgeInsets.only(top: 10),
                                   child: Container(
-                                    width: 50,
-                                    height: 50,
+                                    height: 100,
                                     child: Center(
                                       child: Text(
                                           "관련된 게시물이 ${postKey.category} 카테고리에 더 없습니다"),

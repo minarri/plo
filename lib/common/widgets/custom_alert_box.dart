@@ -22,13 +22,13 @@ class AlertBox {
           actions: <CupertinoDialogAction>[
             CupertinoDialogAction(
               isDefaultAction: true,
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('취소'),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('예'),
             ),
             CupertinoDialogAction(
               isDefaultAction: true,
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('예'),
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('취소'),
             ),
           ],
         );

@@ -18,37 +18,44 @@ class PostFloatingButton extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
     return Container(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          FloatingButtonWidget(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.of(context).pop();
-              }),
-          FloatingButtonWidget(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              }),
-          //내가 쓴 게시물 보기?? 아니면 그냥 설정 버튼?
-          FloatingButtonWidget(
-              icon: Icon(Icons.settings),
-              onPressed: () {
-                isNotSignedUser || user!.userUid != post.uploadUserUid
-                    ? showModalBottomSheet(
-                        context: context,
-                        builder: (context) => PostDetailOtherUserBottomSheet(
-                              postKey: postKey,
-                            ))
-                    : showModalBottomSheet(
-                        context: context,
-                        builder: (context) => PostDetailCurrentUserBottomSheet(
-                              postkey: postKey,
-                              parentcontext: parentContext,
-                            ));
-              }),
-        ]));
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              FloatingButtonWidget(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              const SizedBox(width: 25),
+              FloatingButtonWidget(
+                  icon: Icon(Icons.home),
+                  onPressed: () {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  }),
+              //내가 쓴 게시물 보기?? 아니면 그냥 설정 버튼?
+              const Spacer(),
+              FloatingButtonWidget(
+                  icon: Icon(Icons.settings),
+                  onPressed: () {
+                    isNotSignedUser || user!.userUid != post.uploadUserUid
+                        ? showModalBottomSheet(
+                            context: context,
+                            builder: (context) =>
+                                PostDetailOtherUserBottomSheet(
+                                  postKey: postKey,
+                                ))
+                        : showModalBottomSheet(
+                            context: context,
+                            builder: (context) =>
+                                PostDetailCurrentUserBottomSheet(
+                                  postKey: postKey,
+                                  parentContext: parentContext,
+                                ));
+                  }),
+            ]));
   }
 }
 

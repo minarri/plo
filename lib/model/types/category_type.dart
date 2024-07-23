@@ -9,17 +9,18 @@ enum CategoryType {
   String toString() {
     switch (this) {
       case CategoryType.information:
-      return "information";
+        return "information";
       case CategoryType.general:
-      return "general";
+        return "general";
     }
   }
+
   static stringToCategory(String string) {
-    switch(string) {
-      case "information" :
-      return CategoryType.information;
-      case "general" :
-      return CategoryType.general;
+    switch (string) {
+      case "information":
+        return CategoryType.information;
+      case "general":
+        return CategoryType.general;
     }
   }
 }
