@@ -155,7 +155,7 @@ void uploadChangedPictureToStorage(
         .doc(FirebaseAuth.instance.currentUser!.uid);
 
     // Update the specific field in the document
-    await documentReference.update({"user_pfp": photoUrl});
+    await documentReference.update({"profileImageUrl": photoUrl});
   } catch (error) {
     logToConsole("sendChangedPictureToStorage: $error has occured");
   }

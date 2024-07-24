@@ -26,7 +26,7 @@ class User {
       grade: snapshot["grade"],
       major: snapshot["major"],
       nickname: snapshot["nickname"],
-      userProfilePictureURL: snapshot["user_pfp"],
+      userProfilePictureURL: snapshot["profileImageUrl"],
     );
   }
 
@@ -34,6 +34,6 @@ class User {
         "grade": grade,
         "major": major,
         "nickname": nickname,
-        "user_pfp": userProfilePictureURL,
+        "profileImageUrl": userProfilePictureURL,
       };
 }
