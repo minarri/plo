@@ -12,13 +12,13 @@ final blockedUserModalBottomSheetIsBlockPressedProvider =
     StateProvider.autoDispose<bool>((ref) => false);
 final blockedUserModalBottomSheetCurrentUserFutureProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
-  final currentUser = await ref.watch(firebaseUserRepository).fetchUser();
+  final currentUser = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return currentUser;
 });
 
 final blockUserBottomSheetBlockUserFutureProvider = FutureProvider.autoDispose
     .family<ReturnType, String>((ref, blockingUserUid) async {
-  return await ref.watch(firebaseUserRepository).blockUser(blockingUserUid);
+  return await ref.watch(firebaseUserRepositoryProvider).blockUser(blockingUserUid);
 });
 
 class BlockUserModalBottomsheet extends ConsumerWidget {

@@ -106,6 +106,6 @@ class FirebaseUserRepository {
   }
 }
 
-final firebaseUserRepository = Provider<FirebaseUserRepository>((ref) {
+final firebaseUserRepositoryProvider = Provider<FirebaseUserRepository>((ref) {
   return FirebaseUserRepository();
 });

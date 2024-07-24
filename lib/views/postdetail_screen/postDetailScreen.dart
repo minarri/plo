@@ -18,13 +18,13 @@ import 'package:plo/views/postdetail_screen/postpicture.dart';
 final postUploaderProvider =
     FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
   final userFetched =
-      await ref.watch(firebaseUserRepository).fetchUserbyUid(userUid);
+      await ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
   return userFetched;
 });
 
 final postDetailCurrentUserFutureProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
-  final user = ref.watch(firebaseUserRepository).fetchUser();
+  final user = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return user;
 });
 

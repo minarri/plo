@@ -19,10 +19,12 @@ class FilterOptions {
   FilterOptions update({
     String? searchQuery,
     Set<CategoryType>? categorySelected,
+    SortbyType? sortOptions,
   }) {
     return FilterOptions(
       searchQuery: searchQuery ?? this.searchQuery,
       categorySelected: categorySelected ?? this.categorySelected,
+      sortOptions: sortOptions ?? this.sortOptions,
     );
   }
 

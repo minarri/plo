@@ -30,20 +30,29 @@ class SearchService {
         )
         .asStream();
 
+    logToConsole("SearchService: Search query sent to Algolia: $query");
+
     return index;
   }
 
   Future<List<PostModel>?> searchPost(FilterOptions filterOptions) async {
+    logToConsole("arrived here");
     try {
       if (filterOptions.searchQuery.isEmpty || filterOptions.searchQuery == ' ') {
         return null;
       }
+
+      logToConsole("SearchService: Searching posts with filter options: $filterOptions");
+
       final queryHits = SearchForHits(
         indexName: filterOptions.sortOptions.sortByAlgoliaIndexName(),
         query: filterOptions.searchQuery,
         facetFilters: filterOptions.getCategoryList(),
       );
       final responseHits = await searchClient.searchIndex(request: queryHits);
+
+      logToConsole("SearchService: Algolia response received with ${responseHits.hits.length} hits");
+
       if (responseHits.hits.isEmpty) {
         return [];
       }
@@ -51,9 +60,13 @@ class SearchService {
       for (var hit in responseHits.hits) {
         uidList.add(hit[PostModelFieldNameConstants.uploadUserUid]);
       }
-      final List<PostModel>? posts = await ref
-          .watch(firebasePostRepositoryProvider)
-          .fetchMultiplePostsFromHitList(uidList);
+
+      logToConsole("SearchService: Fetching posts from Firebase with uids: $uidList");
+
+      final List<PostModel>? posts = await ref.watch(firebasePostRepositoryProvider).fetchMultiplePostsFromHitList(uidList);
+
+      logToConsole("SearchService: Fetched ${posts?.length ?? 0} posts from Firebase");
+
       return posts;
     } catch (err) {
       logToConsole("Error in searchItem: $err");

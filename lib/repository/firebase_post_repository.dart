@@ -1,14 +1,9 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebasePostRepository {
   final Ref ref;
@@ -16,22 +11,15 @@ class FirebasePostRepository {
   final firestoreinstance = FirebaseFirestore.instance;
 
   void _logHelper(String typeofAction, String functionName) {
-    logToConsole(
-        "Firestore was used $typeofAction in $functionName in FirebasePostRepository");
+    logToConsole("Firestore was used $typeofAction in $functionName in FirebasePostRepository");
   }
 
   Future<bool> uploadPostFirebase(PostModel postModel, bool isforEdit) async {
     try {
       if (isforEdit) {
-        await firestoreinstance
-            .collection(FirebaseConstants.postcollectionName)
-            .doc(postModel.pid)
-            .update(postModel.toJson());
+        await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(postModel.pid).update(postModel.toJson());
       } else {
-        await firestoreinstance
-            .collection(FirebaseConstants.postcollectionName)
-            .doc(postModel.pid)
-            .set(postModel.toJson());
+        await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(postModel.pid).set(postModel.toJson());
       }
       return true;
     } catch (error) {
@@ -41,8 +29,7 @@ class FirebasePostRepository {
   }
 
   //fetching category by the upload time
-  Future<List<PostModel>?> fetchPost(
-      {Timestamp? lastPostUploadTime, int amountFetch = 10}) async {
+  Future<List<PostModel>?> fetchPost({Timestamp? lastPostUploadTime, int amountFetch = 10}) async {
     try {
       final QuerySnapshot querySnapshot;
 
@@ -68,8 +55,7 @@ class FirebasePostRepository {
 
       final List<PostModel> fetchedPosts = [];
       for (int i = 0; i < querySnapshot.size; i++) {
-        final post = PostModel()
-            .fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+        final post = PostModel().fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
         if (post != null) fetchedPosts.add(post);
       }
       return fetchedPosts;
@@ -78,8 +64,7 @@ class FirebasePostRepository {
     }
   }
 
-  Future<List<PostModel>?> fetchPostsSameCategory(CategoryType categoryType,
-      String excludePid, Timestamp? lastUploadedTime) async {
+  Future<List<PostModel>?> fetchPostsSameCategory(CategoryType categoryType, String excludePid, Timestamp? lastUploadedTime) async {
     List<PostModel> postModel = [];
 
     try {
@@ -87,8 +72,7 @@ class FirebasePostRepository {
       if (lastUploadedTime == null) {
         querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
-            .where(PostModelFieldNameConstants.category,
-                isEqualTo: categoryType.toString())
+            .where(PostModelFieldNameConstants.category, isEqualTo: categoryType.toString())
             .where(PostModelFieldNameConstants.pid, isNotEqualTo: excludePid)
             .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
             .limit(10)
@@ -96,8 +80,7 @@ class FirebasePostRepository {
       } else {
         querySnapshot = await firestoreinstance
             .collection(FirebaseConstants.postcollectionName)
-            .where(PostModelFieldNameConstants.category,
-                isEqualTo: categoryType.toString())
+            .where(PostModelFieldNameConstants.category, isEqualTo: categoryType.toString())
             .where(PostModelFieldNameConstants.pid, isNotEqualTo: excludePid)
             .orderBy(PostModelFieldNameConstants.uploadTime, descending: true)
             .limit(10)
@@ -105,34 +88,28 @@ class FirebasePostRepository {
       }
       final List<PostModel> fetchedPosts = [];
       for (int i = 0; i < querySnapshot.size; i++) {
-        final post = PostModel()
-            .fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+        final post = PostModel().fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
         if (post != null) fetchedPosts.add(post);
       }
       return fetchedPosts;
     } catch (error) {
-      logToConsole(
-          "Error was caused during the fetchPostSameCategoryFunction ${error.toString()}");
+      logToConsole("Error was caused during the fetchPostSameCategoryFunction ${error.toString()}");
       return null;
     }
   }
 
-  Future<List<PostModel>?> fetchPostsSameCategoryFromOtherUsers(
-      CategoryType categoryType, String excludepid) async {
+  Future<List<PostModel>?> fetchPostsSameCategoryFromOtherUsers(CategoryType categoryType, String excludepid) async {
     List<PostModel> postModels = [];
 
     try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await firestoreinstance
-              .collection(FirebaseConstants.postcollectionName)
-              .where(PostModelFieldNameConstants.category,
-                  isEqualTo: categoryType.toString())
-              .limit(10)
-              .get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await firestoreinstance
+          .collection(FirebaseConstants.postcollectionName)
+          .where(PostModelFieldNameConstants.category, isEqualTo: categoryType.toString())
+          .limit(10)
+          .get();
       if (querySnapshot.size > 0) {
         for (int i = 0; i < querySnapshot.size; i++) {
-          final PostModel? post = PostModel()
-              .fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+          final PostModel? post = PostModel().fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
           if (post != null) postModels.add(post);
         }
       } else {
@@ -148,10 +125,7 @@ class FirebasePostRepository {
   Future<PostModel?> fetchPostByPostUid(String pid) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await firestoreinstance
-              .collection(FirebaseConstants.postcollectionName)
-              .doc(pid)
-              .get();
+          await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(pid).get();
       if (documentSnapshot.exists) {
         return PostModel().fromJson(documentSnapshot.data()!);
       } else {
@@ -165,10 +139,7 @@ class FirebasePostRepository {
 
   Future<bool> deletePostbyPid(String pid) async {
     try {
-      await firestoreinstance
-          .collection(FirebaseConstants.postcollectionName)
-          .doc(pid)
-          .delete();
+      await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(pid).delete();
       return true;
     } catch (e) {
       logToConsole("There was an error deleting the post ${e.toString()}");
@@ -178,13 +149,8 @@ class FirebasePostRepository {
 
   Future<int> updateViews(List<String> updatedViews, PostModel post) async {
     try {
-      await firestoreinstance
-          .collection(FirebaseConstants.postcollectionName)
-          .doc(post.pid)
-          .update({
-        PostModelFieldNameConstants.postViewList: updatedViews,
-        PostModelFieldNameConstants.postViewListLength: updatedViews.length
-      });
+      await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(post.pid).update(
+          {PostModelFieldNameConstants.postViewList: updatedViews, PostModelFieldNameConstants.postViewListLength: updatedViews.length});
       _logHelper("update", "updatedViews");
       return updatedViews.length;
     } catch (error) {
@@ -207,8 +173,7 @@ class FirebasePostRepository {
           .get();
       _logHelper("Get", "fetchUsersThreeOtherPosts");
       for (int i = 0; i < querySnapshot.size; i++) {
-        final post = PostModel()
-            .fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+        final post = PostModel().fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
         if (post != null) fetchedPostList.add(post);
       }
       return fetchedPostList;
@@ -227,8 +192,7 @@ class FirebasePostRepository {
           .get();
       if (snapshot.size > 0) {
         for (int i = 0; i < snapshot.size; i++) {
-          PostModel? post = PostModel()
-              .fromJson(snapshot.docs[i].data() as Map<String, dynamic>);
+          PostModel? post = PostModel().fromJson(snapshot.docs[i].data() as Map<String, dynamic>);
           if (post != null) {
             usersPostList.add(post);
           }
@@ -243,18 +207,14 @@ class FirebasePostRepository {
     }
   }
 
-  Future<List<PostModel>?> fetchMultiplePostsFromHitList(
-      List<String> uidList) async {
+  Future<List<PostModel>?> fetchMultiplePostsFromHitList(List<String> uidList) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot;
     PostModel? post;
     try {
       List<PostModel> postModels = [];
       for (int i = 0; i < uidList.length; i++) {
-        documentSnapshot = await db
-            .collection(FirebaseConstants.postcollectionName)
-            .doc(uidList[i])
-            .get();
+        documentSnapshot = await db.collection(FirebaseConstants.postcollectionName).doc(uidList[i]).get();
         if (documentSnapshot.data() != null) {
           post = PostModel().fromJson(documentSnapshot.data()!);
           if (post != null) {
