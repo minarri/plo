@@ -7,13 +7,13 @@ class NoPostFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error, size: 100),
+            const Icon(Icons.error, size: 100),
             FittedBox(
               child: Text(
                 message,

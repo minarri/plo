@@ -88,7 +88,7 @@ class FirebasePostRepository {
       }
       final List<PostModel> fetchedPosts = [];
       for (int i = 0; i < querySnapshot.size; i++) {
-        final post = PostModel().fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+        final post = PostModel().fromJson(querySnapshot.docs[i].data());
         if (post != null) fetchedPosts.add(post);
       }
       return fetchedPosts;
@@ -109,7 +109,7 @@ class FirebasePostRepository {
           .get();
       if (querySnapshot.size > 0) {
         for (int i = 0; i < querySnapshot.size; i++) {
-          final PostModel? post = PostModel().fromJson(querySnapshot.docs[i].data() as Map<String, dynamic>);
+          final PostModel? post = PostModel().fromJson(querySnapshot.docs[i].data());
           if (post != null) postModels.add(post);
         }
       } else {

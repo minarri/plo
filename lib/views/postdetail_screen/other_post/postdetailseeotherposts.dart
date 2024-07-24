@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/compact_post_widget.dart';
@@ -8,7 +7,6 @@ import 'package:plo/common/widgets/shimmer_style.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
-import 'package:plo/views/postdetail_screen/postpicture.dart';
 
 final postDetailFetchedAllUserPostProvider = FutureProvider.autoDispose
     .family<List<PostModel>?, String>((ref, userUid) async {
@@ -25,8 +23,9 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(postDetailCurrentUserFutureProvider).when(
         data: (currentUser) {
-          if (currentUser == null)
+          if (currentUser == null) {
             return const Icon(Icons.error_outline, size: 40);
+          }
           return ref.watch(postUploaderProvider(userUid)).when(
               error: (error, stackTrace) => Scaffold(
                     body: Center(
@@ -46,7 +45,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                   ),
                   body: SafeArea(
                     child: Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -54,15 +53,15 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                   .watch(postDetailFetchedAllUserPostProvider(
                                       user.userUid))
                                   .when(
-                                      error: (error, stackTrace) => Center(
+                                      error: (error, stackTrace) => const Center(
                                           child: Icon(Icons.error_outline,
                                               size: 40)),
                                       loading: () => GridView.builder(
                                             physics:
-                                                NeverScrollableScrollPhysics(),
+                                                const NeverScrollableScrollPhysics(),
                                             shrinkWrap: true,
                                             gridDelegate:
-                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
                                                     crossAxisCount: 3,
                                                     mainAxisSpacing: 5,
                                                     crossAxisSpacing: 5),
@@ -76,7 +75,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                                         ShimmerIndividualWidget(
                                                       child: Container(
                                                         decoration:
-                                                            BoxDecoration(
+                                                            const BoxDecoration(
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .all(
@@ -96,7 +95,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                                         ShimmerIndividualWidget(
                                                       child: Container(
                                                         decoration:
-                                                            BoxDecoration(
+                                                            const BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius.all(
                                                             Radius.circular(10),
@@ -109,7 +108,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
-                                                      decoration: BoxDecoration(
+                                                      decoration: const BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius.all(
                                                                 Radius.circular(
@@ -119,28 +118,26 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                                   )
                                                 ],
                                               );
+                                              return null;
                                             },
                                           ),
                                       data: (data) {
-                                        if (data == null)
+                                        if (data == null) {
                                           return const Icon(
                                               Icons.error_outline);
+                                        }
                                         return GridView.builder(
                                           gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
                                                   crossAxisCount: 3,
                                                   crossAxisSpacing: 5,
                                                   mainAxisSpacing: 5),
                                           itemBuilder: (context, index) {
-                                            if (data == null)
-                                              return const PostDetailUserOtherPostsErrorWidget(
-                                                  message:
-                                                      "게시물을 가져오는데 에러가 발생했습니다.");
-
-                                            if (data.isEmpty)
+                                            if (data.isEmpty) {
                                               return const PostDetailUserOtherPostsErrorWidget(
                                                   message:
                                                       "게시물이 더 이상 존재하지 않습니다");
+                                            }
                                             return InkWell(
                                                 onTap: () async {
                                                   bool proceed = true;
@@ -187,7 +184,7 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
               });
         },
         error: (error, stackTrace) => const Scaffold(
-              body: const Icon(Icons.error_outline, size: 40),
+              body: Icon(Icons.error_outline, size: 40),
             ),
         loading: () => const Scaffold(
               body: Center(
@@ -205,11 +202,11 @@ class PostDetailUserOtherPostsErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.error_rounded, size: 50, color: Colors.red),
+            const Icon(Icons.error_rounded, size: 50, color: Colors.red),
             const SizedBox(height: 20),
             Text(message, style: Theme.of(context).textTheme.bodyMedium)
           ],

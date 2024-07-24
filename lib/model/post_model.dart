@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/error_replacement_constants.dart';
 import 'package:plo/model/types/category_type.dart';
-import 'package:http/http.dart';
 
 class PostModelFieldNameConstants {
   static const String pid = "pid";

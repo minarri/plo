@@ -4,7 +4,6 @@ import 'package:plo/extensions/ref_dipsose.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/services/like_post_service.dart';
-import 'package:plo/views/home_screen/main_post_list_controller.dart';
 import 'package:plo/views/home_screen/main_post_list_provider.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';

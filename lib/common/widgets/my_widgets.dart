@@ -231,11 +231,11 @@ Widget sizedButtonWithShadow({
         height: height,
         child: ElevatedButton(
           style: ButtonStyle(
-            elevation: MaterialStateProperty.all(0),
-            backgroundColor: MaterialStateProperty.all(
+            elevation: WidgetStateProperty.all(0),
+            backgroundColor: WidgetStateProperty.all(
               const Color(0xFFCCE7FF),
             ),
-            shape: MaterialStateProperty.all(
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),

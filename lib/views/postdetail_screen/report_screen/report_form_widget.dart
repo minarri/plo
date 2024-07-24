@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,7 +37,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
             style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 10),
         ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: ReportType.values.length,
           padding: EdgeInsets.zero,
@@ -46,7 +45,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
             final reportType = ReportType.values[index];
             return RadioListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                activeColor: Color.fromRGBO(244, 244, 244, 1),
+                activeColor: const Color.fromRGBO(244, 244, 244, 1),
                 title: Text(reportType.getDescription(),
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: reportType,
@@ -82,7 +81,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
                 FocusScope.of(context).unfocus();
               },
               onTap: () async {
-                await Future.delayed(Duration(milliseconds: 400));
+                await Future.delayed(const Duration(milliseconds: 400));
                 widget.scrollController.animateTo(
                     widget.scrollController.position.maxScrollExtent,
                     duration: const Duration(milliseconds: 500),
@@ -119,7 +118,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
       showDialog(
         barrierDismissible: false,
         context: loadingContext,
-        builder: (__) => CircularProgressIndicator(),
+        builder: (__) => const CircularProgressIndicator(),
       );
       final result = await ref
           .watch(reportPostControllerProvider.notifier)
@@ -130,12 +129,14 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
               etcDescription: etcDescriptionController.text,
               reportDescription: reportDescriptionController.text);
       Navigator.of(loadingContext).pop();
-      if (result == false)
+      if (result == false) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("신고를 하는 도중에 에레거 났습니다")));
-      if (result == true)
+            .showSnackBar(const SnackBar(content: Text("신고를 하는 도중에 에레거 났습니다")));
+      }
+      if (result == true) {
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const ReportSuccessPage()));
+      }
     } else {
       Navigator.of(context).pop();
     }

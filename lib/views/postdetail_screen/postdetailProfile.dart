@@ -27,19 +27,19 @@ class PostDetailProfileWidget extends ConsumerWidget {
         // changing the loading screen to the profile loading widget
         loading: () => const PostDetailProfileLoadingWidget(),
         data: (uploader) {
-          if (uploader == null) return Text("에러가 발생했습니다");
+          if (uploader == null) return const Text("에러가 발생했습니다");
           return Container(
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
                     //have to add viewMyProfileScreen to the TestScreen
-                    MaterialPageRoute(builder: (context) => TestScreen()));
+                    MaterialPageRoute(builder: (context) => const TestScreen()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   DefaultProfileImageWidget(imageUrl: uploader.profileImageUrl),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Container(
                     child: Column(
                       children: [
@@ -55,7 +55,7 @@ class PostDetailProfileWidget extends ConsumerWidget {
             ),
           );
         },
-        error: (error, stackTrace) => Text("error Occured"));
+        error: (error, stackTrace) => const Text("error Occured"));
   }
 }
 
@@ -67,17 +67,17 @@ class PostDetailProfileLoadingWidget extends StatelessWidget {
     return Row(
       children: [
         Shimmer.fromColors(
-          child: CircleAvatar(
+          baseColor: const Color.fromRGBO(224, 224, 224, 1),
+          highlightColor: const Color.fromRGBO(245, 245, 245, 1),
+          child: const CircleAvatar(
             backgroundColor: Color.fromRGBO(224, 224, 224, 1),
           ),
-          baseColor: Color.fromRGBO(224, 224, 224, 1),
-          highlightColor: Color.fromRGBO(245, 245, 245, 1),
         ),
         const SizedBox(width: 6),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           ShimmerIndividualWidget(
             child: Container(
-                color: Color.fromRGBO(224, 224, 224, 1),
+                color: const Color.fromRGBO(224, 224, 224, 1),
                 child: const Text("Imaginary Name")),
           )
         ]),
@@ -85,7 +85,7 @@ class PostDetailProfileLoadingWidget extends StatelessWidget {
         Expanded(
             child: ShimmerIndividualWidget(
                 child: Container(
-          color: Color.fromRGBO(224, 224, 224, 1),
+          color: const Color.fromRGBO(224, 224, 224, 1),
           height: 20,
         )))
       ],

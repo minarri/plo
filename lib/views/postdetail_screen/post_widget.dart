@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/functions.dart';
@@ -10,17 +9,19 @@ class PostWidget extends ConsumerWidget {
   final PostModel post;
   const PostWidget({super.key, required this.post});
 
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
-    if (user == null)
+    if (user == null) {
       logToConsole(
           "Important Message! CurrentlySignedUserProvider is null in PostWidget.");
+    }
     final Duration duration =
         DateTime.now().difference(post.uploadTime!.toDate());
     return Container(
       height: 100,
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
         border: Border(
           bottom: BorderSide(color: Colors.grey),
         ),
@@ -30,13 +31,13 @@ class PostWidget extends ConsumerWidget {
         children: [
           Expanded(
             flex: 3,
-            child: (post.contentImageUrlList.length == 0)
+            child: (post.contentImageUrlList.isEmpty)
                 ? Image.asset("assets/images/profile_default.png",
                     fit: BoxFit.cover)
                 : Image.asset("assets/images/profile_default.png",
                     fit: BoxFit.cover),
           ),
-          SizedBox(width: 5),
+          const SizedBox(width: 5),
           Expanded(
             flex: 7,
             child: Column(
@@ -44,10 +45,10 @@ class PostWidget extends ConsumerWidget {
               children: [
                 Text(
                   post.postTitle,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  "${Functions.timeDifferenceInText(duration)}",
+                  Functions.timeDifferenceInText(duration),
                   style: TextStyle(color: Colors.grey[400], fontSize: 12),
                 ),
                 Expanded(
@@ -55,7 +56,7 @@ class PostWidget extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       user == null
-                          ? Icon(
+                          ? const Icon(
                               Icons.favorite,
                               color: Colors.blue,
                               size: 15,
@@ -71,8 +72,8 @@ class PostWidget extends ConsumerWidget {
                             ? "0"
                             : post.postLikes.toString(),
                       ),
-                      SizedBox(width: 10),
-                      Icon(
+                      const SizedBox(width: 10),
+                      const Icon(
                         Icons.comment,
                         size: 15,
                       )

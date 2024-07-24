@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/compact_post_widget.dart';
@@ -9,8 +8,6 @@ import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailseeotherposts.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
-import 'package:plo/views/postdetail_screen/postpicture.dart';
-import 'package:shimmer/shimmer.dart';
 
 final fetchUsesOtherPostProvider = FutureProvider.autoDispose
     .family<List<PostModel>?, PostModel>((ref, post) async {
@@ -18,22 +15,24 @@ final fetchUsesOtherPostProvider = FutureProvider.autoDispose
       .watch(firebasePostRepositoryProvider)
       .fetchUsersSixOtherPosts(
           userUid: post.uploadUserUid, excludePostUid: post.pid);
+  return null;
 });
 
 class PostDetailUserOtherPostsWidget extends ConsumerWidget {
   final PostModel postKey;
 
-  PostDetailUserOtherPostsWidget({super.key, required this.postKey});
+  const PostDetailUserOtherPostsWidget({super.key, required this.postKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(postDetailCurrentUserFutureProvider).when(
           data: (user) {
-            if (user == null)
-              return Icon(
+            if (user == null) {
+              return const Icon(
                 Icons.error_outline,
                 size: 30,
               );
+            }
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,8 +67,9 @@ class PostDetailUserOtherPostsWidget extends ConsumerWidget {
                                 ),
                               ),
                               data: (user) {
-                                if (user == null)
+                                if (user == null) {
                                   return const Text("유저를 찾을 수가 없습니다");
+                                }
                                 return Expanded(
                                   flex: 2,
                                   child: Text(
@@ -90,16 +90,17 @@ class PostDetailUserOtherPostsWidget extends ConsumerWidget {
                   Container(
                     child: ref.watch(fetchUsesOtherPostProvider(postKey)).when(
                           data: (data) {
-                            if (data == null)
+                            if (data == null) {
                               return const PostDetailUserOtherPostsErrorWidget(
                                 message: "다른 게시물을 가져오는데 에러가 있었습니다.",
                               );
+                            }
                             if (data.isEmpty) return const NoMorePost();
                             return GridView.builder(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,

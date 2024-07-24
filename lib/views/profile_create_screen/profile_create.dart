@@ -9,7 +9,6 @@ import '../../common/widgets/custom_app_bar.dart';
 import '../../common/widgets/custom_button.dart';
 import '../../common/widgets/my_widgets.dart';
 import '../../model/types/return_type.dart';
-import '../../repository/auth_repository.dart';
 import '../../repository/image_picker_repository.dart';
 import '../../views/log_in_screen/log_in_screen.dart';
 import '../../views/profile_create_screen/profile_create_controller.dart';

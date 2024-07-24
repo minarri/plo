@@ -4,7 +4,6 @@ import 'package:plo/views/search_post_screen/filter_options_controller.dart';
 
 import '../../common/utils/log_util.dart';
 import 'search_post_controller.dart';
-import '../home_screen/main_post_list_provider.dart';
 import 'Widgets/post_result_widget.dart';
 
 class SearchPostsMain extends ConsumerStatefulWidget {

@@ -19,7 +19,7 @@ class _PostDetailDescriptionWriteWidgetState
   Widget build(BuildContext context) {
     final post = ref.watch(singlePostProvider(widget.postKey));
 
-    return Container(
+    return SizedBox(
         height: 400,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +40,7 @@ class _PostDetailDescriptionWriteWidgetState
                       ? const Icon(Icons.info_outline)
                       : const Icon(Icons.category)),
               const Spacer(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                 Text(
                     "${post.userNickname} * ${Functions.timeDifferenceInText(DateTime.now().difference(post.uploadTime!.toDate()))}",
@@ -48,8 +48,8 @@ class _PostDetailDescriptionWriteWidgetState
                 const SizedBox(height: 20),
                 Expanded(
                   child: Text(
-                    "${post.postContent}",
-                    style: TextStyle(fontSize: 19),
+                    post.postContent,
+                    style: const TextStyle(fontSize: 19),
                   ),
                 )
               ])

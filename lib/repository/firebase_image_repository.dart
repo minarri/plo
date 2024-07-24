@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/utils/log_util.dart';
-import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/post_model.dart';
 
 class FirebaseImageRepository {

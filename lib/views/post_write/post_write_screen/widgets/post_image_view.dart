@@ -73,7 +73,7 @@ class _ImageViewWidgetState
               bottom: 5,
               right: 5,
               child: Tooltip(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 triggerMode: TooltipTriggerMode.tap,
                 message: "이미지를 클릭해서 이미지를 지우거나 순서를 정하세요",
                 child: Container(

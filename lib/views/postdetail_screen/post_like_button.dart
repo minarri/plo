@@ -25,14 +25,14 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
   Widget build(BuildContext context) {
     final post = ref.watch(singlePostProvider(widget.postKey));
     final user = ref.watch(currentUserProvider);
-    final int defaultLike = 0;
+    const int defaultLike = 0;
     return user == null
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : LikeButton(
             size: 20,
             circleColor:
-                CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
-            bubblesColor: BubblesColor(
+                const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+            bubblesColor: const BubblesColor(
                 dotPrimaryColor: Color(0xff33b5e5),
                 dotSecondaryColor: Color(0xff0099cc)),
             likeCount: defaultLike,

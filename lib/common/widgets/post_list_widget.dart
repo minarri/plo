@@ -67,7 +67,7 @@ class PostListWidget extends ConsumerWidget {
               ),
             );
           },
-          error: (error, stackTrace) => Text("Unknow Error Occured"),
+          error: (error, stackTrace) => const Text("Unknow Error Occured"),
           loading: () => const SizedBox(
             child: Center(
               child: CircularProgressIndicator(),

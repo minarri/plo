@@ -111,7 +111,7 @@ import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
 class PostDetailWidget extends ConsumerStatefulWidget {
   final PostModel postKey;
-  PostDetailWidget({super.key, required this.postKey});
+  const PostDetailWidget({super.key, required this.postKey});
 
   @override
   ConsumerState<PostDetailWidget> createState() => _PostDetailWidgetState();
@@ -132,7 +132,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
       child: Column(
         children: [
           Container(
-            constraints: BoxConstraints(minHeight: 200, minWidth: 200),
+            constraints: const BoxConstraints(minHeight: 200, minWidth: 200),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -149,7 +149,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: Row(children: [
-                                Text("${post.postTitle}",
+                                Text(post.postTitle,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 30)),
@@ -176,13 +176,13 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
                       flex: 4,
                       child: Text(
-                        "${post.category.toString()}", // Convert enum to string
+                        post.category.toString(), // Convert enum to string
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!
@@ -198,10 +198,10 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                     ),
                   ],
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 PostDetailPhoto(postKey: widget.postKey),
-                SizedBox(height: 10),
-                Text("${post.postContent}",
+                const SizedBox(height: 10),
+                Text(post.postContent,
                     style: Theme.of(context).textTheme.bodyLarge),
               ],
             ),

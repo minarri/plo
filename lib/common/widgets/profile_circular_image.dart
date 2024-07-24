@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart'; 
 
 class DefaultProfileImageWidget extends StatefulWidget {
   static const String defaultImageurl = "default_profile_pic";
@@ -30,8 +29,8 @@ class _DefaultImageWidgetState extends State<DefaultProfileImageWidget> {
                   child: Image.network(
                     widget.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, url, error) => Padding(
-                      padding: const EdgeInsets.all(10),
+                    errorBuilder: (context, url, error) => const Padding(
+                      padding: EdgeInsets.all(10),
                       child: Icon(Icons.error, size: 20),
                     ),
                   ),

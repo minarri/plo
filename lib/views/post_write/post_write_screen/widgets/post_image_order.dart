@@ -9,7 +9,6 @@ import 'package:plo/views/post_write/post_write_providers.dart';
 import 'package:plo/views/post_write/post_write_screen/widgets/post_create_images_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plo/views/post_write/post_write_screen/widgets/post_image_view.dart';
 //import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CreateEditPostImageOrderWidget extends ConsumerStatefulWidget {
@@ -45,11 +44,11 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
               flex: 3,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Container(
+                child: SizedBox(
                     height: double.infinity,
                     child: photo is File
                         ? Image.file(
-                            photo as File,
+                            photo,
                             fit: BoxFit.cover,
                           )
                         : CachedNetworkImage(
@@ -81,7 +80,7 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                       ),
                   ]),
             ),
-            SizedBox(width: 5),
+            const SizedBox(width: 5),
             const Icon(Icons.reorder_rounded),
             IconButton(
                 onPressed: () {
@@ -126,10 +125,6 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                         .toList()[index],
                   ),
                 ),
-                children: _photos
-                    .map((photo) =>
-                        buildImageView(photo, _photos.indexOf(photo)))
-                    .toList(),
                 onReorder: ((oldIndex, newIndex) {
                   if (oldIndex < newIndex) {
                     newIndex <= -1;
@@ -138,6 +133,10 @@ class _PhotoOrderState extends ConsumerState<CreateEditPostImageOrderWidget> {
                   _photos.insert(newIndex, post);
                   setState(() {});
                 }),
+                children: _photos
+                    .map((photo) =>
+                        buildImageView(photo, _photos.indexOf(photo)))
+                    .toList(),
               ),
             ),
             CustomButton(
