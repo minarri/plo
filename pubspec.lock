@@ -13,26 +13,26 @@ packages:
     dependency: transitive
     description:
       name: algolia_client_core
-      sha256: e9389ac27da613ece6c96544fd47a9e6bfae5e33d96ac23158f59004811648bf
+      sha256: "535c72c6d55b8c59af4a08d25d726c88f0a2abb07e256be0d40f716f6c0b0e4c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.1"
   algolia_client_insights:
     dependency: transitive
     description:
       name: algolia_client_insights
-      sha256: a9f6d5fc0146b161ef311ecc48508d9af11340fa60013d2aee9d1b69236fc2f3
+      sha256: "5ce38826f1910b9fd490eba096f648d6390a91bab6a5fa2e6b9606deda3aa0ae"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.1"
   algolia_client_search:
     dependency: transitive
     description:
       name: algolia_client_search
-      sha256: "50fd662ffc4412cec71dfc6ce1d719e517038cb1c71bb1b27d98c9abb6e22590"
+      sha256: bccb1d9eb3364ec9021d78dac7f64933f841a4c2b02f77a43328a8968e146128
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.1"
   algolia_helper_flutter:
     dependency: "direct main"
     description:
@@ -53,10 +53,10 @@ packages:
     dependency: "direct main"
     description:
       name: algoliasearch
-      sha256: "2d6d35b33ae5f712e028c90a20a3dda0e8aab5186aa7e0ba9e86c935f22af671"
+      sha256: "85e91a1122d664edd8823336dee91a8bce42b98734c2643dadc1788c48767d86"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.1"
   args:
     dependency: transitive
     description:
@@ -389,10 +389,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: "6643fe3dbd021e6ccfb751f7882b39df355708afbdeb4130fc50f9305a9d1a3d"
+      sha256: "23509cb3cddfb3c910c143279ac3f07f06d3120f7d835e4a5d4b42558e978712"
       url: "https://pub.dev"
     source: hosted
-    version: "2.17.2"
+    version: "2.17.3"
   firebase_crashlytics:
     dependency: "direct main"
     description:
@@ -649,10 +649,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: "4161e1f843d8480d2e9025ee22411778c3c9eb7e40076dcf2da23d8242b7b51c"
+      sha256: ff39a10ab4f48f4ac70776d0494a97bf073cd2570892cd46bc8a5cac162c25db
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.12+3"
+    version: "0.8.12+4"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -1062,10 +1062,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "7068716403343f6ba4969b4173cbf3b84fc768042124bc2c011e5d782b24fe89"
+      sha256: e43b677296fadce447e987a2f519dcf5f6d1e527dc35d01ffab4fff5b8a7063e
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.0"
+    version: "6.3.1"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1110,10 +1110,10 @@ packages:
     dependency: "direct main"
     description:
       name: uuid
-      sha256: "814e9e88f21a176ae1359149021870e87f7cddaf633ab678a5d2b0bff7fd1ba8"
+      sha256: "83d37c7ad7aaf9aa8e275490669535c8080377cfa7a7004c24dfac53afffaa90"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.0"
+    version: "4.4.2"
   vector_graphics:
     dependency: transitive
     description:

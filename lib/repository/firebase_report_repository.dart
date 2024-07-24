@@ -19,7 +19,7 @@ class FirebaseReportRepository {
   }
   Future<ReturnType> alreadyReported(String pid) async {
     try {
-      final user = ref.watch(firebaseUserRepository).currentUser;
+      final user = ref.watch(firebaseUserRepositoryProvider).currentUser;
       if(user ==null) return ErrorReturnType(message: "User wasn't found");
 
       final doc = await  _firebase.collection(FirebaseConstants.reportRecordscollectionName).doc(pid).collection(FirebaseConstants.reportRecordscollectionName).doc(user.uid).get();
