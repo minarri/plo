@@ -69,7 +69,7 @@ class CreateEditPostFormWidget extends ConsumerWidget {
                   useSafeArea: true,
                 ),
                 menuItemStyleData: const MenuItemStyleData(),
-                customButton: Container(
+                customButton: SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: Row(

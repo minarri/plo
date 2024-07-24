@@ -19,7 +19,7 @@ class SquareImageWidget extends StatelessWidget {
           ),
           errorWidget: (context, url, error) => Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-            child: Center(
+            child: const Center(
               child: Column(
                 children: [
                   Icon(Icons.error_outline, size: 50),

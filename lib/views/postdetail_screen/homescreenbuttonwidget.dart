@@ -25,20 +25,20 @@ class PostFloatingButton extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               FloatingButtonWidget(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.of(context).pop();
                   }),
               const SizedBox(width: 25),
               FloatingButtonWidget(
-                  icon: Icon(Icons.home),
+                  icon: const Icon(Icons.home),
                   onPressed: () {
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   }),
               //내가 쓴 게시물 보기?? 아니면 그냥 설정 버튼?
               const Spacer(),
               FloatingButtonWidget(
-                  icon: Icon(Icons.settings),
+                  icon: const Icon(Icons.settings),
                   onPressed: () {
                     isNotSignedUser || user!.userUid != post.uploadUserUid
                         ? showModalBottomSheet(

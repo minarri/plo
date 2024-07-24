@@ -19,10 +19,10 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(reportPostControllerProvider);
     return Scaffold(
-      appBar: BackButtonAppBar(title: "신고하기"),
+      appBar: const BackButtonAppBar(title: "신고하기"),
       body: SafeArea(
         child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: SingleChildScrollView(
                 controller: _scrollController,
                 child: Padding(
@@ -31,7 +31,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
                       ReportFormWidget(
                           postKey: widget.postKey,
                           scrollController: _scrollController),
-                      if (state.isLoading) CircularProgressIndicator(),
+                      if (state.isLoading) const CircularProgressIndicator(),
                       if (state.hasError) Text("Error ${state.error}"),
                     ])))),
       ),

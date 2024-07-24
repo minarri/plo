@@ -35,7 +35,7 @@ class _PostResultWidgetState extends ConsumerState<PostResultWidget> {
             data: (searchedPosts) {
               if (searchedPosts == null) {
                 logToConsole('No posts found');
-                return Center(child: Text('No posts found'));
+                return const Center(child: Text('No posts found'));
               }
               logToConsole('Posts found: ${searchedPosts.length}');
               return PostListWidget(
@@ -46,7 +46,7 @@ class _PostResultWidgetState extends ConsumerState<PostResultWidget> {
             },
             error: (error, stackTrace) {
               logToConsole('Error occurred: $error');
-              return Center(child: Text("Unknown error occurred"));
+              return const Center(child: Text("Unknown error occurred"));
             },
             loading: () => const SizedBox(
                 child: Center(

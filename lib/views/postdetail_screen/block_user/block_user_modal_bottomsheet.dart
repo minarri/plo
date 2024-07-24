@@ -35,14 +35,14 @@ class BlockUserModalBottomsheet extends ConsumerWidget {
           .watch(blockedUserModalBottomSheetCurrentUserFutureProvider)
           .when(
             data: (user) {
-              if (user == null) return Icon(Icons.error_outline, size: 30);
+              if (user == null) return const Icon(Icons.error_outline, size: 30);
               return ref.watch(postUploaderProvider(uploaderUserUid)).when(
                   data: (blockingUser) {
                     return isBlockPressed
                         ? BlockUserModalBottomSheetResultScreen(
                             blockingUserUid: blockingUser!.userUid,
                             isBlocked: !user.blockedUsers
-                                .contains(blockingUser!.userUid))
+                                .contains(blockingUser.userUid))
                         : BlockedUserModalBottomSheetBlockPage(
                             currentUser: user,
                             blockingUser: blockingUser!,
@@ -50,13 +50,13 @@ class BlockUserModalBottomsheet extends ConsumerWidget {
                                 .contains(blockingUser.userUid));
                   },
                   error: (error, stackTrace) =>
-                      Icon(Icons.error_outline, size: 50),
+                      const Icon(Icons.error_outline, size: 50),
                   loading: () => const Center(
                         child: CircularProgressIndicator(),
                       ));
             },
-            error: (error, stackTrace) => Icon(Icons.error_outline, size: 50),
-            loading: () => Center(
+            error: (error, stackTrace) => const Icon(Icons.error_outline, size: 50),
+            loading: () => const Center(
               child: CircularProgressIndicator(),
             ),
           ),

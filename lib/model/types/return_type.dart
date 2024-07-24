@@ -11,6 +11,7 @@ class ReturnType<T> {
 }
 
 class ErrorReturnType<T> extends ReturnType<T> {
+  @override
   final T? data;
   final dynamic error;
   final String? debugMessage;
@@ -25,7 +26,9 @@ class ErrorReturnType<T> extends ReturnType<T> {
 
 class SuccessReturnType<T> extends ReturnType<T> {
   final bool isSuccess;
+  @override
   final String? message;
+  @override
   final T? data;
   SuccessReturnType({this.message = "Success", this.data, required this.isSuccess}) : super(message: message, data: data);
 

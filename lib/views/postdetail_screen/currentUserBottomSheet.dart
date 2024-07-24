@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_alert_box.dart';
@@ -61,7 +60,7 @@ class PostDetailCurrentUserBottomSheet extends ConsumerWidget {
                   Navigator.of(parentContext).pop();
                 }
               },
-              icon: Icon(Icons.delete))
+              icon: const Icon(Icons.delete))
         ],
       ),
     );

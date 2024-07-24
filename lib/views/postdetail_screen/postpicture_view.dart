@@ -1,6 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/image_handler.dart';
 import 'package:plo/common/widgets/style_widgets.dart';
@@ -14,7 +13,7 @@ class PostDetailPhotoview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackButtonAppBar(),
+      appBar: const BackButtonAppBar(),
       body: SafeArea(
         child: Column(
           children: [

@@ -12,6 +12,7 @@ final fetchSamePostCategoryProvider = FutureProvider.autoDispose
   final future = ref
       .watch(firebasePostRepositoryProvider)
       .fetchPostsSameCategoryFromOtherUsers(post.category, post.pid);
+  return null;
 });
 
 class PostDetailSameCategoryWidget extends ConsumerWidget {
@@ -44,7 +45,7 @@ class PostDetailSameCategoryWidget extends ConsumerWidget {
                               if (data == null) {
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 10),
-                                  child: Container(
+                                  child: SizedBox(
                                     height: 100,
                                     child: Center(
                                       child: Text(
@@ -63,9 +64,9 @@ class PostDetailSameCategoryWidget extends ConsumerWidget {
                               }
                               return GridView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 3,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
@@ -111,7 +112,7 @@ class PostDetailSameCategoryWidget extends ConsumerWidget {
             );
           },
           error: (error, stackTrace) => Text(error.toString()),
-          loading: () => CircularProgressIndicator(),
+          loading: () => const CircularProgressIndicator(),
         );
   }
 }

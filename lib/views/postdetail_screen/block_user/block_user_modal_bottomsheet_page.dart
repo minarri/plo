@@ -15,6 +15,7 @@ class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
       required this.blockingUser,
       required this.isBlocked});
 
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Expanded(
       child: Column(
@@ -24,14 +25,14 @@ class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
             imageUrl: blockingUser.profileImageUrl,
             radius: 50,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           FittedBox(
             child: Text("정말 차단 하시겠습니까? ${isBlocked ? "차단" : "아니요"}",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium),
           ),
           FittedBox(child: Text("${blockingUser.userNickname}?")),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           FittedBox(

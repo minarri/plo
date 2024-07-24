@@ -14,7 +14,7 @@ class LikePostService {
   final _firebase = FirebaseFirestore.instance;
 
   void _logHelper(String typeOfAction, String functionName) {
-    log("FireStore was used ${typeOfAction} in ${functionName} in LikePostService ");
+    log("FireStore was used $typeOfAction in $functionName in LikePostService ");
   }
 
   Future<bool> didUserAlreadyLikeThePost(String userUid, String pid) async {

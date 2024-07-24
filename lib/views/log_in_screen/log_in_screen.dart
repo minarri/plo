@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_screen.dart';
 import 'package:plo/model/types/enum_type.dart';
-import 'package:plo/common/providers/login_verification_provider.dart';
 import 'package:plo/views/forgot_password/forgot_password_screen.dart';
 import 'package:plo/views/home_screen/home_screen.dart';
 import 'package:plo/views/log_in_screen/log_in_controller.dart';
@@ -66,8 +65,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               );
               if (_formKey.currentState!.validate()) {
-                final result =
-                    await ref.watch(loginController.notifier).loginWithEmail();
+                final result = await ref.watch(loginController.notifier).loginWithEmail();
                 Navigator.of(context).pop();
 
                 if (result == ReturnTypeENUM.success.toString()) {
@@ -108,12 +106,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           TextButton(
             child: const Text("Proceed without login"),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) {
-                    return const HomeScreen();
-                  },
+                  builder: (context) => const HomeScreen(),
                 ),
               );
             },

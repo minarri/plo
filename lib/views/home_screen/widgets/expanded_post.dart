@@ -20,15 +20,16 @@ class ExpandedPostWidget extends ConsumerWidget {
     // log('item widget photoUrls : ${item.photoUrls}');
     // final item = ref.watch(itemDetailProvider(item));
     final user = ref.watch(currentUserProvider);
-    if (user == null)
+    if (user == null) {
       log('important message! currentlySignedInUserProvider is null in ItemWidget.');
+    }
     // final Duration duration =
     //     DateTime.now().difference(item.uploadTime!.toDate());
     return Container(
       height: 500,
       padding: const EdgeInsets.all(10),
       decoration:
-          BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+          const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
       width: double.infinity,
       child: Column(
         children: [
@@ -50,7 +51,7 @@ class ExpandedPostWidget extends ConsumerWidget {
                         children: [
                           Text(
                             post.postTitle,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(width: 3),
@@ -82,15 +83,15 @@ class ExpandedPostWidget extends ConsumerWidget {
                       Row(
                         children: [
                           Text(
-                            "${Functions.timeDifferenceInText(duration)}",
+                            Functions.timeDifferenceInText(duration),
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall!
                                 .copyWith(color: Colors.grey),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Text(post.userNickname,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12,
                                   fontStyle: FontStyle.italic,
                                   fontWeight: FontWeight.bold)),
@@ -110,7 +111,7 @@ class ExpandedPostWidget extends ConsumerWidget {
                   Text(post.postContent,
                       style: Theme.of(context).textTheme.bodyMedium),
                   const Spacer(),
-                  Icon(Icons.visibility),
+                  const Icon(Icons.visibility),
                   const SizedBox(width: 3),
                   Text(post.postViewList == null
                       ? "0"
@@ -126,7 +127,7 @@ class ExpandedPostWidget extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.grey[300],
                     ),
-                    child: Center(child: Icon(Icons.warning)),
+                    child: const Center(child: Icon(Icons.warning)),
                   )
                 : (post.showWarning)
                     ? Container(
@@ -165,11 +166,11 @@ class ExpandedPostWidget extends ConsumerWidget {
               children: [
                 //have to change this to different Icon where when user liked it it changes the heart to filled and if user is null or has not liked the post it should be an empty heart.
                 user == null || !user.likedPosts.contains(post.pid)
-                    ? Icon(Icons.thumb_up_sharp)
-                    : Icon(Icons.heart_broken),
+                    ? const Icon(Icons.thumb_up_sharp)
+                    : const Icon(Icons.heart_broken),
                 Text(post.postLikes == null ? '0' : post.postLikes.toString()),
                 const SizedBox(width: 10),
-                Icon(Icons.comment),
+                const Icon(Icons.comment),
               ],
             ),
           )

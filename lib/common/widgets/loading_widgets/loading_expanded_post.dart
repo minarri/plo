@@ -15,12 +15,12 @@ class LoadingExpandedPostWidget extends ConsumerWidget {
             Expanded(
               flex: 3,
               child: Shimmer.fromColors(
-                  child: Container(
-                      decoration: BoxDecoration(color: Colors.grey[200])),
                   baseColor: Colors.grey[200]!,
-                  highlightColor: Colors.grey[50]!),
+                  highlightColor: Colors.grey[50]!,
+                  child: Container(
+                      decoration: BoxDecoration(color: Colors.grey[200]))),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               flex: 7,
               child: Column(
@@ -28,11 +28,11 @@ class LoadingExpandedPostWidget extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: Shimmer.fromColors(
+                        baseColor: Colors.grey[200]!,
+                        highlightColor: Colors.grey[50]!,
                         child: Container(
                           decoration: BoxDecoration(color: Colors.grey[200]!),
-                        ),
-                        baseColor: Colors.grey[200]!,
-                        highlightColor: Colors.grey[50]!),
+                        )),
                   ),
                   const SizedBox(height: 5),
                   Expanded(child: Container()),
@@ -40,21 +40,21 @@ class LoadingExpandedPostWidget extends ConsumerWidget {
                     child: SizedBox(
                       width: 100,
                       child: Shimmer.fromColors(
+                          baseColor: Colors.grey[200]!,
+                          highlightColor: Colors.grey[50]!,
                           child: Container(
                             decoration: BoxDecoration(color: Colors.grey[200]!),
-                          ),
-                          baseColor: Colors.grey[200]!,
-                          highlightColor: Colors.grey[50]!),
+                          )),
                     ),
                   ),
                   const SizedBox(height: 5),
                   Expanded(
                     child: Shimmer.fromColors(
+                        baseColor: Colors.grey[200]!,
+                        highlightColor: Colors.grey[50]!,
                         child: Container(
                           decoration: BoxDecoration(color: Colors.grey[200]!),
-                        ),
-                        baseColor: Colors.grey[200]!,
-                        highlightColor: Colors.grey[50]!),
+                        )),
                   ),
                   const SizedBox(height: 5),
                 ],

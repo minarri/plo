@@ -9,6 +9,7 @@ class BlockUserModalBottomSheetResultScreen extends ConsumerWidget {
   const BlockUserModalBottomSheetResultScreen(
       {super.key, required this.blockingUserUid, required this.isBlocked});
 
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Expanded(
       child: ref

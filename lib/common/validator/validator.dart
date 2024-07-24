@@ -1,5 +1,4 @@
 import 'package:plo/constants/error_message_constants.dart';
-import 'package:plo/views/profile_create_screen/profile_create_controller.dart';
 
 class Validator {
   static String? validatePSUEmail(String? email) {

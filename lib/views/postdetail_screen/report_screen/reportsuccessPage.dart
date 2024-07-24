@@ -15,9 +15,9 @@ class ReportSuccessPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Spacer(),
-                Container(height: 120, width:140, child: Icon(Icons.check_box)),
-                SizedBox(height:20),
-                FittedBox(
+                const SizedBox(height: 120, width:140, child: Icon(Icons.check_box)),
+                const SizedBox(height:20),
+                const FittedBox(
                   child: Text("신고가 정상적으로 접수 되었습니다.", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black)),
                 ),
                 FittedBox(child: Text("신고를 검토한 후에 조치를 취하도록 하겠습니다", style: Theme.of(context).textTheme.bodyLarge),),
@@ -26,7 +26,7 @@ class ReportSuccessPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text("홈으로 돌아가기")
+                  child: const Text("홈으로 돌아가기")
                 ))
               ]
             )

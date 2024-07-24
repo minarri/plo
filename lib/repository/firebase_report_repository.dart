@@ -5,7 +5,6 @@ import 'package:plo/constants/firebase_contants.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/post_report_model.dart';
 import 'package:plo/model/types/return_type.dart';
-import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
 
 class FirebaseReportRepository {
@@ -15,7 +14,7 @@ class FirebaseReportRepository {
   final _firebase = FirebaseFirestore.instance;
 
   void _logHelper(String typeofAction, String functionName) {
-    logToConsole("Firestore was used in ${typeofAction} in ${functionName} in firebasePostRepository");
+    logToConsole("Firestore was used in $typeofAction in $functionName in firebasePostRepository");
   }
   Future<ReturnType> alreadyReported(String pid) async {
     try {
@@ -26,7 +25,7 @@ class FirebaseReportRepository {
       if(!doc.exists) return SuccessReturnType(message: "User did not report this Post", isSuccess: false);
       return SuccessReturnType(isSuccess: true);
     } catch (error) {
-      return ErrorReturnType(message: "게시물이 이미 신고 되었습니다: " + error.toString(), data: error);
+      return ErrorReturnType(message: "게시물이 이미 신고 되었습니다: $error", data: error);
     }
   }
   Future<ReturnType> uploadPostReportModelToFirebase(PostReportModel postReportModel, PostModel post) async {

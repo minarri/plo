@@ -18,7 +18,7 @@ class ModalBottomSheetIcon extends StatelessWidget {
             children: [
               if (icon != null)
                 ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 30, maxWidth: 30),
+                    constraints: const BoxConstraints(maxHeight: 30, maxWidth: 30),
                     child: icon!),
               const SizedBox(width: 20),
               Text(title, style: Theme.of(context).textTheme.titleLarge),
