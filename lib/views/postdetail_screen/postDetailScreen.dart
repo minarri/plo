@@ -11,6 +11,8 @@ import 'package:plo/views/postdetail_screen/post_detail_controller/post_detail_c
 import 'package:plo/views/postdetail_screen/postdetailProfile.dart';
 import 'package:plo/views/postdetail_screen/postdetaildescription.dart';
 import 'package:plo/views/postdetail_screen/postdetailsamecategory.dart';
+import 'package:plo/views/postdetail_screen/postpicture.dart';
+import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
 final postUploaderProvider =
     FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
@@ -36,7 +38,9 @@ class PostDetailScreen extends ConsumerWidget {
     final state = ref.watch(postDetailControllerProvider);
 
     final user = ref.watch(currentUserProvider);
-    final isMyPost = postKey.uploadUserUid == user!.userUid;
+    final isMyPost = ref.watch(proceedWithoutLoginProvider)
+        ? false
+        : postKey.uploadUserUid == user!.userUid;
     final post = ref.watch(singlePostProvider(postKey));
 
     return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
@@ -74,8 +78,8 @@ class PostDetailScreen extends ConsumerWidget {
                                   ),
                                   const SizedBox(height: 10),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
                                     child: PostDetailWidget(
                                       postKey: postKey,
                                     ),
@@ -85,30 +89,30 @@ class PostDetailScreen extends ConsumerWidget {
                                   const Divider(
                                     thickness: 1,
                                   ),
-                                  if (user.userUid != post.uploadUserUid)
+                                  if (!isMyPost)
                                     Container(
-                                      padding:
-                                          const EdgeInsets.symmetric(horizontal: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
                                       child: PostDetailUserOtherPostsWidget(
                                         postKey: postKey,
                                       ),
                                     ),
-                                  if (user.userUid != post.uploadUserUid)
-                                    const Divider(
+                                  if (!isMyPost)
+                                    Divider(
                                       thickness: 1,
                                     ),
-                                  if (user.userUid != post.uploadUserUid)
+                                  if (!isMyPost) ...[
                                     Container(
-                                      padding:
-                                          const EdgeInsets.symmetric(horizontal: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
                                       child: PostDetailSameCategoryWidget(
                                         postKey: postKey,
                                       ),
                                     ),
-                                  if (user.userUid != post.uploadUserUid)
-                                    const Divider(
+                                    Divider(
                                       thickness: 1,
                                     )
+                                  ],
                                 ],
                               ),
                             ),

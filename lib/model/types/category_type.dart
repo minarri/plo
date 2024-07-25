@@ -1,4 +1,3 @@
-
 enum CategoryType {
   information,
   general;
@@ -10,6 +9,8 @@ enum CategoryType {
         return "information";
       case CategoryType.general:
         return "general";
+      default:
+        return "information";
     }
   }
 
@@ -19,6 +20,8 @@ enum CategoryType {
         return CategoryType.information;
       case "general":
         return CategoryType.general;
+      default:
+        return CategoryType.information;
     }
   }
 }

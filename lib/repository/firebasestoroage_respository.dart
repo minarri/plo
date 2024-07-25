@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -65,7 +66,7 @@ class StorageMethods {
   // }
 
   Future<List<String>?> uploadPostImageToStorage(
-      String userUid, List<Object> files, String itemUid) async {
+      String userUid, String pid, List<Object> files) async {
     List<String> photos = [];
     try {
       for (int i = 0; i < files.length; i++) {
@@ -80,7 +81,7 @@ class StorageMethods {
           final storageRef = FirebaseStorage.instance
               .ref()
               .child('postImages')
-              .child('$userUid/$itemUid/$photoUid');
+              .child('${userUid}/${pid}/${photoUid}');
 
           // Upload the file
           UploadTask uploadTask = storageRef.putFile(file);
@@ -91,6 +92,7 @@ class StorageMethods {
 
           logToConsole('Firebase storage was used in uploadPhotosToFirebase()');
           photos.add(downloadUrl);
+          log(downloadUrl);
         }
       }
       return photos;

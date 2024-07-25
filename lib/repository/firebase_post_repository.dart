@@ -159,7 +159,7 @@ class FirebasePostRepository {
     }
   }
 
-  Future<List<PostModel>?> fetchUsersSixOtherPosts({
+  Future<List<PostModel>?> fetchUsersThreeOtherPosts({
     required String userUid,
     required String excludePostUid,
   }) async {
@@ -169,7 +169,7 @@ class FirebasePostRepository {
           .collection(FirebaseConstants.postcollectionName)
           .where(PostModelFieldNameConstants.uploadUserUid, isEqualTo: userUid)
           .where(PostModelFieldNameConstants.pid, isNotEqualTo: excludePostUid)
-          .limit(6)
+          .limit(3)
           .get();
       _logHelper("Get", "fetchUsersThreeOtherPosts");
       for (int i = 0; i < querySnapshot.size; i++) {

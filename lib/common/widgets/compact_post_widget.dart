@@ -45,8 +45,10 @@ class CompactPostWidget extends ConsumerWidget {
                             ),
                           ),
                         )
-                      : SquareImageWidget(
-                          postImageUrl: post.contentImageUrlList.first),
+                      : post.contentImageUrlList.isNotEmpty
+                          ? SquareImageWidget(
+                              postImageUrl: post.contentImageUrlList.first)
+                          : const SizedBox.shrink(),
             ),
             Expanded(
               flex: 2,
