@@ -14,6 +14,9 @@ class PostDetailPhoto extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final post = ref.watch(singlePostProvider(postKey));
+    if (post.contentImageUrlList.isEmpty) {
+      return SizedBox.shrink();
+    }
     return SizedBox(
       height: 300,
       child: Swiper(

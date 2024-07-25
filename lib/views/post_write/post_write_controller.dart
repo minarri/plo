@@ -164,7 +164,7 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       final photos = postState.photos;
       List<String>? photoUrls = await ref
           .watch(firebaseStorageProvider)
-          .uploadPostImageToStorage(user.userUid, photos, pid);
+          .uploadPostImageToStorage(user.userUid, pid, photos);
       log("it is uploaded in the Storage");
       if (photoUrls == null) {
         state = AsyncError(

@@ -28,8 +28,8 @@ class ExpandedPostWidget extends ConsumerWidget {
     return Container(
       height: 500,
       padding: const EdgeInsets.all(10),
-      decoration:
-          const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey))),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey))),
       width: double.infinity,
       child: Column(
         children: [
@@ -111,11 +111,19 @@ class ExpandedPostWidget extends ConsumerWidget {
                   Text(post.postContent,
                       style: Theme.of(context).textTheme.bodyMedium),
                   const Spacer(),
-                  const Icon(Icons.visibility),
-                  const SizedBox(width: 3),
-                  Text(post.postViewList == null
-                      ? "0"
-                      : post.postViewList.length.toString())
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.visibility),
+                          const SizedBox(width: 5),
+                          Text(post.postViewList == null
+                              ? "0"
+                              : post.postViewList.length.toString())
+                        ],
+                      )
+                    ],
+                  )
                 ],
               )),
           Expanded(
@@ -147,14 +155,7 @@ class ExpandedPostWidget extends ConsumerWidget {
                         ? Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey[300],
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.image,
-                                color: Colors.grey,
-                                size: 50,
-                              ),
+                              color: Colors.transparent,
                             ),
                           )
                         : SquareImageWidget(
