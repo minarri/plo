@@ -117,7 +117,7 @@ class ExpandedPostWidget extends ConsumerWidget {
                         children: [
                           Icon(Icons.visibility),
                           const SizedBox(width: 5),
-                          Text(post.postViewList == null
+                          Text(post.postViewList.isEmpty
                               ? "0"
                               : post.postViewList.length.toString())
                         ],

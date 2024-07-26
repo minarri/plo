@@ -64,7 +64,7 @@ class CustomButton extends StatelessWidget {
         // ],
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () => onPressed(),
         style: ElevatedButton.styleFrom(
             shadowColor: const Color.fromARGB(0, 14, 14, 14),
             shape:

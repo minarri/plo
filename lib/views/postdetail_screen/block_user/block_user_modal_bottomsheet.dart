@@ -12,13 +12,16 @@ final blockedUserModalBottomSheetIsBlockPressedProvider =
     StateProvider.autoDispose<bool>((ref) => false);
 final blockedUserModalBottomSheetCurrentUserFutureProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
-  final currentUser = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
+  final currentUser =
+      await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return currentUser;
 });
 
 final blockUserBottomSheetBlockUserFutureProvider = FutureProvider.autoDispose
     .family<ReturnType, String>((ref, blockingUserUid) async {
-  return await ref.watch(firebaseUserRepositoryProvider).blockUser(blockingUserUid);
+  return await ref
+      .watch(firebaseUserRepositoryProvider)
+      .blockUser(blockingUserUid);
 });
 
 class BlockUserModalBottomsheet extends ConsumerWidget {
@@ -30,36 +33,38 @@ class BlockUserModalBottomsheet extends ConsumerWidget {
     final isBlockPressed =
         ref.watch(blockedUserModalBottomSheetIsBlockPressedProvider);
     return DefaultModalBottomSheet(
-      title: "차단/취소",
-      child: ref
-          .watch(blockedUserModalBottomSheetCurrentUserFutureProvider)
-          .when(
-            data: (user) {
-              if (user == null) return const Icon(Icons.error_outline, size: 30);
-              return ref.watch(postUploaderProvider(uploaderUserUid)).when(
-                  data: (blockingUser) {
-                    return isBlockPressed
-                        ? BlockUserModalBottomSheetResultScreen(
-                            blockingUserUid: blockingUser!.userUid,
-                            isBlocked: !user.blockedUsers
-                                .contains(blockingUser.userUid))
-                        : BlockedUserModalBottomSheetBlockPage(
-                            currentUser: user,
-                            blockingUser: blockingUser!,
-                            isBlocked: !user.blockedUsers
-                                .contains(blockingUser.userUid));
-                  },
-                  error: (error, stackTrace) =>
-                      const Icon(Icons.error_outline, size: 50),
-                  loading: () => const Center(
-                        child: CircularProgressIndicator(),
-                      ));
-            },
-            error: (error, stackTrace) => const Icon(Icons.error_outline, size: 50),
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+      title: "차단/차단 해제",
+      child:
+          ref.watch(blockedUserModalBottomSheetCurrentUserFutureProvider).when(
+                data: (user) {
+                  if (user == null)
+                    return const Icon(Icons.error_outline, size: 30);
+                  return ref.watch(postUploaderProvider(uploaderUserUid)).when(
+                      data: (blockingUser) {
+                        return isBlockPressed
+                            ? BlockUserModalBottomSheetResultScreen(
+                                blockingUserUid: blockingUser!.userUid,
+                                isBlocked: !user.blockedUsers
+                                    .contains(blockingUser.userUid),
+                              )
+                            : BlockedUserModalBottomSheetBlockPage(
+                                currentUser: user,
+                                blockingUser: blockingUser!,
+                                isBlocked: !user.blockedUsers
+                                    .contains(blockingUser.userUid));
+                      },
+                      error: (error, stackTrace) =>
+                          const Icon(Icons.error_outline, size: 50),
+                      loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ));
+                },
+                error: (error, stackTrace) =>
+                    const Icon(Icons.error_outline, size: 50),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
     );
   }
 }

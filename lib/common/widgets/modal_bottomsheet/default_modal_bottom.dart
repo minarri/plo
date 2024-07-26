@@ -15,7 +15,7 @@ class DefaultModalBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: fixedHeight ? MediaQuery.of(context).size.height : null,
+      height: fixedHeight ? MediaQuery.of(context).size.height * 0.5 : null,
       child: SafeArea(
         child: Padding(
           padding:

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,7 +47,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
             final reportType = ReportType.values[index];
             return RadioListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                activeColor: const Color.fromRGBO(244, 244, 244, 1),
+                activeColor: Color.fromARGB(255, 128, 120, 120),
                 title: Text(reportType.getDescription(),
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: reportType,
@@ -61,7 +63,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
             maxLines: 3,
             maxLength: 40,
             decoration: InputDecoration(
-              hintText: "신고하는 이유를 여기다가 적어주세요.",
+              hintText: "신고하는 이유를 간략하게 적어주세요.",
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             ),
@@ -89,7 +91,8 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
               },
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
-                hintText: "신고하시는 이유을 여기다가 적어주세요",
+                hintText:
+                    "여기에 게시물을 신고하는 이유를 적어주세요. 자세한 설명은 신고된 게시물을 처리 할 때 도움이 됩니다.",
                 focusColor: Colors.transparent,
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -112,7 +115,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
       WidgetRef ref) async {
     bool? isConfirmed =
         await AlertBox.showYesOrNoAlertDialogue(context, "진짜로 신고 하시겠습니까?");
-    if (isConfirmed = true) {
+    if (isConfirmed == true) {
       final post = ref.watch(singlePostProvider(widget.postKey));
       BuildContext loadingContext = context;
       showDialog(
@@ -121,17 +124,18 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
         builder: (__) => const CircularProgressIndicator(),
       );
       final result = await ref
-          .watch(reportPostControllerProvider.notifier)
+          .read(reportPostControllerProvider.notifier)
           .uploadReport(
               reportType: selectedReportType,
               post: post,
               formkey: formKey,
               etcDescription: etcDescriptionController.text,
               reportDescription: reportDescriptionController.text);
+      log("upload report");
       Navigator.of(loadingContext).pop();
       if (result == false) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("신고를 하는 도중에 에레거 났습니다")));
+            .showSnackBar(const SnackBar(content: Text("신고를 하는 도중에 에러가 났습니다")));
       }
       if (result == true) {
         Navigator.of(context).pushReplacement(
