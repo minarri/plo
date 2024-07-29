@@ -12,7 +12,8 @@ import 'package:plo/views/home_screen/main_post_list_provider.dart';
 import 'package:plo/views/home_screen/widgets/expanded_post.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
 
-final mainPostListCurrentUserProvider = FutureProvider.autoDispose<UserModel?>((ref) async {
+final mainPostListCurrentUserProvider =
+    FutureProvider.autoDispose<UserModel?>((ref) async {
   final user = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return user;
 });
@@ -39,10 +40,14 @@ class MainPostList extends ConsumerWidget {
                         ? const NoPostFound()
                         : ListView.separated(
                             physics: const AlwaysScrollableScrollPhysics(),
-                            controller: ref.watch(mainpostListController.notifier).scrollController,
+                            controller: ref
+                                .watch(mainpostListController.notifier)
+                                .scrollController,
                             itemBuilder: (context, index) {
                               if (index >= posts.length) {
-                                return ref.watch(mainpostListController.notifier).isPostAllLoaded
+                                return ref
+                                        .watch(mainpostListController.notifier)
+                                        .isPostAllLoaded
                                     ? const NoMorePost()
                                     : const LoadingExpandedPostWidget();
                               }
@@ -51,12 +56,15 @@ class MainPostList extends ConsumerWidget {
                                     bool? isConfirmed = true;
 
                                     if (posts.elementAt(index).showWarning) {
-                                      isConfirmed = await AlertBox.showYesOrNoAlertDialogue(context, "계속 하시겠습니까?");
+                                      isConfirmed = await AlertBox
+                                          .showYesOrNoAlertDialogue(
+                                              context, "계속 하시겠습니까?");
                                     }
                                     if (isConfirmed == true) {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => PostDetailScreen(
+                                          builder: (context) =>
+                                              PostDetailScreen(
                                             postKey: posts[index],
                                           ),
                                         ),
@@ -69,7 +77,8 @@ class MainPostList extends ConsumerWidget {
                                     post: posts.elementAt(index),
                                     isFromBlockedUser: currentUser == null
                                         ? false
-                                        : currentUser.blockedUsers.contains(posts[index].uploadUserUid),
+                                        : currentUser.blockedUsers.contains(
+                                            posts[index].uploadUserUid),
                                   ));
                             },
                             separatorBuilder: (context, index) => Container(),

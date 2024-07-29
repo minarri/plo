@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/singlepost.dart';
+import 'package:plo/common/widgets/detail_no_like_button.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/postdetail_screen/homescreenbuttonwidget.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
 import 'package:plo/views/postdetail_screen/post_detail_controller/post_detail_controller.dart';
+import 'package:plo/views/postdetail_screen/post_like_button.dart';
 import 'package:plo/views/postdetail_screen/postdetailProfile.dart';
 import 'package:plo/views/postdetail_screen/postdetaildescription.dart';
 import 'package:plo/views/postdetail_screen/postdetailsamecategory.dart';
@@ -36,7 +38,7 @@ class PostDetailScreen extends ConsumerWidget {
     ref.watch(postDetailControllerProvider.notifier).updateViewCounts(postKey);
 
     final state = ref.watch(postDetailControllerProvider);
-
+    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
     final user = ref.watch(currentUserProvider);
     final isMyPost = ref.watch(proceedWithoutLoginProvider)
         ? false
@@ -82,6 +84,20 @@ class PostDetailScreen extends ConsumerWidget {
                                         horizontal: 10),
                                     child: PostDetailWidget(
                                       postKey: postKey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: isNotSignedUser
+                                          ? DetailNoLikeButton()
+                                          : SizedBox(
+                                              child: PostDetailLikeButton(
+                                                postKey: postKey,
+                                              ),
+                                            ),
                                     ),
                                   ),
                                   const SizedBox(height: 5),

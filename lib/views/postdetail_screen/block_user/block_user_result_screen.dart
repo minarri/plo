@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_button.dart';
+import 'package:plo/model/user_model.dart';
 import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet.dart';
 
 class BlockUserModalBottomSheetResultScreen extends ConsumerWidget {
   final String blockingUserUid;
   final bool isBlocked;
-  const BlockUserModalBottomSheetResultScreen(
-      {super.key, required this.blockingUserUid, required this.isBlocked});
+
+  const BlockUserModalBottomSheetResultScreen({
+    super.key,
+    required this.blockingUserUid,
+    required this.isBlocked,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +25,8 @@ class BlockUserModalBottomSheetResultScreen extends ConsumerWidget {
                   children: [
                     const Spacer(),
                     FittedBox(
-                      child: Text(isBlocked ? "성공적으로 차단하셨습니다" : "차단하지 않으셨습니다",
+                      child: Text(
+                          isBlocked ? "성공적으로 차단하셨습니다" : "성공적으로 차단 해제하셨습니다",
                           style: Theme.of(context).textTheme.titleLarge),
                     ),
                     const Spacer(),

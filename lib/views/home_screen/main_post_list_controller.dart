@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
@@ -26,6 +28,7 @@ class MainPostListController extends StateNotifier<AsyncValue<void>> {
               _scrollController.position.maxScrollExtent &&
           !_isPostAllLoaded) {
         await _fetchMorePosts();
+        log("fetched more posts");
       }
     });
   }

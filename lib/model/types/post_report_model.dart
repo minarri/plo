@@ -21,38 +21,41 @@ class PostReportModel {
   final String? etcDescription;
   final String reportDetail;
 
-  PostReportModel ({
-    this.pid = ErrorReplacementConstants.notSetString,
-    this.uploadUserUid = ErrorReplacementConstants.notSetString,
-    this.reportingUserUid = ErrorReplacementConstants.notSetString,
-    required this.uploadTime,
-    required this.reportType,
-    this.etcDescription = ErrorReplacementConstants.notSetString,
-    required this.reportDetail
-  });
+  PostReportModel(
+      {this.pid = ErrorReplacementConstants.notSetString,
+      this.uploadUserUid = ErrorReplacementConstants.notSetString,
+      this.reportingUserUid = ErrorReplacementConstants.notSetString,
+      required this.uploadTime,
+      required this.reportType,
+      this.etcDescription = ErrorReplacementConstants.notSetString,
+      required this.reportDetail});
   Map<String, Object?> toJson() {
     return {
       PostReportModelConstants.pid: pid,
       PostReportModelConstants.uploadUserUid: uploadUserUid,
       PostReportModelConstants.reportingUserUid: reportingUserUid,
       PostReportModelConstants.uploadTime: uploadTime,
-      PostReportModelConstants.reportType: reportType,
+      PostReportModelConstants.reportType: reportType.toString(),
       PostReportModelConstants.etcDescription: etcDescription,
       PostReportModelConstants.reportDetail: reportDetail,
-      
     };
   }
 
   PostReportModel? fromJson(Map<String, dynamic> json) {
     try {
       return PostReportModel(
-        pid: json[PostReportModelConstants.pid] ?? ErrorReplacementConstants.notFoundString,
-         uploadUserUid: json[PostReportModelConstants.uploadUserUid] ?? ErrorReplacementConstants.notFoundString,
-          reportingUserUid: json[PostReportModelConstants.reportingUserUid] ?? ErrorReplacementConstants.notFoundString,
-           uploadTime: json[PostReportModelConstants.pid],
-            reportType: json[PostReportModelConstants.pid],
-             etcDescription: json[PostReportModelConstants.pid] ?? ErrorReplacementConstants.notFoundString,
-              reportDetail: json[PostReportModelConstants.pid] ?? ErrorReplacementConstants.notFoundString,
+        pid: json[PostReportModelConstants.pid] ??
+            ErrorReplacementConstants.notFoundString,
+        uploadUserUid: json[PostReportModelConstants.uploadUserUid] ??
+            ErrorReplacementConstants.notFoundString,
+        reportingUserUid: json[PostReportModelConstants.reportingUserUid] ??
+            ErrorReplacementConstants.notFoundString,
+        uploadTime: json[PostReportModelConstants.pid],
+        reportType: json[PostReportModelConstants.pid],
+        etcDescription: json[PostReportModelConstants.pid] ??
+            ErrorReplacementConstants.notFoundString,
+        reportDetail: json[PostReportModelConstants.pid] ??
+            ErrorReplacementConstants.notFoundString,
       );
     } catch (error) {
       return null;

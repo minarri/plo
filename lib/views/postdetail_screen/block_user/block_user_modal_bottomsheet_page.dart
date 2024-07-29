@@ -23,31 +23,34 @@ class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
         children: [
           DefaultProfileImageWidget(
             imageUrl: blockingUser.profileImageUrl,
-            radius: 50,
+            radius: 80,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 50),
           FittedBox(
-            child: Text("정말 차단 하시겠습니까? ${isBlocked ? "차단" : "아니요"}",
+            child: Text(
+                "정말 ${isBlocked ? "${blockingUser.userNickname}님을 차단 하시겠습니까?" : "${blockingUser.userNickname}님을 차단 해제 하시겠습니까?"}",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium),
+                style: Theme.of(context).textTheme.bodyLarge),
           ),
-          FittedBox(child: Text("${blockingUser.userNickname}?")),
           const SizedBox(
-            height: 10,
+            height: 30,
           ),
           FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(isBlocked
-                  ? "이 유저의 정보가 더 이상 보이지 않습니다"
-                  : "이 유저의 게시물을 계속 볼 수 있습니다")),
+            fit: BoxFit.scaleDown,
+            child: Text(
+                isBlocked
+                    ? "${blockingUser.userNickname}님의 정보가 더 이상 보이지 않습니다"
+                    : "${blockingUser.userNickname}님의 게시물을 이제부터 볼 수 있습니다",
+                style: Theme.of(context).textTheme.bodyLarge),
+          ),
+          const Spacer(),
           CustomButton(
               text: isBlocked ? "차단" : "아니요",
               onPressed: () {
                 ref
-                        .watch(blockedUserModalBottomSheetIsBlockPressedProvider
-                            .notifier)
-                        .state ==
-                    true;
+                    .watch(blockedUserModalBottomSheetIsBlockPressedProvider
+                        .notifier)
+                    .state = true;
               })
         ],
       ),

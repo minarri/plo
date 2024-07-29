@@ -29,9 +29,9 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
     return user == null
         ? const CircularProgressIndicator()
         : LikeButton(
-            size: 20,
-            circleColor:
-                const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+            size: 30,
+            circleColor: const CircleColor(
+                start: Color(0xff00ddff), end: Color(0xff0099cc)),
             bubblesColor: const BubblesColor(
                 dotPrimaryColor: Color(0xff33b5e5),
                 dotSecondaryColor: Color(0xff0099cc)),
@@ -40,7 +40,7 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
               return Icon(Icons.favorite,
                   size: 20, color: isLiked ? Colors.pinkAccent : Colors.grey);
             },
-            countPostion: CountPostion.bottom,
+            countPostion: CountPostion.right,
             onTap: (bool isLiked) async {
               final result = await ref
                   .read(postDetailControllerProvider.notifier)
