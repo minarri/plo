@@ -59,6 +59,9 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
 
   Future<bool> toggleLike(PostModel postKey, PostModel post) async {
     final user = ref.read(currentUserProvider);
+    if (user == null) {
+      return false;
+    }
     int? postLikeCountAfterUpdate = await ref
         .watch(likedPostServiceProvider)
         .likedPosts(user!.userUid, post.pid);

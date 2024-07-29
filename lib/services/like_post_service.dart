@@ -127,11 +127,13 @@ class LikePostService {
 
   Future<int?> likedPosts(String userUid, String pid) async {
     try {
-      int? updatedUserModelResult = await updateLikedPostsInUserModel(userUid, pid);
+      int? updatedUserModelResult =
+          await updateLikedPostsInUserModel(userUid, pid);
 
-      if(updatedUserModelResult == null) return -1;
+      if (updatedUserModelResult == null) return -1;
 
-      int updatedPostModelResult = await updateLikedPostsInPostModel(pid, updatedUserModelResult);
+      int updatedPostModelResult =
+          await updateLikedPostsInPostModel(pid, updatedUserModelResult);
 
       return updatedPostModelResult;
     } catch (error) {
