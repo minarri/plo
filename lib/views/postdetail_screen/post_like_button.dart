@@ -25,28 +25,35 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
   Widget build(BuildContext context) {
     final post = ref.watch(singlePostProvider(widget.postKey));
     final user = ref.watch(currentUserProvider);
-    const int defaultLike = 0;
-    return user == null
-        ? const CircularProgressIndicator()
-        : LikeButton(
-            size: 30,
-            circleColor: const CircleColor(
-                start: Color(0xff00ddff), end: Color(0xff0099cc)),
-            bubblesColor: const BubblesColor(
-                dotPrimaryColor: Color(0xff33b5e5),
-                dotSecondaryColor: Color(0xff0099cc)),
-            likeCount: defaultLike,
-            likeBuilder: (bool isLiked) {
-              return Icon(Icons.favorite,
-                  size: 20, color: isLiked ? Colors.pinkAccent : Colors.grey);
-            },
-            countPostion: CountPostion.right,
-            onTap: (bool isLiked) async {
-              final result = await ref
-                  .read(postDetailControllerProvider.notifier)
-                  .toggleLike(widget.postKey, post);
-              return result;
-            },
-          );
+    if (user == null) {
+      return CircularProgressIndicator();
+    }
+    final int likeCount = post.postLikes ?? 0;
+    final bool isLiked = user.likedPosts.contains(post.pid);
+    return LikeButton(
+      size: 30,
+      isLiked: !isLiked,
+      circleColor:
+          const CircleColor(start: Color(0xff00ddff), end: Color(0xff0099cc)),
+      bubblesColor: const BubblesColor(
+          dotPrimaryColor: Color.fromARGB(255, 229, 66, 51),
+          dotSecondaryColor: Color.fromARGB(255, 255, 1, 217)),
+      likeCount: likeCount,
+      likeBuilder: (bool isLiked) {
+        return Icon(Icons.favorite,
+            size: 20, color: !isLiked ? Colors.pinkAccent : Colors.grey);
+      },
+      countPostion: CountPostion.right,
+      onTap: (bool isLiked) async {
+        final result = await ref
+            .read(postDetailControllerProvider.notifier)
+            .toggleLike(widget.postKey, post);
+
+        setState(() {
+          isLiked = !isLiked;
+        });
+        return result;
+      },
+    );
   }
 }

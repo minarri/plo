@@ -73,8 +73,9 @@ class PostDetailScreen extends ConsumerWidget {
                               padding: const EdgeInsets.all(10),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const SizedBox(height: 50),
+                                  const SizedBox(height: 60),
                                   PostDetailProfileWidget(
                                     postKey: postKey,
                                   ),
@@ -87,18 +88,22 @@ class PostDetailScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: isNotSignedUser
-                                          ? DetailNoLikeButton()
-                                          : SizedBox(
-                                              child: PostDetailLikeButton(
-                                                postKey: postKey,
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: isNotSignedUser
+                                            ? DetailNoLikeButton()
+                                            : SizedBox(
+                                                child: PostDetailLikeButton(
+                                                  postKey: postKey,
+                                                ),
                                               ),
-                                            ),
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 5),
                                   // PostDetailPhoto(postKey: postKey),

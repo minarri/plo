@@ -101,11 +101,14 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:like_button/like_button.dart';
 import 'package:plo/common/utils/functions.dart';
+import 'package:plo/common/widgets/detail_no_like_button.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:plo/views/postdetail_screen/post_like_button.dart';
 import 'package:plo/views/postdetail_screen/postpicture.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
@@ -153,7 +156,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 30)),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 5),
                                 Tooltip(
                                     message: post.category ==
                                             CategoryType.information
@@ -161,12 +164,11 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                                         : "자유 게시물",
                                     preferBelow: false,
                                     triggerMode: TooltipTriggerMode.tap,
-                                    showDuration: const Duration(seconds: 3),
-                                    waitDuration: Duration.zero,
+                                    showDuration: const Duration(seconds: 2),
                                     child: post.category ==
                                             CategoryType.information
                                         ? const Icon(Icons.info_outline,
-                                            size: 30)
+                                            size: 20)
                                         : const Icon(Icons.category, size: 30)),
                               ]),
                             ),
@@ -203,6 +205,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                 const SizedBox(height: 10),
                 Text(post.postContent,
                     style: Theme.of(context).textTheme.bodyLarge),
+                SizedBox(height: 5),
               ],
             ),
           ),
