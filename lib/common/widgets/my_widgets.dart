@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
-
 Widget alertInputBox(
     {required BuildContext context,
     required String title,
@@ -24,7 +22,6 @@ Widget alertInputBox(
     ],
   );
 }
-
 
 PopupMenuItem<Object> dropMenuItem({
   required dynamic val,
@@ -93,13 +90,11 @@ Widget pfpStack({
 }) {
   return Stack(
     children: [
-      
-          CircleAvatar(
-              radius: 62,
-              backgroundColor: Colors.transparent,
-              backgroundImage: pfpImage != null ? FileImage(pfpImage) : bgImage,
-            ),
-          
+      CircleAvatar(
+        radius: 62,
+        backgroundColor: Colors.transparent,
+        backgroundImage: pfpImage != null ? FileImage(pfpImage) : bgImage,
+      ),
       Positioned(
         right: -1,
         bottom: 0,
@@ -209,48 +204,48 @@ Widget textFormFieldErrWithShadow({
   );
 }
 
-Widget sizedButtonWithShadow({
-  double? width = 300,
-  double? height = 55,
-  double? radius = 9.0,
-  required Offset shadowOffset,
-  required void Function()? onPressed,
-  required String buttonText,
-  //cum cum cum
-}) {
-  return Stack(
-    children: [
-      shadowBox(
-        width: width!,
-        height: height!,
-        circularRadius: radius!,
-        offset: shadowOffset,
-      ),
-      SizedBox(
-        width: width,
-        height: height,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            elevation: WidgetStateProperty.all(0),
-            backgroundColor: WidgetStateProperty.all(
-              const Color(0xFFCCE7FF),
-            ),
-            shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-          ),
-          onPressed: onPressed,
-          child: Text(
-            buttonText,
-            style: const TextStyle(
-              fontSize: 20.0,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      )
-    ],
-  );
-}
+// Widget sizedButtonWithShadow({
+//   double? width = 300,
+//   double? height = 55,
+//   double? radius = 9.0,
+//   required Offset shadowOffset,
+//   required void Function()? onPressed,
+//   required String buttonText,
+//   //cum cum cum
+// }) {
+//   return Stack(
+//     children: [
+//       shadowBox(
+//         width: width!,
+//         height: height!,
+//         circularRadius: radius!,
+//         offset: shadowOffset,
+//       ),
+//       SizedBox(
+//         width: width,
+//         height: height,
+//         child: ElevatedButton(
+//           style: ButtonStyle(
+//             elevation: WidgetStateProperty.all(0),
+//             backgroundColor: WidgetStateProperty.all(
+//               const Color(0xFFCCE7FF),
+//             ),
+//             shape: WidgetStateProperty.all(
+//               RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(20.0),
+//               ),
+//             ),
+//           ),
+//           onPressed: onPressed,
+//           child: Text(
+//             buttonText,
+//             style: const TextStyle(
+//               fontSize: 20.0,
+//               color: Colors.black,
+//             ),
+//           ),
+//         ),
+//       )
+//     ],
+//   );
+// }

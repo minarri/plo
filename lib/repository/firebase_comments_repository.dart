@@ -24,22 +24,23 @@ class CommentsRepository {
             .doc(comment.cid)
             .update(commentModel);
         log("Comment is updated in the firebase as the subCollection for the PostCollection");
-        await _firestoreInstance
-            .collection(FirebaseConstants.commentscollectionName)
-            .doc(comment.cid)
-            .update(commentModel);
-        log("Comment is updated in the firebase for the comment collection");
+        // await _firestoreInstance
+        //     .collection(FirebaseConstants.commentscollectionName)
+        //     .doc(comment.cid)
+        //     .update(commentModel);
+        // log("Comment is updated in the firebase for the comment collection");
       } else {
         final commentRef = await _firestoreInstance
             .collection(FirebaseConstants.postcollectionName)
             .doc(post.pid)
             .collection(FirebaseConstants.commentscollectionName)
-            .add(commentModel);
-        log("commentmodel is uploaded in the firebase as the subCollection for the PostCollection");
-        await _firestoreInstance
-            .collection(FirebaseConstants.commentscollectionName)
-            .doc(commentRef.id)
+            .doc(comment.cid)
             .set(commentModel);
+        log("commentmodel is uploaded in the firebase as the subCollection for the PostCollection");
+        // await _firestoreInstance
+        //     .collection(FirebaseConstants.commentscollectionName)
+        //     .doc(commentRef.id)
+        //     .set(commentModel);
       }
       return true;
     } catch (error) {
@@ -101,15 +102,35 @@ class CommentsRepository {
           .delete();
       log("comment is deleted from the subcollection in the postcollection");
 
-      await _firestoreInstance
-          .collection(FirebaseConstants.commentscollectionName)
-          .doc(comment.cid)
-          .delete();
+      // await _firestoreInstance
+      //     .collection(FirebaseConstants.commentscollectionName)
+      //     .doc(comment.cid)
+      //     .delete();
       log("comment is deleted from the comment collection from the firebase");
       return true;
     } catch (error) {
       log("There was an error while deleting a comment from the firebase");
       return false;
+    }
+  }
+
+  Future<CommentModel?> fetchCommentByCid(String pid, String cid) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await _firestoreInstance
+              .collection(FirebaseConstants.postcollectionName)
+              .doc(pid)
+              .collection(FirebaseConstants.commentscollectionName)
+              .doc(cid)
+              .get();
+      if (documentSnapshot.exists) {
+        return CommentModel.fromJson(documentSnapshot.data()!);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      log("There was an error while fetching a single comment ${error.toString()}");
+      return null;
     }
   }
 }

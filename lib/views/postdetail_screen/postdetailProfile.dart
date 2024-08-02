@@ -33,7 +33,8 @@ class PostDetailProfileWidget extends ConsumerWidget {
               onTap: () {
                 Navigator.of(context).push(
                     //have to add viewMyProfileScreen to the TestScreen
-                    MaterialPageRoute(builder: (context) => const TestScreen()));
+                    MaterialPageRoute(
+                        builder: (context) => const TestScreen()));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
