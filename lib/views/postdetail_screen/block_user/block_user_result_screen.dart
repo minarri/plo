@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_button.dart';
-import 'package:plo/model/user_model.dart';
 import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet.dart';
 
 class BlockUserModalBottomSheetResultScreen extends ConsumerWidget {

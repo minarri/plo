@@ -4,9 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
-import 'package:plo/common/providers/singlepost.dart';
-import 'package:plo/constants/error_message_constants.dart';
 import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_comments_repository.dart';
@@ -48,7 +45,7 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
       if (ref.read(currentUserProvider.notifier).mounted == false ||
           ref.read(currentUserProvider) == null) {
         state = AsyncError("CurrentUserSignedIn Error", StackTrace.current);
-        state = AsyncData(null);
+        state = const AsyncData(null);
         return false;
       }
       final user = ref.read(currentUserProvider)!;
@@ -95,7 +92,7 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
 
   Future<bool> deleteComment(PostModel post, CommentModel comment) async {
     try {
-      state = AsyncLoading();
+      state = const AsyncLoading();
       final deleteCommentResult = await ref
           .watch(firebaseCommentRepository)
           .deleteComments(post, comment);
@@ -106,7 +103,7 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
         state = const AsyncData(null);
         return false;
       }
-      state = AsyncData(null);
+      state = const AsyncData(null);
       return true;
     } catch (error) {
       state = AsyncError(

@@ -101,14 +101,11 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:like_button/like_button.dart';
 import 'package:plo/common/utils/functions.dart';
-import 'package:plo/common/widgets/detail_no_like_button.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
-import 'package:plo/views/postdetail_screen/post_like_button.dart';
 import 'package:plo/views/postdetail_screen/postpicture.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
@@ -205,7 +202,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                 const SizedBox(height: 10),
                 Text(post.postContent,
                     style: Theme.of(context).textTheme.bodyLarge),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
               ],
             ),
           ),

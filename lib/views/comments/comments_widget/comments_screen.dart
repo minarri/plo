@@ -22,6 +22,6 @@ class CommentDetailScreen extends ConsumerWidget {
   const CommentDetailScreen({super.key, required this.commentKey});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Text("Hello");
+    return const Text("Hello");
   }
 }

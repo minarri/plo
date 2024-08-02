@@ -37,8 +37,9 @@ class BlockUserModalBottomsheet extends ConsumerWidget {
       child:
           ref.watch(blockedUserModalBottomSheetCurrentUserFutureProvider).when(
                 data: (user) {
-                  if (user == null)
+                  if (user == null) {
                     return const Icon(Icons.error_outline, size: 30);
+                  }
                   return ref.watch(postUploaderProvider(uploaderUserUid)).when(
                       data: (blockingUser) {
                         return isBlockPressed

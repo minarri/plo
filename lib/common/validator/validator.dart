@@ -81,8 +81,9 @@ class Validator {
   }
 
   static String? commentContentValidator(String? commentContent) {
-    if (commentContent == null || commentContent.isEmpty)
+    if (commentContent == null || commentContent.isEmpty) {
       return "내용을 입력하셔야 합니다";
+    }
     if (commentContent.length > 100) return "내용은 100자 이내여야 합니다";
     return null;
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plo/views/search_post_screen/filter_options_controller.dart';
 
 import '../../common/utils/log_util.dart';
-import 'search_post_controller.dart';
-import 'Widgets/post_result_widget.dart';
+import '../../common/widgets/post_list_widget.dart';
+import '../../model/post_model.dart';
+import '../../model/state_model/search_filter_options_model.dart';
+import '../../services/search_service.dart';
+import 'filter_options_controller.dart';
 
 class SearchPostsMain extends ConsumerStatefulWidget {
   const SearchPostsMain({super.key});
@@ -21,14 +23,14 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
   @override
   void initState() {
     super.initState();
-    searchQueryController = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.watch(filterOptionsControllerProvider.notifier).setSearchQuery(searchQueryController.text);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final filterOptions = ref.watch(filterOptionsControllerProvider);
-    final searchPosts = ref.watch(searchPostsControllerProvider);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -38,25 +40,15 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
             children: [
               SearchBar(
                 controller: searchQueryController,
+                leading: const Icon(Icons.search),
                 trailing: [
                   IconButton(
-                    icon: const Icon(Icons.search),
-                    onPressed: () async {
-                      if (searchQueryController.text.isEmpty) {
-                        setState(() {
-                          isFieldEmpty = true;
-                        });
-                        return;
-                      }
-                      await ref
-                          .read(searchPostsControllerProvider.notifier)
-                          .setSearchQuery(searchQueryController.text);
-                    },
-                  )
+                    icon: const Icon(Icons.clear),
+                    onPressed: searchQueryController.clear,
+                  ),
                 ],
                 hintText: "검색어를 입력해주세요",
                 onSubmitted: (_) async {
-                  logToConsole("Search button pressed");
                   if (searchQueryController.text.isEmpty) {
                     logToConsole("searchQuery is empty");
                     setState(() {
@@ -64,22 +56,18 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
                     });
                     return;
                   }
-                  logToConsole(
-                      "Search query submitted: ${searchQueryController.text}");
-                  await ref
-                      .read(searchPostsControllerProvider.notifier)
-                      .setSearchQuery(searchQueryController.text);
+                  setState(() {
+                    ref.watch(filterOptionsControllerProvider.notifier).setSearchQuery(searchQueryController.text);
+                  });
+                  logToConsole("Search query submitted: ${searchQueryController.text}");
+                  Expanded(
+                    child: PostResultWidget(
+                      filterOptions: filterOptions,
+                    ),
+                  );
                 },
                 // onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
-              Expanded(
-                child: searchPosts == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : PostResultWidget(
-                        filterOptions: filterOptions,
-                        searchQuery: searchQueryController.text,
-                      ),
-              )
             ],
           ),
         ),
@@ -87,3 +75,42 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
     );
   }
 }
+
+class PostResultWidget extends ConsumerWidget {
+  final FilterOptions filterOptions;
+  const PostResultWidget({super.key, required this.filterOptions});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    logToConsole("PostResultWidget build called");
+    return Container(
+      child: ref.watch(searchPostsFutureProvider(filterOptions)).when(
+        loading: () {
+          logToConsole("Hit loading");
+          return const Center(child: CircularProgressIndicator());
+        },
+        error: (error, stackTrace) {
+          logToConsole('Error occurred: $error');
+          return const Center(child: Text("Unknown error occurred"));
+        },
+        data: (searchedPosts) {
+          if (searchedPosts == null) {
+            logToConsole('No posts found');
+            return const Center(child: Text('No posts found'));
+          }
+          logToConsole('Posts found: ${searchedPosts.length}');
+          return PostListWidget(
+              posts: searchedPosts,
+              refreshFunction: () {
+                ref.refresh(searchPostsFutureProvider(filterOptions));
+              });
+        },
+      ),
+    );
+  }
+}
+
+final searchPostsFutureProvider = FutureProvider.family.autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
+  final posts = await ref.watch(searchServiceProvider).searchPost(filterOptions);
+  return posts;
+});

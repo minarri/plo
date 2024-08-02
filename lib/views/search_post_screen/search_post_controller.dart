@@ -1,41 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/utils/log_util.dart';
-import '../../model/post_model.dart';
-import '../../services/search_service.dart';
-import 'filter_options_controller.dart';
 
-class SearchPostsController extends StateNotifier<List<PostModel>?> {
+class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   final Ref ref;
   String searchQuery = "";
 
-  SearchPostsController(this.ref) : super(null) {
+  SearchPostsController(this.ref) : super(const AsyncLoading()) {
     _init();
   }
 
-  // Initialization method
-  Future<void> _init() async {
-    // Set the initial state if needed
-    state = [];
-    logToConsole("SearchPostsController: Initialized");
+  _init() async {
+    state = const AsyncLoading();
+    // final searchHistory = await ref.watch(sharedPreferenceRepositoryProvider).loadSearchHistory();
+    // if (searchHistory != null) ref.read(searchHistoryListProvider.notifier).setList(searchHistory);
+    state = const AsyncData(null);
   }
 
-  Future<void> setSearchQuery(String query) async {
-    searchQuery = query;
-    final filterOptions = ref.read(filterOptionsControllerProvider);
-    ref.read(filterOptionsControllerProvider.notifier).state = filterOptions;
-
-    logToConsole("SearchPostsController: Search query updated to $query");
-    logToConsole("SearchPostsController: Filter options updated to $filterOptions");
-
-    final posts = await ref.read(searchServiceProvider).searchPost(filterOptions);
-    state = posts;
-
-    logToConsole("SearchPostsController: Fetched ${posts?.length ?? 0} posts");
+  void setSearchQuery(String newSearchQuery) {
+    searchQuery = newSearchQuery;
   }
 }
 
-final searchPostsControllerProvider = StateNotifierProvider.autoDispose<SearchPostsController, List<PostModel>?>((ref) {
+final searchPostsControllerProvider = StateNotifierProvider.autoDispose<SearchPostsController, AsyncValue<void>>((ref) {
   ref.onDispose(() {
     logToConsole("SearchPostsController disposed");
   });
