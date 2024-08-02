@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/firebase_contants.dart';
@@ -160,10 +162,28 @@ class FirebasePostRepository {
 
   Future<bool> deletePostbyPid(String pid) async {
     try {
-      await firestoreinstance
+      final postRef = firestoreinstance
           .collection(FirebaseConstants.postcollectionName)
-          .doc(pid)
-          .delete();
+          .doc(pid);
+
+      final commentRef =
+          postRef.collection(FirebaseConstants.commentscollectionName);
+
+      final commentSnapShot = await commentRef.get();
+
+      final batch = firestoreinstance.batch();
+
+      for (final doc in commentSnapShot.docs) {
+        batch.delete(doc.reference);
+      }
+
+      batch.delete(postRef);
+      await batch.commit();
+      log("Succesfully commited delete batch");
+      // await firestoreinstance
+      //     .collection(FirebaseConstants.postcollectionName)
+      //     .doc(pid)
+      //     .delete();
       return true;
     } catch (e) {
       logToConsole("There was an error deleting the post ${e.toString()}");

@@ -48,7 +48,9 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
                         });
                         return;
                       }
-                      await ref.read(searchPostsControllerProvider.notifier).setSearchQuery(searchQueryController.text);
+                      await ref
+                          .read(searchPostsControllerProvider.notifier)
+                          .setSearchQuery(searchQueryController.text);
                     },
                   )
                 ],
@@ -62,10 +64,13 @@ class _SearchPostsMainState extends ConsumerState<SearchPostsMain> {
                     });
                     return;
                   }
-                  logToConsole("Search query submitted: ${searchQueryController.text}");
-                  await ref.read(searchPostsControllerProvider.notifier).setSearchQuery(searchQueryController.text);
+                  logToConsole(
+                      "Search query submitted: ${searchQueryController.text}");
+                  await ref
+                      .read(searchPostsControllerProvider.notifier)
+                      .setSearchQuery(searchQueryController.text);
                 },
-                onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                // onTapOutside: (event) => FocusScope.of(context).unfocus(),
               ),
               Expanded(
                 child: searchPosts == null
