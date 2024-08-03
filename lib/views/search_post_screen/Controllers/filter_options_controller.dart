@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/model/types/sortby_type.dart';
 
-import '../../model/state_model/search_filter_options_model.dart';
+import '../../../model/state_model/search_filter_options_model.dart';
 
 class FilterOptionsController extends StateNotifier<FilterOptions> {
   FilterOptionsController() : super(FilterOptions());
@@ -19,5 +19,6 @@ class FilterOptionsController extends StateNotifier<FilterOptions> {
   }
 }
 
-final filterOptionsControllerProvider =
+final filterOptionsProvider = StateNotifierProvider.autoDispose<FilterOptionsController, FilterOptions>((ref) => FilterOptionsController());
+final tempFilterOptionProvider =
     StateNotifierProvider.autoDispose<FilterOptionsController, FilterOptions>((ref) => FilterOptionsController());

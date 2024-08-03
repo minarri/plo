@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/views/home_screen/widgets/mainpostlist.dart';
 import 'package:plo/views/home_screen/widgets/navigator_bar.dart';
 import 'package:plo/views/post_write/post_write_screen/post_write_screen.dart';
-import 'package:plo/views/search_post_screen/search_post_main.dart';
+import 'package:plo/views/search_post_screen/Screens/search_post.dart';
 import 'package:plo/views/settings_screen/settings_screen.dart';
 import 'package:plo/views/test_screen.dart';
 
@@ -28,12 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _pageController.jumpToPage(index);
   }
 
-  final List<Widget> pages = [
-    const MainPostList(),
-    const SearchPostsMain(),
-    const TestScreen(),
-    const SettingsScreen()
-  ];
+  final List<Widget> pages = [const MainPostList(), const SearchPostsHero(), const TestScreen(), const SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {
