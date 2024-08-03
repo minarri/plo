@@ -49,13 +49,14 @@ class CommentsRepository {
     }
   }
 
-  Future<List<CommentModel>?> fetchComments(PostModel post,
+  //이렇게 해보고 안 되면 String Pid 말고 아예 PostModel로 Controller도 바꿔주기.
+  Future<List<CommentModel>?> fetchComments(String pid,
       {int amountFetch = 10, Timestamp? lastCommentUploadTime = null}) async {
     try {
       final QuerySnapshot querySnapshot;
       final commentSubCollectionRef = _firestoreInstance
           .collection(FirebaseConstants.postcollectionName)
-          .doc(post.pid)
+          .doc(pid)
           .collection(FirebaseConstants.commentscollectionName);
 
       if (lastCommentUploadTime == null) {

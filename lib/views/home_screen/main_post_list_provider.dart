@@ -19,8 +19,7 @@ class MainPostListProvider extends StateNotifier<List<PostModel>> {
   updateSingePostInPostList(PostModel post) {
     if (_postExistInList(post)) {
       state = state
-          .map((postInList) =>
-              (postInList.pid == post.pid) ? post : postInList)
+          .map((postInList) => (postInList.pid == post.pid) ? post : postInList)
           .toList();
     }
   }
