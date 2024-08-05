@@ -48,13 +48,13 @@ class _DefaultProgressResultState extends ConsumerState<DefaultProgressResult> {
               ],
             );
           }, loading: () {
-            return SizedBox(
+            return const SizedBox(
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 10),
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10),
                   FittedBox(
                     child: Text(
                       "현재 요청하신 사항을 처리 중입니다!",
@@ -85,7 +85,7 @@ class _DefaultProgressResultState extends ConsumerState<DefaultProgressResult> {
                   const SizedBox(
                     height: 10,
                   ),
-                  FittedBox(
+                  const FittedBox(
                     child: Text(
                       "다시 한번 시도해주세요 문제가 고쳐지지 않으면 문의 해주세요",
                       textAlign: TextAlign.center,
@@ -96,7 +96,7 @@ class _DefaultProgressResultState extends ConsumerState<DefaultProgressResult> {
                 CustomButton(
                     onPressed: () {
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(builder: (context) => const HomeScreen()),
                           (Route<dynamic> route) => false);
                     },
                     text: "홈 화면으로 가기")

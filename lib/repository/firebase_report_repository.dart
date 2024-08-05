@@ -31,9 +31,10 @@ class FirebaseReportRepository {
           .collection(FirebaseConstants.reportRecordscollectionName)
           .doc(user.uid)
           .get();
-      if (!doc.exists)
+      if (!doc.exists) {
         return SuccessReturnType(
             message: "User did not report this Post", isSuccess: false);
+      }
       return SuccessReturnType(isSuccess: true);
     } catch (error) {
       return ErrorReturnType(message: "게시물이 이미 신고 되었습니다: $error", data: error);

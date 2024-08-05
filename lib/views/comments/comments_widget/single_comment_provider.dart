@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/model/comments_model.dart';
-import 'package:plo/model/post_model.dart';
 import 'package:plo/repository/firebase_comments_repository.dart';
 
 class SingleCommentProvider extends StateNotifier<CommentModel> {

@@ -81,7 +81,7 @@ class StorageMethods {
           final storageRef = FirebaseStorage.instance
               .ref()
               .child('postImages')
-              .child('${userUid}/${pid}/${photoUid}');
+              .child('$userUid/$pid/$photoUid');
 
           // Upload the file
           UploadTask uploadTask = storageRef.putFile(file);

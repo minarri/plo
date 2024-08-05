@@ -13,7 +13,6 @@ import 'package:plo/views/postdetail_screen/post_like_button.dart';
 import 'package:plo/views/postdetail_screen/postdetailProfile.dart';
 import 'package:plo/views/postdetail_screen/postdetaildescription.dart';
 import 'package:plo/views/postdetail_screen/postdetailsamecategory.dart';
-import 'package:plo/views/postdetail_screen/postpicture.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
 final postUploaderProvider =
@@ -96,7 +95,7 @@ class PostDetailScreen extends ConsumerWidget {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10.0),
                                         child: isNotSignedUser
-                                            ? DetailNoLikeButton()
+                                            ? const DetailNoLikeButton()
                                             : SizedBox(
                                                 child: PostDetailLikeButton(
                                                   postKey: postKey,
@@ -119,7 +118,7 @@ class PostDetailScreen extends ConsumerWidget {
                                       ),
                                     ),
                                   if (!isMyPost)
-                                    Divider(
+                                    const Divider(
                                       thickness: 1,
                                     ),
                                   if (!isMyPost) ...[
@@ -130,7 +129,7 @@ class PostDetailScreen extends ConsumerWidget {
                                         postKey: postKey,
                                       ),
                                     ),
-                                    Divider(
+                                    const Divider(
                                       thickness: 1,
                                     )
                                   ],

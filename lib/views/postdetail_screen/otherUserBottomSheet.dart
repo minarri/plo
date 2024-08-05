@@ -22,7 +22,7 @@ class PostDetailOtherUserBottomSheet extends ConsumerWidget {
         children: [
           ModalBottomSheetIcon(
             title: "게시물 신고하기",
-            icon: Icon(Icons.warning),
+            icon: const Icon(Icons.warning),
             onTap: () {
               if (isNotSignedUser) {
                 Navigator.of(context).pop();
@@ -45,7 +45,7 @@ class PostDetailOtherUserBottomSheet extends ConsumerWidget {
           ),
           ModalBottomSheetIcon(
               title: "이 유저 차단하기",
-              icon: Icon(Icons.block),
+              icon: const Icon(Icons.block),
               onTap: () {
                 if (isNotSignedUser) {
                   Navigator.of(context).pop();

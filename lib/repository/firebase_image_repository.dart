@@ -6,8 +6,7 @@ import 'package:plo/model/post_model.dart';
 class FirebaseImageRepository {
   Future<bool> deletePostPhotos(PostModel post) async {
     try {
-      if (post.contentImageUrlList == null ||
-          post.contentImageUrlList.isEmpty) {
+      if (post.contentImageUrlList.isEmpty) {
         return true;
       }
       // List<String> imageList = [];

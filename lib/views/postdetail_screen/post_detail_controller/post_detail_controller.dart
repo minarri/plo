@@ -64,7 +64,7 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
     }
     int? postLikeCountAfterUpdate = await ref
         .watch(likedPostServiceProvider)
-        .likedPosts(user!.userUid, post.pid);
+        .likedPosts(user.userUid, post.pid);
 
     PostModel postToBeUpdated =
         post.update(postLikes: postLikeCountAfterUpdate);

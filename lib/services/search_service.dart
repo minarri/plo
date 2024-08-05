@@ -36,9 +36,10 @@ class SearchService {
   }
 
   Future<List<PostModel>?> searchPost(FilterOptions filterOptions) async {
-    logToConsole("arrived here");
+    logToConsole("arrived here: searchPost in search_service");
     try {
-      if (filterOptions.searchQuery.isEmpty || filterOptions.searchQuery == ' ') {
+      if (filterOptions.searchQuery.isEmpty || filterOptions.searchQuery == "") {
+        logToConsole("filterOptions is empty");
         return null;
       }
 

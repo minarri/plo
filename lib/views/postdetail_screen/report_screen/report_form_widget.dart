@@ -47,7 +47,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
             final reportType = ReportType.values[index];
             return RadioListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                activeColor: Color.fromARGB(255, 128, 120, 120),
+                activeColor: const Color.fromARGB(255, 128, 120, 120),
                 title: Text(reportType.getDescription(),
                     style: Theme.of(context).textTheme.bodyMedium),
                 value: reportType,
