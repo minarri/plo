@@ -47,6 +47,7 @@ class CommentModel {
       CommentModelFieldNameConstants.commentContent: commentContent,
       CommentModelFieldNameConstants.profileImageUrl: profileImageUrl,
       CommentModelFieldNameConstants.commentsUserNickname: commentsUserNickname,
+      CommentModelFieldNameConstants.commentsUserUid: commentsUserUid,
       CommentModelFieldNameConstants.uploadTime: uploadTime,
       CommentModelFieldNameConstants.commentsPid: commentsPid,
       CommentModelFieldNameConstants.commentLikes: commentLikes,
@@ -75,6 +76,8 @@ class CommentModel {
         commentsUserNickname:
             json[CommentModelFieldNameConstants.commentsUserNickname] ??
                 ErrorReplacementConstants.notFoundString,
+        commentsUserUid: json[CommentModelFieldNameConstants.commentsUserUid] ??
+            ErrorReplacementConstants.notFoundString,
         uploadTime: json[CommentModelFieldNameConstants.uploadTime],
         commentsPid: json[CommentModelFieldNameConstants.commentsPid] ??
             ErrorReplacementConstants.notFoundString,
@@ -93,6 +96,7 @@ class CommentModel {
     String? commentContent,
     String? profileImageUrl,
     String? commentsUserNickname,
+    String? commentsUserUid,
     Timestamp? uploadTime,
     String? commentsPid,
     int? commentLikes,
@@ -104,6 +108,7 @@ class CommentModel {
       commentContent: commentContent ?? this.commentContent,
       profileImageUrl: profileImageUrl ?? this.profileImageUrl,
       commentsUserNickname: commentsUserNickname ?? this.commentsUserNickname,
+      commentsUserUid: commentsUserUid ?? this.commentsUserUid,
       uploadTime: uploadTime ?? this.uploadTime,
       commentsPid: commentsPid ?? this.commentsPid,
       commentLikes: commentLikes ?? this.commentLikes,

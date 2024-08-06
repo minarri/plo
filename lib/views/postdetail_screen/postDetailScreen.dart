@@ -5,6 +5,7 @@ import 'package:plo/model/post_model.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
+import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/postdetail_screen/homescreenbuttonwidget.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
@@ -109,14 +110,16 @@ class PostDetailScreen extends ConsumerWidget {
                                   const Divider(
                                     thickness: 1,
                                   ),
-                                  if (!isMyPost)
-                                    Container(
+
+                                  Container(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 10),
-                                      child: PostDetailUserOtherPostsWidget(
-                                        postKey: postKey,
-                                      ),
-                                    ),
+                                      // child: PostDetailUserOtherPostsWidget(
+                                      //   postKey: postKey,
+                                      // ),
+                                      child: CommentWriteScreen(
+                                        postKey: postKey, commentKey: ,
+                                      ),),
                                   if (!isMyPost)
                                     const Divider(
                                       thickness: 1,

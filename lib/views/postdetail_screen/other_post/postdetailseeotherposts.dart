@@ -53,9 +53,10 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                   .watch(postDetailFetchedAllUserPostProvider(
                                       user.userUid))
                                   .when(
-                                      error: (error, stackTrace) => const Center(
-                                          child: Icon(Icons.error_outline,
-                                              size: 40)),
+                                      error: (error, stackTrace) =>
+                                          const Center(
+                                              child: Icon(Icons.error_outline,
+                                                  size: 40)),
                                       loading: () => GridView.builder(
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
@@ -108,7 +109,8 @@ class PostDetailSeeOtherPostsDetailPage extends ConsumerWidget {
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
-                                                      decoration: const BoxDecoration(
+                                                      decoration:
+                                                          const BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius.all(
                                                                 Radius.circular(

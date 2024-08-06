@@ -37,11 +37,11 @@ class SingleCommentProvider extends StateNotifier<CommentModel> {
 final singleCommentProvider = StateNotifierProvider.family
     .autoDispose<SingleCommentProvider, CommentModel, Map<String, dynamic>>(
         (ref, data) {
-  final post = ref.watch(singlePostProvider(data['post']));
-  final pid = post.pid;
+  final pid = data['pid'] as String;
   final comment = data['comment'] as CommentModel;
   return SingleCommentProvider(
-      firebaseCommentRepository: ref.watch(firebaseCommentRepository),
-      comment: comment,
-      pid: pid);
+    firebaseCommentRepository: ref.watch(firebaseCommentRepository),
+    pid: pid,
+    comment: comment,
+  );
 });
