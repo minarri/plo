@@ -12,13 +12,13 @@ class CommentsRepository {
   CommentsRepository(this.ref);
 
   Future<bool> uploadCommentToFirebase(
-      PostModel post, CommentModel comment, bool isForEdit) async {
+      String postPid, CommentModel comment, bool isForEdit) async {
     final commentModel = comment.toJson();
     try {
       if (isForEdit) {
         await _firestoreInstance
             .collection(FirebaseConstants.postcollectionName)
-            .doc(post.pid)
+            .doc(postPid)
             .collection(FirebaseConstants.commentscollectionName)
             .doc(comment.cid)
             .update(commentModel);
@@ -31,7 +31,7 @@ class CommentsRepository {
       } else {
         final commentRef = await _firestoreInstance
             .collection(FirebaseConstants.postcollectionName)
-            .doc(post.pid)
+            .doc(postPid)
             .collection(FirebaseConstants.commentscollectionName)
             .doc(comment.cid)
             .set(commentModel);
@@ -64,7 +64,7 @@ class CommentsRepository {
                 descending: true)
             .limit(amountFetch)
             .get();
-        log("fetch comments for the initial 10 posts");
+        log("fetch 10 initial comments");
       } else {
         querySnapshot = await commentSubCollectionRef
             .orderBy(CommentModelFieldNameConstants.uploadTime,
@@ -72,9 +72,8 @@ class CommentsRepository {
             .startAfter([lastCommentUploadTime])
             .limit(amountFetch)
             .get();
-        log("fetched posts after 10 initial posts");
+        log("fetched another 10 comments after 10 initial comments");
       }
-      log("fetch comments from firebase");
       final List<CommentModel> fetchedComments = querySnapshot.docs
           .map((doc) {
             final data = doc.data() as Map<String, dynamic>;

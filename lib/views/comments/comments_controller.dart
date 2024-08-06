@@ -1,17 +1,20 @@
 import 'dart:developer';
 
+import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
+import 'package:plo/model/state_model/create_edit_comment_model.dart';
 import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/views/comments/comments_provider.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
+  final SwiperController _swiperController = SwiperController();
   final TextEditingController _commentContentController =
       TextEditingController();
   final Ref ref;
@@ -19,8 +22,9 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
   CreateEditCommentController(this.ref) : super(const AsyncLoading()) {
     _init();
   }
-
-  get commentContentController => _commentContentController;
+  SwiperController get swiperController => _swiperController;
+  TextEditingController get commentContentController =>
+      _commentContentController;
 
   _init() async {
     state = const AsyncLoading();
@@ -30,10 +34,15 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
           ref.read(createEditCommentStateProvider).editCommentInformation!;
       _commentContentController.text = commentStateModel.commentContent;
     }
+    log("create comment controller init");
+  }
+
+  initFieldForEdit(CreateEditCommentModel editCommentInformation) {
+    _commentContentController.text = editCommentInformation.commentContent;
   }
 
   Future<bool> uploadComment(
-      {required GlobalKey<FormState> formKey, required PostModel post}) async {
+      {required GlobalKey<FormState> formKey, required String postPid}) async {
     try {
       if (!formKey.currentState!.validate()) {
         return false;
@@ -42,8 +51,8 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
 
       final isForEdit = commentState.isForEdit;
 
-      if (ref.read(currentUserProvider.notifier).mounted == false ||
-          ref.read(currentUserProvider) == null) {
+      if (ref.watch(currentUserProvider.notifier).mounted == false ||
+          ref.watch(currentUserProvider) == null) {
         state = AsyncError("CurrentUserSignedIn Error", StackTrace.current);
         state = const AsyncData(null);
         return false;
@@ -66,12 +75,14 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
           commentsUserNickname: user.userNickname,
           commentsUserUid: user.userUid,
           uploadTime: Timestamp.now(),
-          commentsPid: post.pid,
+          commentsPid: postPid,
         );
       }
+      log('Uploading comment: $comment');
+
       final commentUploadResult =
           await ref.watch(firebaseCommentRepository).uploadCommentToFirebase(
-                post,
+                postPid,
                 comment,
                 isForEdit,
               );
@@ -82,10 +93,9 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
         state = const AsyncData(null);
         return false;
       }
-
       return true;
     } catch (error) {
-      log("There was an error when uploading comment in the firebase ${error.toString()}");
+      log("Error occursed ${error.toString()}");
       return false;
     }
   }
@@ -114,7 +124,7 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final createEditCommentController = StateNotifierProvider.autoDispose<
-    CreateEditCommentController, AsyncValue<void>>((ref) {
+final createEditCommentController =
+    StateNotifierProvider<CreateEditCommentController, AsyncValue<void>>((ref) {
   return CreateEditCommentController(ref);
 });

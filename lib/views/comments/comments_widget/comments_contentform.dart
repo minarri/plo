@@ -11,14 +11,16 @@ class CommentContentForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Form(
+      key: formKey,
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Text("댓글 내용"),
+            SizedBox(height: 5),
             TextFormField(
               controller: ref
-                  .watch(createEditCommentController.notifier)
+                  .read(createEditCommentController.notifier)
                   .commentContentController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -31,11 +33,11 @@ class CommentContentForm extends ConsumerWidget {
               validator: (value) {
                 return Validator.commentContentValidator(value);
               },
-              onChanged: (value) {
-                ref
-                    .read(createEditCommentStateProvider.notifier)
-                    .updateContent(value);
-              },
+              // onChanged: (value) {
+              //   ref
+              //       .read(createEditCommentStateProvider.notifier)
+              //       .updateContent(value);
+              // },
               onTapOutside: (event) {
                 FocusManager.instance.primaryFocus?.unfocus();
               },

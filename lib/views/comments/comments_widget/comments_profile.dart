@@ -12,7 +12,7 @@ final commentDetailProfileErrorProvider =
 
 class CommentProfileWidget extends ConsumerWidget {
   final CommentModel commentKey;
-  final PostModel postKey;
+  final String postKey;
   const CommentProfileWidget(
       {super.key, required this.commentKey, required this.postKey});
 
