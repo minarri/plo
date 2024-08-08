@@ -37,7 +37,7 @@ class UserProvider extends StateNotifier<UserModel?> {
 }
 
 final currentUserProvider =
-    StateNotifierProvider<UserProvider, UserModel?>((ref) {
+    StateNotifierProvider.autoDispose<UserProvider, UserModel?>((ref) {
   ref.onDispose(() {
     logToConsole("currentUserProvider disposed");
   });

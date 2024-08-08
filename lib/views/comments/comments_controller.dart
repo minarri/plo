@@ -10,6 +10,7 @@ import 'package:plo/model/post_model.dart';
 import 'package:plo/model/state_model/create_edit_comment_model.dart';
 import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/views/comments/comments_provider.dart';
+import 'package:plo/views/comments/comments_widget/commentlists/comments_list_provider.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -51,8 +52,8 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
 
       final isForEdit = commentState.isForEdit;
 
-      if (ref.watch(currentUserProvider.notifier).mounted == false ||
-          ref.watch(currentUserProvider) == null) {
+      if (ref.read(currentUserProvider.notifier).mounted == false ||
+          ref.read(currentUserProvider) == null) {
         state = AsyncError("CurrentUserSignedIn Error", StackTrace.current);
         state = const AsyncData(null);
         return false;
@@ -86,12 +87,20 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
                 comment,
                 isForEdit,
               );
-
       if (commentUploadResult == false) {
         state = AsyncError("Error while Uploading commentModel to Firebase",
             StackTrace.current);
         state = const AsyncData(null);
         return false;
+      }
+      if (isForEdit) {
+        ref
+            .read(commentListProvider(postPid).notifier)
+            .updateSingleCommentInCommentList(comment);
+      } else {
+        ref
+            .read(commentListProvider(postPid).notifier)
+            .addSingleComment(comment);
       }
       return true;
     } catch (error) {

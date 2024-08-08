@@ -1,11 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/widgets/detail_no_like_button.dart';
+import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
-import 'package:plo/views/comments/comments_widget/comments_screen.dart';
+import 'package:plo/views/comments/comments_widget/comments_write_screen.dart';
+import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/postdetail_screen/homescreenbuttonwidget.dart';
 import 'package:plo/views/postdetail_screen/other_post/postdetailuserotherposts.dart';
@@ -31,12 +34,13 @@ final postDetailCurrentUserFutureProvider =
 
 class PostDetailScreen extends ConsumerWidget {
   final PostModel postKey;
+  // final CommentModel commentKey;
   const PostDetailScreen({super.key, required this.postKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(postDetailControllerProvider.notifier).updateViewCounts(postKey);
-
+    ref.watch(postDetailControllerProvider.notifier).updateComments(postKey);
     final state = ref.watch(postDetailControllerProvider);
     final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
     final user = ref.watch(currentUserProvider);
@@ -44,7 +48,6 @@ class PostDetailScreen extends ConsumerWidget {
         ? false
         : postKey.uploadUserUid == user!.userUid;
     final post = ref.watch(singlePostProvider(postKey));
-
     return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
         data: (data) {
           return state.isLoading
@@ -103,6 +106,8 @@ class PostDetailScreen extends ConsumerWidget {
                                                 ),
                                               ),
                                       ),
+                                      Icon(Icons.comment),
+                                      Text(post.commentCount.toString())
                                     ],
                                   ),
                                   const SizedBox(height: 5),
@@ -112,30 +117,31 @@ class PostDetailScreen extends ConsumerWidget {
                                   ),
 
                                   Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      // child: PostDetailUserOtherPostsWidget(
-                                      //   postKey: postKey,
-                                      // ),
-                                      child: CommentWriteScreen(
-                                        postKey: postKey, commentKey: ,
-                                      ),),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    // child: PostDetailUserOtherPostsWidget(
+                                    //   postKey: postKey,
+                                    // ),
+                                    child: CommentWriteScreen(
+                                      postKey: postKey,
+                                    ),
+                                  ),
                                   if (!isMyPost)
                                     const Divider(
                                       thickness: 1,
                                     ),
-                                  if (!isMyPost) ...[
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: PostDetailSameCategoryWidget(
-                                        postKey: postKey,
-                                      ),
-                                    ),
-                                    const Divider(
-                                      thickness: 1,
-                                    )
-                                  ],
+                                  // if (!isMyPost) ...[
+                                  //   Container(
+                                  //     padding: const EdgeInsets.symmetric(
+                                  //         horizontal: 10),
+                                  //     child: PostDetailSameCategoryWidget(
+                                  //       postKey: postKey,
+                                  //     ),
+                                  //   ),
+                                  //   const Divider(
+                                  //     thickness: 1,
+                                  //   )
+                                  // ],
                                 ],
                               ),
                             ),

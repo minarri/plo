@@ -27,57 +27,75 @@ final postDetailCurrentUserFutureProvider =
 
 class CommentDetailScreen extends ConsumerWidget {
   final CommentModel commentKey;
-  final PostModel postKey;
-  const CommentDetailScreen(
-      {super.key, required this.commentKey, required this.postKey});
+  const CommentDetailScreen({
+    super.key,
+    required this.commentKey,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(currentUserProvider);
     final state = ref.watch(
-      commentListController(postKey.pid),
+      commentListController(commentKey.commentsPid),
     );
-    final isMyComment = ref.watch(proceedWithoutLoginProvider)
-        ? false
-        : commentKey.commentsUserUid == user!.userUid;
-    final post = ref.watch(singlePostProvider(postKey));
-    final comment = ref.watch(
-        singleCommentProvider({'comment': commentKey, 'pid': postKey.pid}));
 
-    return ref.watch(commentUploaderProvider(comment.commentsUserUid)).when(
-          data: (data) {
-            return state.isLoading
-                ? CircularProgressIndicator()
-                : Material(
-                    child: SafeArea(
-                      child: Scaffold(
-                          body: Stack(children: [
-                        SingleChildScrollView(
-                            child: Container(
-                                child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                CommentProfileWidget(
-                                    commentKey: commentKey,
-                                    postKey: postKey.pid),
-                                const SizedBox(width: 10),
-                                CommentDetailWidget(
-                                    postKey: postKey.pid,
-                                    commentKey: commentKey)
-                              ],
-                            ),
-                          ],
-                        )))
-                      ])),
-                    ),
-                  );
-          },
-          loading: () => CircularProgressIndicator(),
-          error: (error, stackTrace) =>
-              const Icon(Icons.error_outline, size: 20),
+    final comment = ref.watch(singleCommentProvider(commentKey));
+    // final isMyComment = ref.watch(proceedWithoutLoginProvider)
+    //     ? false
+    //     : comment.commentsUserUid == user!.userUid;
+    final uploader =
+        ref.watch(commentUploaderProvider(comment.commentsUserUid));
+    return uploader.when(
+      data: (data) {
+        if (data == null) {
+          return const Text("유저를 찾을 수 없습니다");
+        }
+        // return state.isLoading
+        //     ? CircularProgressIndicator()
+        // : Material(
+        //     child: SafeArea(
+        //       child: Scaffold(
+        //           body: SingleChildScrollView(
+        //               child: Container(
+        //                   child: Column(
+        //         mainAxisAlignment: MainAxisAlignment.start,
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Row(
+        //             children: [
+        //               CommentProfileWidget(commentKey: commentKey),
+        //               const SizedBox(width: 10),
+        //               CommentDetailWidget(commentKey: commentKey)
+        //             ],
+        //           ),
+        //         ],
+        //       )))),
+        //     ),
+        //   );
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: CommentProfileWidget(commentKey: commentKey),
+                ),
+                const SizedBox(width: 10),
+                Flexible(
+                  flex: 3,
+                  fit: FlexFit.tight,
+                  child: CommentDetailWidget(commentKey: commentKey),
+                ),
+              ],
+            ),
+          ],
         );
+      },
+      loading: () => CircularProgressIndicator(),
+      error: (error, stackTrace) => const Icon(Icons.error_outline, size: 20),
+    );
   }
 }

@@ -59,12 +59,16 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                       });
                       return;
                     }
-                    ref.watch(searchPostsProvider.notifier).saveSearchQuery(searchQuery.text);
+                    ref
+                        .watch(searchPostsProvider.notifier)
+                        .saveSearchQuery(searchQuery.text);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => SearchPostResult(searchHeroTag: searchHeroTag, searchQuery: searchQuery.text),
+                      builder: (context) => SearchPostResult(
+                          searchHeroTag: searchHeroTag,
+                          searchQuery: searchQuery.text),
                     ));
                   },
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                  // onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   autoFocus: true,
                 ),
               ),
@@ -77,7 +81,9 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                   ),
                   TextButton(
                     onPressed: () {
-                      ref.watch(searchPostsProvider.notifier).deleteEntireSearchHistory();
+                      ref
+                          .watch(searchPostsProvider.notifier)
+                          .deleteEntireSearchHistory();
                     },
                     child: const Text(
                       "Delete all",
@@ -128,7 +134,9 @@ class PostResultWidget extends ConsumerWidget {
   }
 }
 
-final searchPostsFutureProvider = FutureProvider.family.autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
-  final posts = await ref.watch(searchServiceProvider).searchPost(filterOptions);
+final searchPostsFutureProvider = FutureProvider.family
+    .autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
+  final posts =
+      await ref.watch(searchServiceProvider).searchPost(filterOptions);
   return posts;
 });

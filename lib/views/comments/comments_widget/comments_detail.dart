@@ -7,10 +7,8 @@ import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
 
 class CommentDetailWidget extends ConsumerStatefulWidget {
-  final String postKey;
   final CommentModel commentKey;
-  const CommentDetailWidget(
-      {super.key, required this.postKey, required this.commentKey});
+  const CommentDetailWidget({super.key, required this.commentKey});
 
   @override
   ConsumerState<CommentDetailWidget> createState() =>
@@ -25,15 +23,13 @@ class _CommentDetailWidgetState extends ConsumerState<CommentDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final comment = ref.watch(singleCommentProvider(
-        {'comment': widget.commentKey, 'post': widget.postKey}));
+    final comment = ref.watch(singleCommentProvider(widget.commentKey));
     final currentUser = ref.watch(currentUserProvider);
     final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
     return SingleChildScrollView(
         child: Column(
       children: [
         Container(
-          constraints: BoxConstraints(minHeight: 50, minWidth: 50),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -44,8 +40,8 @@ class _CommentDetailWidgetState extends ConsumerState<CommentDetailWidget> {
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          flex: 4,
+                        Flexible(
+                          fit: FlexFit.loose,
                           child: FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,

@@ -5,6 +5,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/utils/log_util.dart';
 import 'package:plo/constants/error_message_constants.dart';
 import 'package:plo/extensions/ref_dipsose.dart';
@@ -14,6 +15,7 @@ import 'package:plo/model/types/return_type.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/repository/firebasestoroage_respository.dart';
 import 'package:plo/repository/image_picker_repository.dart';
+import 'package:plo/views/home_screen/main_post_list_provider.dart';
 import 'package:plo/views/post_write/post_write_providers.dart';
 import 'package:plo/views/post_write/post_write_screen/widgets/post_image_view.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
@@ -147,8 +149,8 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
       // }
 
       final isForEdit = postState.isForEdit;
-      if (!ref.watch(currentUserProvider.notifier).mounted ||
-          ref.watch(currentUserProvider) == null) {
+      if (ref.read(currentUserProvider.notifier).mounted == false ||
+          ref.read(currentUserProvider) == null) {
         state = AsyncError("Debug: current user error", StackTrace.current);
         state = const AsyncData(null);
         return false;
@@ -184,16 +186,17 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
         );
       } else {
         post = PostModel(
-          postTitle: _titleController.text,
-          postContent: _contentController.text,
-          contentImageUrlList: photoUrls,
           pid: pid,
-          userNickname: user.userNickname,
           uploadUserUid: user.userUid,
-          category: postState.category,
-          uploadTime: Timestamp.now(),
+          userNickname: user.userNickname,
           userProfileURL: user.profileImageUrl,
+          category: postState.category,
+          postContent: _contentController.text,
+          postTitle: _titleController.text,
+          contentImageUrlList: photoUrls,
           postLikes: 0,
+          uploadTime: Timestamp.now(),
+          commentCount: 0,
         );
       }
       final postUploadResult = await ref
@@ -204,6 +207,20 @@ class CreatePostController extends StateNotifier<AsyncValue<void>> {
             ErrorMessageConstants.postUploadError, StackTrace.current);
         state = const AsyncData(null);
         return false;
+      }
+
+      if (isForEdit) {
+        ref.read(mainPostListProvider.notifier).updateSingePostInPostList(post);
+        await ref
+            .read(singlePostProvider(postState.editPostInformation!).notifier)
+            .updatePostFromServer();
+      } else {
+        ref.read(mainPostListProvider.notifier).addListenToPostList([post]);
+      }
+      if (isForEdit) {
+        await ref
+            .read(singlePostProvider(postState.editPostInformation!).notifier)
+            .updatePostFromServer();
       }
       return true;
     } catch (error) {

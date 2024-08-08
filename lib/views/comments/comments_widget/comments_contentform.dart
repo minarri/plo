@@ -19,6 +19,7 @@ class CommentContentForm extends ConsumerWidget {
             const Text("댓글 내용"),
             SizedBox(height: 5),
             TextFormField(
+              keyboardType: TextInputType.text,
               controller: ref
                   .read(createEditCommentController.notifier)
                   .commentContentController,

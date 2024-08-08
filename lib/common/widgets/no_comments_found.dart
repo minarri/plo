@@ -8,12 +8,12 @@ class NoCommentsFound extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: double.infinity,
+        height: 100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error, size: 100),
+            const Icon(Icons.error, size: 20),
             FittedBox(
               child: Text(
                 message,

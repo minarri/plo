@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/utils/functions.dart';
 import 'package:plo/common/widgets/square_image_widget.dart';
 import 'package:plo/model/post_model.dart';
@@ -20,8 +21,9 @@ class ExpandedPostWidget extends ConsumerWidget {
     // log('item widget photoUrls : ${item.photoUrls}');
     // final item = ref.watch(itemDetailProvider(item));
     final user = ref.watch(currentUserProvider);
+    final postKey = ref.watch(singlePostProvider(post));
     if (user == null) {
-      log('important message! currentlySignedInUserProvider is null in ItemWidget.');
+      log('important message! currentlySignedInUserProvider is null in PostWidget.');
     }
     // final Duration duration =
     //     DateTime.now().difference(item.uploadTime!.toDate());
@@ -172,6 +174,9 @@ class ExpandedPostWidget extends ConsumerWidget {
                 Text(post.postLikes == null ? '0' : post.postLikes.toString()),
                 const SizedBox(width: 10),
                 const Icon(Icons.comment),
+                Text(post.commentCount == null
+                    ? '0'
+                    : post.commentCount.toString())
               ],
             ),
           )

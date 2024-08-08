@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/extensions/ref_dipsose.dart';
 import 'package:plo/model/post_model.dart';
+import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/services/like_post_service.dart';
 import 'package:plo/views/home_screen/main_post_list_provider.dart';
@@ -38,6 +39,17 @@ class PostDetailController extends StateNotifier<AsyncValue<void>> {
           _updatePost(postKey, postToBeUpdated);
         }
       }
+    }
+  }
+
+  void updateComments(PostModel postKey) async {
+    final post = ref.read(singlePostProvider(postKey));
+    final int commentCount = await ref
+        .watch(firebasePostRepositoryProvider)
+        .updateCommentCountInPostModel(postKey.pid);
+    if (commentCount != 1) {
+      PostModel postToBeUpdated = post.update(commentCount: commentCount);
+      _updatePost(postKey, postToBeUpdated);
     }
   }
 

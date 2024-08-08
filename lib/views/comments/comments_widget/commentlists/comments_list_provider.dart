@@ -25,6 +25,15 @@ class CommentListProvider extends StateNotifier<List<CommentModel>> {
           .toList();
     }
   }
+
+  void addSingleComment(CommentModel comment) {
+    if (!_commentExistInList(comment)) {
+      state = state
+          .map((commentInList) =>
+              (commentInList.cid == comment.cid) ? comment : commentInList)
+          .toList();
+    }
+  }
 }
 
 final commentListProvider = StateNotifierProvider.autoDispose
