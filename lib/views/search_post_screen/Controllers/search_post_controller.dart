@@ -12,8 +12,10 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   }
   _init() async {
     state = const AsyncLoading();
-    final searchHistory = await ref.watch(sharedPreferenceRepositoryProvider).loadSearchHistory();
-    if (searchHistory != null) ref.read(searchHistoryProvider.notifier).setList(searchHistory);
+    final searchHistory =
+        await ref.watch(sharedPreferenceRepositoryProvider).loadSearchHistory();
+    if (searchHistory != null)
+      ref.read(searchHistoryProvider.notifier).setList(searchHistory);
     state = const AsyncData(null);
   }
 
@@ -22,7 +24,8 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   }
 
   bool _checkListOver10() {
-    final List<String> updatedList = ref.read(searchHistoryProvider.notifier).getList;
+    final List<String> updatedList =
+        ref.read(searchHistoryProvider.notifier).getList;
     if (updatedList.length >= 10) {
       return true;
     } else {
@@ -33,7 +36,9 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   void saveSearchQuery(String searchQuery) async {
     state = const AsyncLoading();
 
-    final List<String>? result = await ref.watch(sharedPreferenceRepositoryProvider).addSingleSearchHistoryItem(searchQuery);
+    final List<String>? result = await ref
+        .watch(sharedPreferenceRepositoryProvider)
+        .addSingleSearchHistoryItem(searchQuery);
     if (result != null) {
       ref.read(searchHistoryProvider.notifier).setList(result);
     } else {
@@ -45,8 +50,11 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   void deleteSingleItemInSearchHistroy(String searchQuery) {
     state = const AsyncLoading();
     ref.read(searchHistoryProvider.notifier).removeSingleItem(searchQuery);
-    final List<String> updatedList = ref.read(searchHistoryProvider.notifier).getList;
-    ref.watch(sharedPreferenceRepositoryProvider).saveSearchHistory(updatedList);
+    final List<String> updatedList =
+        ref.read(searchHistoryProvider.notifier).getList;
+    ref
+        .watch(sharedPreferenceRepositoryProvider)
+        .saveSearchHistory(updatedList);
     state = const AsyncData(null);
   }
 
@@ -58,7 +66,9 @@ class SearchPostsController extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final searchPostsProvider = StateNotifierProvider.autoDispose<SearchPostsController, AsyncValue<void>>((ref) {
+final searchPostsProvider =
+    StateNotifierProvider.autoDispose<SearchPostsController, AsyncValue<void>>(
+        (ref) {
   ref.onDispose(() {
     logToConsole("SearchPostsController disposed");
   });

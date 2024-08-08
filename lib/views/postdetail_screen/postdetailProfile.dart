@@ -42,6 +42,7 @@ class PostDetailProfileWidget extends ConsumerWidget {
                   DefaultProfileImageWidget(imageUrl: uploader.profileImageUrl),
                   const SizedBox(width: 10),
                   Container(
+                    constraints: BoxConstraints(),
                     child: Column(
                       children: [
                         Text("작성자: ${uploader.userNickname}님",
@@ -65,31 +66,37 @@ class PostDetailProfileLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Shimmer.fromColors(
-          baseColor: const Color.fromRGBO(224, 224, 224, 1),
-          highlightColor: const Color.fromRGBO(245, 245, 245, 1),
-          child: const CircleAvatar(
-            backgroundColor: Color.fromRGBO(224, 224, 224, 1),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+      child: Row(
+        children: [
+          Shimmer.fromColors(
+            baseColor: const Color.fromRGBO(224, 224, 224, 1),
+            highlightColor: const Color.fromRGBO(245, 245, 245, 1),
+            child: const CircleAvatar(
+              backgroundColor: Color.fromRGBO(224, 224, 224, 1),
+            ),
           ),
-        ),
-        const SizedBox(width: 6),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ShimmerIndividualWidget(
-            child: Container(
-                color: const Color.fromRGBO(224, 224, 224, 1),
-                child: const Text("Imaginary Name")),
-          )
-        ]),
-        const Spacer(),
-        Expanded(
-            child: ShimmerIndividualWidget(
+          const SizedBox(width: 6),
+          Expanded(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              ShimmerIndividualWidget(
                 child: Container(
-          color: const Color.fromRGBO(224, 224, 224, 1),
-          height: 20,
-        )))
-      ],
+                    color: const Color.fromRGBO(224, 224, 224, 1),
+                    child: const Text("Imaginary Name")),
+              )
+            ]),
+          ),
+          const Spacer(),
+          Expanded(
+              child: ShimmerIndividualWidget(
+                  child: Container(
+            color: const Color.fromRGBO(224, 224, 224, 1),
+            height: 20,
+          )))
+        ],
+      ),
     );
   }
 }

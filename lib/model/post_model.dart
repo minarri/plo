@@ -18,6 +18,7 @@ class PostModelFieldNameConstants {
   static const String postViewList = "postViewList";
   static const String postViewListLength = "postViewListLength";
   static const String showWarning = "ShowWarning";
+  static const String commentCount = "commentCount";
 }
 
 class PostModel {
@@ -35,6 +36,7 @@ class PostModel {
   final List<String> postViewList;
   final int postViewListLength;
   final bool showWarning;
+  final int commentCount;
 
   PostModel(
       {this.pid = ErrorReplacementConstants.notSetString,
@@ -50,7 +52,8 @@ class PostModel {
       this.category = CategoryType.information,
       this.postViewList = const [],
       this.postViewListLength = 0,
-      this.showWarning = false});
+      this.showWarning = false,
+      this.commentCount = 0});
 
   Map<String, Object?> toJson() {
     return {
@@ -68,6 +71,7 @@ class PostModel {
       PostModelFieldNameConstants.postViewList: postViewList,
       PostModelFieldNameConstants.postViewListLength: postViewList.length,
       PostModelFieldNameConstants.showWarning: showWarning,
+      PostModelFieldNameConstants.commentCount: commentCount
     };
   }
 
@@ -113,6 +117,7 @@ class PostModel {
         postViewListLength:
             json[PostModelFieldNameConstants.postViewListLength] ?? -1,
         showWarning: json[PostModelFieldNameConstants.showWarning] ?? false,
+        commentCount: json[PostModelFieldNameConstants.commentCount] ?? 0,
       );
       // final pid = json[PostModelFieldNameConstants.pid] ??
       //     ErrorReplacementConstants.notFoundString;
@@ -221,22 +226,25 @@ class PostModel {
       int? postLikes,
       List<String>? postViewList,
       bool? showWarning,
-      int? postViewListLength}) {
+      int? postViewListLength,
+      int? commentCount}) {
     return PostModel(
-        pid: pid ?? this.pid,
-        uploadUserUid: uploadUserUid ?? this.uploadUserUid,
-        userNickname: userNickname ?? this.userNickname,
-        userProfileURL: userProfileURL ?? this.userProfileURL,
-        postTitle: postTitle ?? this.postTitle,
-        postContent: postContent ?? this.postContent,
-        contentImageUrlList: contentImageUrlList ?? this.contentImageUrlList,
-        uploadTime: uploadTime ?? this.uploadTime,
-        isPostImageBool: isPostImageBool ?? this.isPostImageBool,
-        category: category ?? this.category,
-        postLikes: postLikes ?? this.postLikes,
-        postViewList: postViewList ?? this.postViewList,
-        postViewListLength: postViewListLength ?? this.postViewListLength,
-        showWarning: showWarning ?? this.showWarning);
+      pid: pid ?? this.pid,
+      uploadUserUid: uploadUserUid ?? this.uploadUserUid,
+      userNickname: userNickname ?? this.userNickname,
+      userProfileURL: userProfileURL ?? this.userProfileURL,
+      postTitle: postTitle ?? this.postTitle,
+      postContent: postContent ?? this.postContent,
+      contentImageUrlList: contentImageUrlList ?? this.contentImageUrlList,
+      uploadTime: uploadTime ?? this.uploadTime,
+      isPostImageBool: isPostImageBool ?? this.isPostImageBool,
+      category: category ?? this.category,
+      postLikes: postLikes ?? this.postLikes,
+      postViewList: postViewList ?? this.postViewList,
+      postViewListLength: postViewListLength ?? this.postViewListLength,
+      showWarning: showWarning ?? this.showWarning,
+      commentCount: commentCount ?? this.commentCount,
+    );
   }
 
   @override

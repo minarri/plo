@@ -32,11 +32,13 @@ class SharedPreferenceRepository {
         searchHistoryResult.remove(itemToBeAdded);
       }
       searchHistoryResult.add(itemToBeAdded);
-      final result = await prefs.setStringList('searchHistory', searchHistoryResult);
+      final result =
+          await prefs.setStringList('searchHistory', searchHistoryResult);
       return searchHistoryResult;
     } else {
       searchHistoryResult = [itemToBeAdded];
-      final result = await prefs.setStringList('searchHistory', searchHistoryResult);
+      final result =
+          await prefs.setStringList('searchHistory', searchHistoryResult);
       return searchHistoryResult;
     }
   }
@@ -54,7 +56,8 @@ class SharedPreferenceRepository {
     List<String>? searchHistoryResult = prefs.getStringList('searchHistory');
     if (searchHistoryResult != null) {
       searchHistoryResult.remove(itemToBeDeleted);
-      final result = await prefs.setStringList('searchHistory', searchHistoryResult);
+      final result =
+          await prefs.setStringList('searchHistory', searchHistoryResult);
       return result;
     } else {
       return false;
@@ -75,6 +78,7 @@ class SharedPreferenceRepository {
   }
 }
 
-final sharedPreferenceRepositoryProvider = Provider<SharedPreferenceRepository>((ref) {
+final sharedPreferenceRepositoryProvider =
+    Provider<SharedPreferenceRepository>((ref) {
   return SharedPreferenceRepository();
 });

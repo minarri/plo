@@ -16,7 +16,7 @@ class CommentListController extends StateNotifier<AsyncValue<void>> {
   Ref ref;
   final CommentsRepository commentRepository;
   final FirebaseUserRepository firebaseUserRepository;
-  String pid;
+  final String pid;
 
   CommentListController(
       {required this.ref,

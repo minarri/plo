@@ -208,6 +208,46 @@ class FirebasePostRepository {
     }
   }
 
+  Future<int> countComments(String pid) async {
+    try {
+      QuerySnapshot querySnapshot = await firestoreinstance
+          .collection(FirebaseConstants.postcollectionName)
+          .doc(pid)
+          .collection(FirebaseConstants.commentscollectionName)
+          .get();
+      int commentCount = querySnapshot.size;
+      return commentCount;
+    } catch (error) {
+      return -1;
+    }
+  }
+
+  Future<int> updateCommentCountInPostModel(String pid) async {
+    try {
+      int commentCount = await countComments(pid);
+      if (commentCount == -1) {
+        return -1;
+      }
+
+      DocumentSnapshot postSnapshot = await firestoreinstance
+          .collection(FirebaseConstants.postcollectionName)
+          .doc(pid)
+          .get();
+
+      if (!postSnapshot.exists) {
+        return -1;
+      }
+
+      await postSnapshot.reference
+          .update({PostModelFieldNameConstants.commentCount: commentCount});
+
+      return commentCount;
+    } catch (error) {
+      log("There was an error during the updateCommentCountInPostModel ${error.toString()}");
+      return -1;
+    }
+  }
+
   Future<List<PostModel>?> fetchUsersThreeOtherPosts({
     required String userUid,
     required String excludePostUid,

@@ -7,18 +7,22 @@ import '../../../services/search_service.dart';
 import '../Controllers/filter_options_controller.dart';
 import '../Widgets/search_bar.dart';
 
-final searchItemFutureProvider = FutureProvider.family.autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
-  final items = await ref.watch(searchServiceProvider).searchPost(filterOptions);
+final searchItemFutureProvider = FutureProvider.family
+    .autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
+  final items =
+      await ref.watch(searchServiceProvider).searchPost(filterOptions);
   return items;
 });
 
 class SearchPostResult extends ConsumerStatefulWidget {
   final String searchHeroTag;
   final String searchQuery;
-  const SearchPostResult({super.key, required this.searchHeroTag, required this.searchQuery});
+  const SearchPostResult(
+      {super.key, required this.searchHeroTag, required this.searchQuery});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _SearchPostResultState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SearchPostResultState();
 }
 
 class _SearchPostResultState extends ConsumerState<SearchPostResult> {
@@ -26,7 +30,9 @@ class _SearchPostResultState extends ConsumerState<SearchPostResult> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.watch(filterOptionsProvider.notifier).setSearchQuery(widget.searchQuery);
+      ref
+          .watch(filterOptionsProvider.notifier)
+          .setSearchQuery(widget.searchQuery);
     });
   }
 
