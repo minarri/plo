@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/common/widgets/detail_no_like_button.dart';
@@ -49,107 +50,164 @@ class PostDetailScreen extends ConsumerWidget {
         : postKey.uploadUserUid == user!.userUid;
     final post = ref.watch(singlePostProvider(postKey));
     return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
-        data: (data) {
-          return state.isLoading
-              ? const Scaffold(
-                  body: Center(
-                  child: CircularProgressIndicator(),
-                ))
-              : Material(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  child: SafeArea(
-                    child: Scaffold(
-                      extendBodyBehindAppBar: true,
-                      appBar: AppBar(
-                        automaticallyImplyLeading: false,
-                        elevation: 0,
-                        backgroundColor: Colors.transparent,
-                        actions: [
-                          PostFloatingButton(
-                              postKey: postKey, parentContext: context)
-                        ],
-                      ),
-                      body: Stack(
-                        children: [
-                          SingleChildScrollView(
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(height: 60),
-                                  PostDetailProfileWidget(
-                                    postKey: postKey,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: PostDetailWidget(
-                                      postKey: postKey,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        child: isNotSignedUser
-                                            ? const DetailNoLikeButton()
-                                            : SizedBox(
-                                                child: PostDetailLikeButton(
-                                                  postKey: postKey,
-                                                ),
-                                              ),
-                                      ),
-                                      Icon(Icons.comment),
-                                      Text(post.commentCount.toString())
-                                    ],
-                                  ),
-                                  const SizedBox(height: 5),
-                                  // PostDetailPhoto(postKey: postKey),
-                                  const Divider(
-                                    thickness: 1,
-                                  ),
+        // data: (data) {
+        //   return state.isLoading
+        //       ? const Scaffold(
+        //           body: Center(
+        //           child: CircularProgressIndicator(),
+        //         ))
+        //       : Material(
+        //           color: Theme.of(context).scaffoldBackgroundColor,
+        //           child: SafeArea(
+        //             child: Scaffold(
+        //               extendBodyBehindAppBar: true,
+        //               appBar: AppBar(
+        //                 automaticallyImplyLeading: false,
+        //                 elevation: 0,
+        //                 backgroundColor: Colors.transparent,
+        //                 actions: [
+        //                   PostFloatingButton(
+        //                       postKey: postKey, parentContext: context)
+        //                 ],
+        //               ),
+        //               body: Stack(
+        //                 children: [
+        //                   SingleChildScrollView(
+        //                     child: Container(
+        //                       padding: const EdgeInsets.all(10),
+        //                       child: Column(
+        //                         mainAxisAlignment: MainAxisAlignment.start,
+        //                         crossAxisAlignment: CrossAxisAlignment.start,
+        //                         children: [
+        //                           const SizedBox(height: 60),
+        //                           PostDetailProfileWidget(
+        //                             postKey: postKey,
+        //                           ),
+        //                           const SizedBox(height: 10),
+        //                           Padding(
+        //                             padding: const EdgeInsets.symmetric(
+        //                                 horizontal: 10),
+        //                             child: PostDetailWidget(
+        //                               postKey: postKey,
+        //                             ),
+        //                           ),
+        //                           const SizedBox(height: 5),
+        //                           Row(
+        //                             crossAxisAlignment:
+        //                                 CrossAxisAlignment.center,
+        //                             children: [
+        //                               Padding(
+        //                                 padding: const EdgeInsets.symmetric(
+        //                                     horizontal: 10.0),
+        //                                 child: isNotSignedUser
+        //                                     ? const DetailNoLikeButton()
+        //                                     : SizedBox(
+        //                                         child: PostDetailLikeButton(
+        //                                           postKey: postKey,
+        //                                         ),
+        //                                       ),
+        //                               ),
+        //                               Icon(Icons.comment),
+        //                               Text(post.commentCount.toString())
+        //                             ],
+        //                           ),
+        //                           const SizedBox(height: 5),
+        //                           // PostDetailPhoto(postKey: postKey),
+        //                           const Divider(
+        //                             thickness: 1,
+        //                           ),
 
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    // child: PostDetailUserOtherPostsWidget(
-                                    //   postKey: postKey,
-                                    // ),
-                                    child: CommentWriteScreen(
-                                      postKey: postKey,
-                                    ),
-                                  ),
-                                  if (!isMyPost)
-                                    const Divider(
-                                      thickness: 1,
-                                    ),
-                                  // if (!isMyPost) ...[
-                                  //   Container(
-                                  //     padding: const EdgeInsets.symmetric(
-                                  //         horizontal: 10),
-                                  //     child: PostDetailSameCategoryWidget(
-                                  //       postKey: postKey,
-                                  //     ),
-                                  //   ),
-                                  //   const Divider(
-                                  //     thickness: 1,
-                                  //   )
-                                  // ],
-                                ],
-                              ),
+        //                           CommentWriteScreen(
+        //                             postKey: postKey,
+        //                           ),
+
+        //                           if (!isMyPost)
+        //                             const Divider(
+        //                               thickness: 1,
+        //                             ),
+        //                           // if (!isMyPost) ...[
+        //                           //   Container(
+        //                           //     padding: const EdgeInsets.symmetric(
+        //                           //         horizontal: 10),
+        //                           //     child: PostDetailSameCategoryWidget(
+        //                           //       postKey: postKey,
+        //                           //     ),
+        //                           //   ),
+        //                           //   const Divider(
+        //                           //     thickness: 1,
+        //                           //   )
+        //                           // ],
+        //                         ],
+        //                       ),
+        //                     ),
+        //                   )
+        //                 ],
+        //               ),
+        //             ),
+        //           ));
+        // },
+        data: (data) {
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              actions: [
+                PostFloatingButton(postKey: postKey, parentContext: context)
+              ],
+            ),
+            body: SafeArea(
+              child: state.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 60),
+                            PostDetailProfileWidget(postKey: postKey),
+                            const SizedBox(height: 10),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: PostDetailWidget(postKey: postKey),
                             ),
-                          )
-                        ],
+                            const SizedBox(height: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  child: isNotSignedUser
+                                      ? const DetailNoLikeButton()
+                                      : SizedBox(
+                                          child: PostDetailLikeButton(
+                                              postKey: postKey),
+                                        ),
+                                ),
+                                const Icon(Icons.comment),
+                                Text(post.commentCount.toString()),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            const Divider(thickness: 1),
+
+                            Flexible(
+                                fit: FlexFit.loose,
+                                child: CommentWriteScreen(postKey: postKey)),
+                            if (!isMyPost) const Divider(thickness: 1),
+                            // if (!isMyPost)
+                            //   PostDetailSameCategoryWidget(postKey: postKey),
+                          ],
+                        ),
                       ),
                     ),
-                  ));
+            ),
+          );
         },
         error: (error, stackTrace) => const Icon(Icons.error_outline),
         loading: () => const CircularProgressIndicator());

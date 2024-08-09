@@ -27,10 +27,9 @@ final postDetailCurrentUserFutureProvider =
 
 class CommentDetailScreen extends ConsumerWidget {
   final CommentModel commentKey;
-  const CommentDetailScreen({
-    super.key,
-    required this.commentKey,
-  });
+  final PostModel postKey;
+  const CommentDetailScreen(
+      {super.key, required this.commentKey, required this.postKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,6 +72,7 @@ class CommentDetailScreen extends ConsumerWidget {
         //     ),
         //   );
         return Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -87,7 +87,10 @@ class CommentDetailScreen extends ConsumerWidget {
                 Flexible(
                   flex: 3,
                   fit: FlexFit.tight,
-                  child: CommentDetailWidget(commentKey: commentKey),
+                  child: CommentDetailWidget(
+                    commentKey: commentKey,
+                    postKey: postKey,
+                  ),
                 ),
               ],
             ),

@@ -109,28 +109,28 @@ class CreateEditCommentController extends StateNotifier<AsyncValue<void>> {
     }
   }
 
-  Future<bool> deleteComment(PostModel post, CommentModel comment) async {
-    try {
-      state = const AsyncLoading();
-      final deleteCommentResult = await ref
-          .watch(firebaseCommentRepository)
-          .deleteComments(post, comment);
+  // Future<bool> deleteComment(PostModel post, CommentModel comment) async {
+  //   try {
+  //     state = const AsyncLoading();
+  //     final deleteCommentResult = await ref
+  //         .watch(firebaseCommentRepository)
+  //         .deleteComments(post, comment);
 
-      if (!deleteCommentResult) {
-        state = AsyncError("Error while deleting comment from the firebase",
-            StackTrace.current);
-        state = const AsyncData(null);
-        return false;
-      }
-      state = const AsyncData(null);
-      return true;
-    } catch (error) {
-      state = AsyncError(
-          "Error deleting comment: ${error.toString()}", StackTrace.current);
-      log("There was an error while deleting a comment ${error.toString()}");
-      return false;
-    }
-  }
+  //     if (!deleteCommentResult) {
+  //       state = AsyncError("Error while deleting comment from the firebase",
+  //           StackTrace.current);
+  //       state = const AsyncData(null);
+  //       return false;
+  //     }
+  //     state = const AsyncData(null);
+  //     return true;
+  //   } catch (error) {
+  //     state = AsyncError(
+  //         "Error deleting comment: ${error.toString()}", StackTrace.current);
+  //     log("There was an error while deleting a comment ${error.toString()}");
+  //     return false;
+  //   }
+  // }
 }
 
 final createEditCommentController =
