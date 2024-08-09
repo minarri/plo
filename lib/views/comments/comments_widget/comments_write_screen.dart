@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/providers/singlepost.dart';
 import 'package:plo/model/comments_model.dart';
@@ -8,7 +9,7 @@ import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/comments/comments_controller.dart';
-import 'package:plo/views/comments/comments_widget/commentlist_screen.dart';
+import 'package:plo/views/comments/comments_widget/commentlists/commentlist_screen.dart';
 import 'package:plo/views/comments/comments_widget/commentlists/comments_list_controller.dart';
 import 'package:plo/views/comments/comments_widget/commentlists/comments_list_provider.dart';
 import 'package:plo/views/comments/comments_provider.dart';
@@ -67,74 +68,71 @@ class _CommentWriteScreenState extends ConsumerState<CommentWriteScreen> {
   Widget build(BuildContext context) {
     // var commentState = ref.watch(createEditCommentStateProvider);
     final post = ref.watch(postDetailFutureProvider(widget.postKey.pid));
-    return SafeArea(
-      child: post.when(
-        data: (post) {
-          if (post == null) {
-            return Center(child: Text("게시물이 존재하지 않습니다"));
-          }
-          ref.watch(commentListController(post.pid));
-          // return SizedBox(
-          //   width: MediaQuery.of(context).size.width,
-          //   height: MediaQuery.of(context).size.height,
-          //   child: Column(
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: [
-          //       Flexible(
-          //         fit: FlexFit.tight,
-          //         child: CommentListScreen(
-          //           postKey: post,
-          //         ),
-          //       ),
-          //       Padding(
-          //           padding: const EdgeInsets.symmetric(vertical: 8),
-          //           child: CommentContentForm(formKey: _formKey)),
-          //       TextButton(
-          //         onPressed: () async {
-          //           showDialog(
-          //               context: context,
-          //               barrierDismissible: false,
-          //               builder: (context) =>
-          //                   Center(child: CircularProgressIndicator()));
-          //           final result = await ref
-          //               .read(createEditCommentController.notifier)
-          //               .uploadComment(
-          //                   formKey: _formKey, postPid: widget.postKey.pid);
-          //           // if (!result) {
-          //           //   Navigator.of(context).pop();
+    return Scaffold(
+      body: SafeArea(
+        child: post.when(
+          data: (post) {
+            if (post == null) {
+              return Center(child: Text("게시물이 존재하지 않습니다"));
+            }
+            ref.watch(commentListController(post.pid));
+            // return SizedBox(
+            //   width: MediaQuery.of(context).size.width,
+            //   height: MediaQuery.of(context).size.height,
+            //   child: Column(
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       Flexible(
+            //         fit: FlexFit.tight,
+            //         child: CommentListScreen(
+            //           postKey: post,
+            //         ),
+            //       ),
+            //       Padding(
+            //           padding: const EdgeInsets.symmetric(vertical: 8),
+            //           child: CommentContentForm(formKey: _formKey)),
+            //       TextButton(
+            //         onPressed: () async {
+            //           showDialog(
+            //               context: context,
+            //               barrierDismissible: false,
+            //               builder: (context) =>
+            //                   Center(child: CircularProgressIndicator()));
+            //           final result = await ref
+            //               .read(createEditCommentController.notifier)
+            //               .uploadComment(
+            //                   formKey: _formKey, postPid: widget.postKey.pid);
+            //           // if (!result) {
+            //           //   Navigator.of(context).pop();
 
-          //           //   ScaffoldMessenger.of(context).showSnackBar(
-          //           //     SnackBar(
-          //           //       content: Text("댓글을 올리는데 실패 했습니다."),
-          //           //     ),
-          //           //   );
-          //           // }
-          //           if (result == true) {
-          //             ref.refresh(commentListController(widget.postKey.pid));
-          //             Navigator.of(context).pop();
-          //           } else {
-          //             Navigator.of(context).pop();
-          //           }
-          //         },
-          //         child: const Text("글 작성"),
-          //       ),
-          //     ],
-          //   ),
-          // );
-          return LayoutBuilder(builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints:
-                    BoxConstraints(maxHeight: constraints.maxHeight - 150),
-                child: Column(
+            //           //   ScaffoldMessenger.of(context).showSnackBar(
+            //           //     SnackBar(
+            //           //       content: Text("댓글을 올리는데 실패 했습니다."),
+            //           //     ),
+            //           //   );
+            //           // }
+            //           if (result == true) {
+            //             ref.refresh(commentListController(widget.postKey.pid));
+            //             Navigator.of(context).pop();
+            //           } else {
+            //             Navigator.of(context).pop();
+            //           }
+            //         },
+            //         child: const Text("글 작성"),
+            //       ),
+            //     ],
+            //   ),
+            // );
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxHeight: constraints.maxHeight - 150),
-                    ),
-                    CommentListScreen(
-                      postKey: post,
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: CommentListScreen(
+                        postKey: post,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -166,17 +164,17 @@ class _CommentWriteScreenState extends ConsumerState<CommentWriteScreen> {
                       child: const Text("글 작성"),
                     ),
                   ],
-                ),
-              ),
+                );
+              },
             );
-          });
-        },
-        loading: () => CircularProgressIndicator(),
-        error: ((error, stackTrace) => Center(
-              child: Text(
-                "Error: ${error.toString()}",
-              ),
-            )),
+          },
+          loading: () => CircularProgressIndicator(),
+          error: ((error, stackTrace) => Center(
+                child: Text(
+                  "Error: ${error.toString()}",
+                ),
+              )),
+        ),
       ),
     );
   }

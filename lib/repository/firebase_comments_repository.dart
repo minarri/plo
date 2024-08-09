@@ -91,13 +91,13 @@ class CommentsRepository {
     }
   }
 
-  Future<bool> deleteComments(PostModel post, CommentModel comment) async {
+  Future<bool> deleteComments(String pid, String cid) async {
     try {
       await _firestoreInstance
           .collection(FirebaseConstants.postcollectionName)
-          .doc(post.pid)
+          .doc(pid)
           .collection(FirebaseConstants.commentscollectionName)
-          .doc(comment.cid)
+          .doc(cid)
           .delete();
       log("comment is deleted from the subcollection in the postcollection");
 
