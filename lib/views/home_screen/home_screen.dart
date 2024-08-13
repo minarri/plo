@@ -28,7 +28,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _pageController.jumpToPage(index);
   }
 
-  final List<Widget> pages = [const MainPostList(), const SearchPostsHero(), const TestScreen(), const SettingsScreen()];
+  final List<Widget> pages = [const MainPostList(), const SearchPostsHero(), const SettingsScreen()];
 
   @override
   Widget build(BuildContext context) {
