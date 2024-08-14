@@ -42,7 +42,7 @@ class _CheckAppRequirementScreenState
         ),
         resizeToAvoidBottomInset: true,
         body: state.isLoading
-            ? const CircularProgressIndicator()
+            ? const Center(child: CircularProgressIndicator())
             : const HomeScreen());
   }
 }

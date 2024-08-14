@@ -166,7 +166,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                                             CategoryType.information
                                         ? const Icon(Icons.info_outline,
                                             size: 20)
-                                        : const Icon(Icons.category, size: 30)),
+                                        : const Icon(Icons.category, size: 20)),
                               ]),
                             ),
                           )
@@ -181,7 +181,10 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                     Expanded(
                       flex: 4,
                       child: Text(
-                        post.category.toString(), // Convert enum to string
+                        post.category == CategoryType.information
+                            ? "정보 게시물"
+                            : "자유 게시물",
+                        // post.category.toString(), // Convert enum to string
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!
@@ -189,7 +192,7 @@ class _PostDetailWidgetState extends ConsumerState<PostDetailWidget> {
                       ),
                     ),
                     Text(
-                      " ${Functions.timeDifferenceInText(DateTime.now().difference(post.uploadTime!.toDate()))}",
+                      " 작성일: ${Functions.timeDifferenceInText(DateTime.now().difference(post.uploadTime!.toDate()))}",
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall!

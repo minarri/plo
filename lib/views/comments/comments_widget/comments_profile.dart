@@ -27,21 +27,17 @@ class CommentProfileWidget extends ConsumerWidget {
         data: (commentUploader) {
           if (commentUploader == null) return const Text("유저를 찾을 수 없습니다.");
           return Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DefaultProfileImageWidget(
-                  imageUrl: commentUploader.profileImageUrl),
-              const SizedBox(width: 10),
-              Flexible(
-                fit: FlexFit.loose,
-                child: Text(" 작성자 ${commentUploader.userNickname}님",
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium),
-              )
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: DefaultProfileImageWidget(
+                    imageUrl: commentUploader.profileImageUrl),
+              ),
             ],
           );
-          ;
         });
   }
 }

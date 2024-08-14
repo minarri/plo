@@ -46,12 +46,17 @@ class CommentDetailCurrentUserKebobicon extends ConsumerWidget {
                     ),
                   ),
                 );
+                // if (result == true) {
+                //   if (context.mounted) {
+                //     await ref
+                //         .watch(singleCommentProvider(commentKey).notifier)
+                //         .updateCommentFromServer();
+                //   }
+                // }
                 if (result == true) {
-                  if (context.mounted) {
-                    await ref
-                        .watch(singleCommentProvider(commentKey).notifier)
-                        .updateCommentFromServer();
-                  }
+                  ref
+                      .refresh(singleCommentProvider(commentKey).notifier)
+                      .updateCommentFromServer();
                 }
               },
               icon: const Icon(Icons.edit),

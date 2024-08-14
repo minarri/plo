@@ -32,58 +32,28 @@ class _CommentDetailWidgetState extends ConsumerState<CommentDetailWidget> {
     final comment = ref.watch(singleCommentProvider(widget.commentKey));
     final currentUser = ref.watch(currentUserProvider);
     final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
-    return SingleChildScrollView(
-        child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Flexible(
-                        fit: FlexFit.tight,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              Text(comment.commentsUserNickname),
-                              SizedBox(width: 5),
-                              Text(
-                                  "${Functions.timeDifferenceInText(DateTime.now().difference(comment.uploadTime!.toDate()))}"),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      // Flexible(
-                      //   fit: FlexFit.tight,
-                      //   child: KebobIconButton(
-                      //       commentKey: widget.commentKey,
-                      //       postKey: widget.postKey,
-                      //       parentContext: context),
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Flexible(
-                          fit: FlexFit.loose,
-                          child: Text(comment.commentContent)),
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
-        )
+        Row(
+          children: [
+            Text('${comment.commentsUserNickname}님'),
+            SizedBox(width: 5),
+            Text(
+                "${Functions.timeDifferenceInText(DateTime.now().difference(comment.uploadTime!.toDate()))}"),
+            const Spacer(),
+            KebobIconButton(
+                commentKey: widget.commentKey,
+                postKey: widget.postKey,
+                parentContext: context),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          comment.commentContent,
+          softWrap: true,
+        ),
       ],
-    ));
+    );
   }
 }

@@ -44,7 +44,7 @@ class _CheckEmailAndUsermodelScreenState
       ),
       data: (data) {
         return data == false
-            ? SignUpScreen()
+            ? const SignUpScreen()
             : const CheckAppRequirementScreen();
       },
     );

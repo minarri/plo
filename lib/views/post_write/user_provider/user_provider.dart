@@ -22,9 +22,6 @@ class UserProvider extends StateNotifier<UserModel?> {
       if (user != null) {
         log("User fetched from Firebase: ${user.userNickname}");
         state = user;
-        if (mounted) {
-          state = user;
-        }
       } else {
         log("No user data returned from Firebase");
       }
