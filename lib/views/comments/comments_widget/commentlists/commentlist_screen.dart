@@ -47,9 +47,9 @@ class CommentListScreen extends ConsumerWidget {
                 return const NoCommentsFound();
               }
               return ListView.separated(
-                padding: const EdgeInsets.all(8),
-                physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
+                padding: const EdgeInsets.all(8),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: ref
                     .read(commentListController(postKey.pid).notifier)
                     .scrollController,

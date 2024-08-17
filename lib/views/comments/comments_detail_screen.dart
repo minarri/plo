@@ -71,30 +71,25 @@ class CommentDetailScreen extends ConsumerWidget {
         //       )))),
         //     ),
         //   );
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  flex: 1,
-                  fit: FlexFit.tight,
-                  child: CommentProfileWidget(commentKey: commentKey),
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CommentProfileWidget(commentKey: commentKey)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: CommentDetailWidget(
+                  commentKey: commentKey,
+                  postKey: postKey,
                 ),
-                const SizedBox(width: 10),
-                Flexible(
-                  flex: 3,
-                  fit: FlexFit.tight,
-                  child: CommentDetailWidget(
-                    commentKey: commentKey,
-                    postKey: postKey,
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         );
       },
       loading: () => CircularProgressIndicator(),
