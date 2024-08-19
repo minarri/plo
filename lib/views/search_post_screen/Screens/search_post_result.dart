@@ -12,8 +12,8 @@ import '../Widgets/search_bar.dart';
 //import '../Widgets/search_sort.dart';
 
 final searchPostFutureProvider = FutureProvider.family.autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
-  final items = await ref.watch(searchServiceProvider).searchPost(filterOptions);
-  return items;
+  final posts = await ref.watch(searchServiceProvider).searchPost(filterOptions);
+  return posts;
 });
 
 class SearchPostResult extends ConsumerStatefulWidget {

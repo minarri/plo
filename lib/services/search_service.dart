@@ -10,38 +10,31 @@ import '../model/state_model/search_filter_options_model.dart';
 class SearchService {
   SearchService({required this.ref});
   final Ref ref;
-  final searchClient = SearchClient(
-    apiKey: AlgoliaConstants.algoliaApiKey,
-    appId: AlgoliaConstants.algoliaAppId,
-  );
 
   Stream getSearchQuery(String? query) {
     if (query == null || query.isEmpty) {
       return const Stream.empty();
     }
-    final index = searchClient
-        .searchIndex(
-          request: SearchForHits(
-            indexName: AlgoliaConstants.sortByNewestIndexName,
-            query: query,
-            page: 0,
-            hitsPerPage: 10,
-          ),
-        )
+    final searchClient = SearchClient(
+      apiKey: AlgoliaConstants.algoliaApiKey,
+      appId: AlgoliaConstants.algoliaAppId,
+    );
+    return searchClient
+        .searchIndex(request: SearchForHits(indexName: AlgoliaConstants.sortByNewestIndexName, query: query, page: 0, hitsPerPage: 10))
         .asStream();
-
-    logToConsole("SearchService: Search query sent to Algolia: $query");
-
-    return index;
   }
 
   Future<List<PostModel>?> searchPost(FilterOptions filterOptions) async {
     logToConsole("arrived here: searchPost in search_service");
     try {
-      if (filterOptions.searchQuery.isEmpty || filterOptions.searchQuery == "") {
+      if (filterOptions.searchQuery.isEmpty || filterOptions.searchQuery == " ") {
         logToConsole("filterOptions is empty");
         return null;
       }
+      final searchClient = SearchClient(
+        apiKey: AlgoliaConstants.algoliaApiKey,
+        appId: AlgoliaConstants.algoliaAppId,
+      );
 
       logToConsole("SearchService: Searching posts with filter options: $filterOptions");
 

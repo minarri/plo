@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/views/search_post_screen/Widgets/search_history.dart';
 
 import '../Controllers/search_post_controller.dart';
 import 'search_post_result.dart';
@@ -44,11 +45,12 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                   trailing: [
                     IconButton(
                       icon: const Icon(Icons.clear),
-                      onPressed: searchQuery.clear,
+                      onPressed: () {
+                        searchQuery.clear();
+                      },
                     ),
                   ],
                   hintText: "검색어를 입력해주세요",
-                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   onSubmitted: (_) async {
                     if (searchQuery.text.isEmpty || searchQuery.text == " ") {
                       setState(() {
@@ -62,6 +64,7 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                     ));
                   },
                   autoFocus: true,
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 ),
               ),
               const SizedBox(height: 15),
@@ -83,6 +86,7 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                   ),
                 ],
               ),
+              SearchHistory(searchHeroTag: searchHeroTag),
             ],
           ),
         ),
