@@ -10,7 +10,7 @@ import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/state_model/create_edit_comment_model.dart';
 import 'package:plo/services/delete_service.dart';
-import 'package:plo/views/comments/comments_widget/comments_write_screen.dart';
+import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
 import 'package:plo/views/home_screen/widgets/default_progress_result.dart';
 
@@ -33,34 +33,34 @@ class CommentDetailCurrentUserKebobicon extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ModalBottomSheetIcon(
-              title: "수정",
-              onTap: () async {
-                Navigator.of(context).pop();
-                final result = await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CommentWriteScreen(
-                      postKey: post,
-                      editCommentInformation:
-                          CreateEditCommentModel.initForEditComment(comment),
-                    ),
-                  ),
-                );
-                // if (result == true) {
-                //   if (context.mounted) {
-                //     await ref
-                //         .watch(singleCommentProvider(commentKey).notifier)
-                //         .updateCommentFromServer();
-                //   }
-                // }
-                if (result == true) {
-                  ref
-                      .refresh(singleCommentProvider(commentKey).notifier)
-                      .updateCommentFromServer();
-                }
-              },
-              icon: const Icon(Icons.edit),
-            ),
+            // ModalBottomSheetIcon(
+            //   title: "수정",
+            //   onTap: () async {
+            //     Navigator.of(context).pop();
+            //     final result = await Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (context) => CommentScreen(
+            //           postKey: post,
+            //           editCommentInformation:
+            //               CreateEditCommentModel.initForEditComment(comment),
+            //         ),
+            //       ),
+            //     );
+            //     // if (result == true) {
+            //     //   if (context.mounted) {
+            //     //     await ref
+            //     //         .watch(singleCommentProvider(commentKey).notifier)
+            //     //         .updateCommentFromServer();
+            //     //   }
+            //     // }
+            //     if (result == true) {
+            //       ref
+            //           .refresh(singleCommentProvider(commentKey).notifier)
+            //           .updateCommentFromServer();
+            //     }
+            //   },
+            //   icon: const Icon(Icons.edit),
+            // ),
             ModalBottomSheetIcon(
                 title: "삭제",
                 icon: const Icon(Icons.delete),

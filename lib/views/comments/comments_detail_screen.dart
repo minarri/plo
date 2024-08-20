@@ -92,7 +92,7 @@ class CommentDetailScreen extends ConsumerWidget {
           ),
         );
       },
-      loading: () => CircularProgressIndicator(),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) => const Icon(Icons.error_outline, size: 20),
     );
   }

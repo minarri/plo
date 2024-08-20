@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_screen.dart';
 import 'package:plo/model/types/enum_type.dart';
@@ -33,78 +35,131 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomInitialScreen(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Log-in'),
+          const Text(
+            'People Link One',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          Image.asset('assets/images/pennstate_logo.png',
+              width: 130, height: 130),
           const SizedBox(height: 10),
           LogInTextFieldWidget(
             formKey: _formKey,
             emailController: emailController,
             passwordController: passwordController,
           ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ForgotPasswordScreen(),
-                ),
-              );
-            },
-            child: const Text("Forgot Password?"),
-          ),
-          TextButton(
-            onPressed: () async {
-              showDialog(
-                context: context,
-                builder: (context) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-              if (_formKey.currentState!.validate()) {
-                final result = await ref.watch(loginController.notifier).loginWithEmail();
-                Navigator.of(context).pop();
-
-                if (result == ReturnTypeENUM.success.toString()) {
-                  Navigator.pushReplacement(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
+                      builder: (context) => const ForgotPasswordScreen(),
                     ),
                   );
+                },
+                child: const Text("Forgot Password?",
+                    style: TextStyle(fontSize: 11)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Container(
+            height: 50,
+            width: MediaQuery.sizeOf(context).width * 0.6,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () async {
+                showDialog(
+                  context: context,
+                  builder: (context) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+                if (_formKey.currentState!.validate()) {
+                  final result = await ref
+                      .watch(loginController.notifier)
+                      .loginWithEmail();
+                  Navigator.of(context).pop();
+
+                  if (result == ReturnTypeENUM.success.toString()) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  }
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  Navigator.of(context).pop();
                 }
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-            child: const Text("Log-in"),
+              },
+              child: const Text("Login",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white)),
+            ),
           ),
           defaultSpacing,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("New User"),
-              TextButton(
-                child: const Text("Sign-Up"),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpScreen(),
+              Container(
+                height: 50,
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                },
+                  ),
+                  child: const Text("New User? Sign-Up",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SignUpScreen(),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
-          defaultSpacing,
-          TextButton(
-            child: const Text("Proceed without login"),
+          SizedBox(height: 80),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text("Continue Without Login",
+                style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.pushReplacement(
                 context,

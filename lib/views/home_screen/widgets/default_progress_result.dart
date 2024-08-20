@@ -53,7 +53,7 @@ class _DefaultProgressResultState extends ConsumerState<DefaultProgressResult> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
+                  Center(child: CircularProgressIndicator()),
                   SizedBox(height: 10),
                   FittedBox(
                     child: Text(
@@ -96,7 +96,8 @@ class _DefaultProgressResultState extends ConsumerState<DefaultProgressResult> {
                 CustomButton(
                     onPressed: () {
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => const HomeScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
                           (Route<dynamic> route) => false);
                     },
                     text: "홈 화면으로 가기")

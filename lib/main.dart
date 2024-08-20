@@ -26,10 +26,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          fontFamily: 'NotoSansKR',
-          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        fontFamily: 'NotoSansKR',
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          })),
+          },
+        ),
+      ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
@@ -40,8 +43,11 @@ class MyApp extends StatelessWidget {
             return const Scaffold(
                 body: Center(child: Text("There has been an error")));
           }
+          // if (snapshot.hasData) {
+          //   return const CheckEmailAndUsermodelScreen();
+          // }
           if (snapshot.hasData) {
-            return const CheckEmailAndUsermodelScreen();
+            return const SignInScreen();
           }
           return const SignInScreen();
         },

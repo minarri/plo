@@ -94,6 +94,7 @@ flutter:
   assets:
     - assets/images/profile_default.png
     - assets/images/profile_plus.png
+    - assets/images/pennstate_logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
