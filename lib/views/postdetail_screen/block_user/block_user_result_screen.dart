@@ -39,7 +39,7 @@ class BlockUserModalBottomSheetResultScreen extends ConsumerWidget {
               },
               error: (error, stackTrace) =>
                   const Icon(Icons.error_outline_outlined, size: 30),
-              loading: () => const CircularProgressIndicator()),
+              loading: () => const Center(child: CircularProgressIndicator())),
     );
   }
 }

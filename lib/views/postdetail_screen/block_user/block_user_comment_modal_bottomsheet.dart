@@ -4,7 +4,7 @@ import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
-import 'package:plo/views/comments/comments_widget/comments_write_screen.dart';
+import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/postdetail_screen/block_user/blocK_user_result_screen.dart';
 import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet_page.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';

@@ -192,6 +192,6 @@ class PostDetailScreen extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) => const Icon(Icons.error_outline),
-        loading: () => const CircularProgressIndicator());
+        loading: () => const Center(child: CircularProgressIndicator()));
   }
 }

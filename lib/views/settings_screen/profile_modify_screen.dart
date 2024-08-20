@@ -63,7 +63,7 @@ class _ProfileModifyScreenState extends ConsumerState<ProfileModifyScreen> {
                     validator: (value) => Validator.validateMajor(value)),
                 const SizedBox(height: 50),
                 _isLoading
-                    ? const CircularProgressIndicator()
+                    ? const Center(child: CircularProgressIndicator())
                     : CustomButton(
                         text: "변경사항 저장",
                         onPressed: () async {

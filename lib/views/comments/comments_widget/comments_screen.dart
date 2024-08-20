@@ -33,20 +33,20 @@ final commentDetailCurrentUserFutureProvider =
   return user;
 });
 
-class CommentWriteScreen extends ConsumerStatefulWidget {
+class CommentScreen extends ConsumerStatefulWidget {
   final CreateEditCommentModel? editCommentInformation;
   final PostModel postKey;
 
-  const CommentWriteScreen({
+  const CommentScreen({
     super.key,
     this.editCommentInformation,
     required this.postKey,
   });
   @override
-  ConsumerState<CommentWriteScreen> createState() => _CommentWriteScreenState();
+  ConsumerState<CommentScreen> createState() => _CommentWriteScreenState();
 }
 
-class _CommentWriteScreenState extends ConsumerState<CommentWriteScreen> {
+class _CommentWriteScreenState extends ConsumerState<CommentScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override

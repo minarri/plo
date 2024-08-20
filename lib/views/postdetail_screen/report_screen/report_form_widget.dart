@@ -121,7 +121,7 @@ class _ReportFormWidgetState extends ConsumerState<ReportFormWidget> {
       showDialog(
         barrierDismissible: false,
         context: loadingContext,
-        builder: (__) => const CircularProgressIndicator(),
+        builder: (__) => const Center(child: CircularProgressIndicator()),
       );
       final result = await ref
           .read(reportPostControllerProvider.notifier)

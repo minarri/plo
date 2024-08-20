@@ -26,7 +26,7 @@ class _PostDetailLikeButtonState extends ConsumerState<PostDetailLikeButton> {
     final post = ref.watch(singlePostProvider(widget.postKey));
     final user = ref.watch(currentUserProvider);
     if (user == null) {
-      return const CircularProgressIndicator();
+      return const Center(child: CircularProgressIndicator());
     }
     final int likeCount = post.postLikes ?? 0;
     final bool isLiked = user.likedPosts.contains(post.pid);

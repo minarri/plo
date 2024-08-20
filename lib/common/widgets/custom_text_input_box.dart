@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // commentation needed
 Widget textInputBox(
     {required String text,
+    String? hintText,
     required TextEditingController controller,
     required String? Function(String?)? validator}) {
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -28,6 +29,9 @@ Widget textInputBox(
         ),
         TextFormField(
             decoration: InputDecoration(
+                hintStyle: TextStyle(fontSize: 20, color: Colors.grey[600]),
+                hintText: hintText,
+                prefixIcon: const Icon(Icons.email),
                 fillColor: Colors.white,
                 filled: true,
                 enabledBorder: OutlineInputBorder(
@@ -88,6 +92,7 @@ Widget passwordInputBox(
               keyboardType: TextInputType.visiblePassword,
               style: const TextStyle(fontSize: 20),
               decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.lock),
                   fillColor: Colors.white,
                   filled: true,
                   suffixIcon: IconButton(
