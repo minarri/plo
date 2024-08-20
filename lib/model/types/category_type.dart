@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 enum CategoryType {
   information,
   general;
@@ -24,4 +26,13 @@ enum CategoryType {
         return CategoryType.information;
     }
   }
+
+  static bool isAllSelected(List<CategoryType> categoryList) {
+    return listEquals(categoryList, CategoryType.categoryOptions);
+  }
+
+  static const List<CategoryType> categoryOptions = [
+    CategoryType.information,
+    CategoryType.general,
+  ];
 }

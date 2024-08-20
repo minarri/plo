@@ -31,8 +31,7 @@ class FilterOptions {
   List<String> getCategoryList() {
     List<String> categoryList = [];
     for (var category in categorySelected) {
-      categoryList.add(
-          "${PostModelFieldNameConstants.category}:${category.toString()}");
+      categoryList.add("${PostModelFieldNameConstants.category}:${category.toString()}");
     }
     return categoryList;
   }

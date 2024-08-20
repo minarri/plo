@@ -7,26 +7,17 @@ class CustomSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var searchQueryController;
     return Hero(
       tag: "search",
-      child: SearchBar(
-        hintText: searchQuery,
-        controller: searchQueryController,
-        leading: const Icon(Icons.search),
-        trailing: [
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: searchQueryController.clear,
-          ),
-        ],
-        onSubmitted: (_) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const SearchPostsHero(),
-            ),
-          );
-        },
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SearchBar(
+          hintText: searchQuery,
+          leading: const Icon(Icons.search),
+          onTap: () {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SearchPostsHero()));
+          },
+        ),
       ),
     );
   }

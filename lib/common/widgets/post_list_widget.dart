@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/views/home_screen/widgets/expanded_post.dart';
 
@@ -10,17 +9,16 @@ import '../../views/postdetail_screen/postDetailScreen.dart';
 import 'custom_alert_box.dart';
 import 'no_post_found.dart';
 
-final postListCurrentUserFutureProvider =
-    FutureProvider.autoDispose<UserModel?>((ref) async {
+final postListCurrentUserFutureProvider = FutureProvider.autoDispose<UserModel?>((ref) async {
   final user = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return user;
 });
 
 class PostListWidget extends ConsumerWidget {
-  final List<PostModel> posts;
+  List<PostModel> posts;
   final VoidCallback refreshFunction;
 
-  const PostListWidget({
+  PostListWidget({
     super.key,
     required this.posts,
     required this.refreshFunction,
@@ -48,9 +46,7 @@ class PostListWidget extends ConsumerWidget {
                             onTap: () async {
                               bool? isConfirmed = true;
                               if (posts.elementAt(index).showWarning) {
-                                isConfirmed =
-                                    await AlertBox.showYesOrNoAlertDialogue(
-                                        context, "계속 하시겠습니까?");
+                                isConfirmed = await AlertBox.showYesOrNoAlertDialogue(context, "계속 하시겠습니까?");
                               }
                               if (isConfirmed == true) {
                                 Navigator.of(context).push(
@@ -66,10 +62,7 @@ class PostListWidget extends ConsumerWidget {
                               refreshFunction();
                             },
                             child: ExpandedPostWidget(
-                              isFromBlockedUser: user == null
-                                  ? false
-                                  : user.blockedUsers
-                                      .contains(post.uploadUserUid),
+                              isFromBlockedUser: user == null ? false : user.blockedUsers.contains(post.uploadUserUid),
                               post: post,
                             ),
                           );
