@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -39,15 +39,230 @@ final postDetailCurrentUserFutureProvider =
   return user;
 });
 
+// class PostDetailScreen extends ConsumerWidget {
+//   final PostModel postKey;
+//   // final CommentModel commentKey;
+//   const PostDetailScreen({super.key, required this.postKey});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+//     ref.watch(postDetailControllerProvider.notifier).updateViewCounts(postKey);
+//     ref.watch(postDetailControllerProvider.notifier).updateComments(postKey);
+//     final state = ref.watch(postDetailControllerProvider);
+//     final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+//     final user = ref.watch(currentUserProvider);
+//     final isMyPost = ref.watch(proceedWithoutLoginProvider)
+//         ? false
+//         : postKey.uploadUserUid == user!.userUid;
+//     final post = ref.watch(singlePostProvider(postKey));
+//     return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
+//         data: (data) {
+//           return Scaffold(
+//             extendBodyBehindAppBar: true,
+//             resizeToAvoidBottomInset: true,
+//             appBar: AppBar(
+//               automaticallyImplyLeading: false,
+//               elevation: 0,
+//               backgroundColor: Colors.transparent,
+//               actions: [
+//                 PostFloatingButton(postKey: postKey, parentContext: context)
+//               ],
+//             ),
+//             body: SafeArea(
+//               child: state.isLoading
+//                   ? const Center(child: CircularProgressIndicator())
+//                   : SingleChildScrollView(
+//                       child: Padding(
+//                         padding: const EdgeInsets.all(10),
+//                         child: Column(
+//                           mainAxisAlignment: MainAxisAlignment.start,
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             const SizedBox(height: 60),
+//                             PostDetailProfileWidget(postKey: postKey),
+//                             const SizedBox(height: 10),
+//                             Padding(
+//                               padding:
+//                                   const EdgeInsets.symmetric(horizontal: 10),
+//                               child: PostDetailWidget(postKey: postKey),
+//                             ),
+//                             const SizedBox(height: 15),
+//                             Row(
+//                               crossAxisAlignment: CrossAxisAlignment.center,
+//                               children: [
+//                                 Padding(
+//                                   padding: const EdgeInsets.symmetric(
+//                                       horizontal: 10.0),
+//                                   child: isNotSignedUser
+//                                       ? const DetailNoLikeButton()
+//                                       : SizedBox(
+//                                           child: PostDetailLikeButton(
+//                                               postKey: postKey),
+//                                         ),
+//                                 ),
+//                                 const Icon(Icons.comment),
+//                                 Text(post.commentCount.toString()),
+//                               ],
+//                             ),
+//                             const SizedBox(height: 5),
+//                             const Divider(thickness: 1),
+
+//                             CommentScreen(postKey: postKey),
+//                             // if (!isMyPost) const Divider(thickness: 1),
+//                             // if (!isMyPost)
+//                             //   PostDetailSameCategoryWidget(postKey: postKey),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//             ),
+//             bottomNavigationBar: Padding(
+//               padding:
+//                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+//               child: SafeArea(
+//                 child: Container(
+//                   child: Column(
+//                     mainAxisSize: MainAxisSize.min,
+//                     children: [
+//                       Container(
+//                         width: 350,
+//                         height: 60,
+//                         child: ElevatedButton(
+//                           style: ElevatedButton.styleFrom(
+//                               backgroundColor: Colors.black),
+//                           onPressed: () {
+//                             showModalBottomSheet(
+//                               context: context,
+//                               builder: (context) => Padding(
+//                                   padding: EdgeInsets.only(
+//                                       bottom: MediaQuery.of(context)
+//                                           .viewInsets
+//                                           .bottom),
+//                                   child: Column(
+//                                     mainAxisSize: MainAxisSize.min,
+//                                     children: [
+//                                       CommentContentForm(
+//                                         formKey: _formKey,
+//                                       ),
+//                                       const SizedBox(
+//                                         height: 5,
+//                                       ),
+//                                       Container(
+//                                         width: 350,
+//                                         height: 60,
+//                                         child: ElevatedButton(
+//                                           style: ElevatedButton.styleFrom(
+//                                             backgroundColor: Colors.black,
+//                                           ),
+//                                           onPressed: () async {
+//                                             showDialog(
+//                                               context: context,
+//                                               barrierDismissible: false,
+//                                               builder: (context) =>
+//                                                   const SizedBox(
+//                                                 width: 20,
+//                                                 height: 20,
+//                                                 child: Center(
+//                                                     child:
+//                                                         CircularProgressIndicator()),
+//                                               ),
+//                                             );
+//                                             final result = await ref
+//                                                 .read(
+//                                                     createEditCommentController
+//                                                         .notifier)
+//                                                 .uploadComment(
+//                                                   formKey: _formKey,
+//                                                   postPid: postKey.pid,
+//                                                 );
+//                                             Navigator.of(context).pop();
+//                                             if (result == true) {
+//                                               await Future.delayed(
+//                                                   const Duration(
+//                                                       milliseconds: 100));
+//                                               Navigator.of(context).pop();
+//                                               ref.refresh(commentListController(
+//                                                   postKey.pid));
+//                                               ref
+//                                                   .read(
+//                                                       createEditCommentController
+//                                                           .notifier)
+//                                                   .commentContentController
+//                                                   .clear();
+//                                             } else {
+//                                               ScaffoldMessenger.of(context)
+//                                                   .showSnackBar(
+//                                                 const SnackBar(
+//                                                   content:
+//                                                       Text("댓글을 올리는데 실패 했습니다."),
+//                                                 ),
+//                                               );
+//                                             }
+//                                           },
+//                                           child: const Row(
+//                                             mainAxisSize: MainAxisSize.min,
+//                                             mainAxisAlignment:
+//                                                 MainAxisAlignment.center,
+//                                             crossAxisAlignment:
+//                                                 CrossAxisAlignment.center,
+//                                             children: [
+//                                               Icon(Icons.comment,
+//                                                   color: Colors.white),
+//                                               Spacer(),
+//                                               Text(
+//                                                 "글 작성",
+//                                                 style: TextStyle(
+//                                                   color: Colors.white,
+//                                                   fontSize: 14,
+//                                                   fontWeight: FontWeight.bold,
+//                                                 ),
+//                                               ),
+//                                               Spacer(),
+//                                             ],
+//                                           ),
+//                                         ),
+//                                       ),
+//                                       SizedBox(height: 10)
+//                                     ],
+//                                   )),
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.vertical(
+//                                   top: Radius.circular(25.0),
+//                                 ),
+//                               ),
+//                               backgroundColor: Colors.white,
+//                               isScrollControlled: true,
+//                             );
+//                           },
+//                           child: const Text(
+//                             "글 쓰기 ",
+//                             style: TextStyle(
+//                                 fontSize: 18,
+//                                 fontWeight: FontWeight.bold,
+//                                 color: Colors.white),
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(height: 10)
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           );
+//         },
+//         error: (error, stackTrace) => const Icon(Icons.error_outline),
+//         loading: () => const Center(child: CircularProgressIndicator()));
+//   }
+// }
 class PostDetailScreen extends ConsumerWidget {
   final PostModel postKey;
-  // final CommentModel commentKey;
   const PostDetailScreen({super.key, required this.postKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
     ref.watch(postDetailControllerProvider.notifier).updateViewCounts(postKey);
     ref.watch(postDetailControllerProvider.notifier).updateComments(postKey);
     final state = ref.watch(postDetailControllerProvider);
@@ -57,141 +272,212 @@ class PostDetailScreen extends ConsumerWidget {
         ? false
         : postKey.uploadUserUid == user!.userUid;
     final post = ref.watch(singlePostProvider(postKey));
-    return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
-        data: (data) {
-          return Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              actions: [
-                PostFloatingButton(postKey: postKey, parentContext: context)
-              ],
-            ),
-            body: SafeArea(
-              child: state.isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 60),
-                            PostDetailProfileWidget(postKey: postKey),
-                            const SizedBox(height: 10),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: PostDetailWidget(postKey: postKey),
-                            ),
-                            const SizedBox(height: 15),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10.0),
-                                  child: isNotSignedUser
-                                      ? const DetailNoLikeButton()
-                                      : SizedBox(
-                                          child: PostDetailLikeButton(
-                                              postKey: postKey),
-                                        ),
-                                ),
-                                const Icon(Icons.comment),
-                                Text(post.commentCount.toString()),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            const Divider(thickness: 1),
 
-                            CommentScreen(postKey: postKey),
-                            if (!isMyPost) const Divider(thickness: 1),
-                            // if (!isMyPost)
-                            //   PostDetailSameCategoryWidget(postKey: postKey),
-                          ],
-                        ),
-                      ),
-                    ),
-            ),
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                height: 170,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CommentContentForm(
-                      formKey: _formKey,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                      ),
-                      onPressed: () async {
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) => const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
-                        );
-                        final result = await ref
-                            .read(createEditCommentController.notifier)
-                            .uploadComment(
-                              formKey: _formKey,
-                              postPid: postKey.pid,
-                            );
-                        Navigator.of(context).pop();
-                        if (result == true) {
-                          ref.refresh(commentListController(postKey.pid));
-                          ref
-                              .read(createEditCommentController.notifier)
-                              .commentContentController
-                              .clear();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("댓글을 올리는데 실패 했습니다."),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.comment, color: Colors.white),
-                          Spacer(),
-                          Text(
-                            "글 작성",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+    return ref.watch(postUploaderProvider(post.uploadUserUid)).when(
+          data: (data) {
+            return Scaffold(
+              extendBodyBehindAppBar: true,
+              resizeToAvoidBottomInset: true,
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                actions: [
+                  PostFloatingButton(postKey: postKey, parentContext: context)
+                ],
+              ),
+              body: SafeArea(
+                child: state.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 60),
+                                  PostDetailProfileWidget(postKey: postKey),
+                                  const SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: PostDetailWidget(postKey: postKey),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        child: isNotSignedUser
+                                            ? const DetailNoLikeButton()
+                                            : SizedBox(
+                                                child: PostDetailLikeButton(
+                                                    postKey: postKey),
+                                              ),
+                                      ),
+                                      const Icon(Icons.comment),
+                                      Text(post.commentCount.toString()),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 5),
+                                  const Divider(thickness: 1),
+                                ],
+                              ),
                             ),
                           ),
-                          Spacer(),
+                          // Insert the Comment Screen as a SliverToBoxAdapter
+                          SliverFillRemaining(
+                            hasScrollBody: true,
+                            child: CommentScreen(postKey: postKey),
+                          ),
+                          // If needed, you can add additional sections here
+                          // like related posts or more content as slivers
                         ],
                       ),
+              ),
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
+                child: SafeArea(
+                  child: Container(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 350,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context)
+                                          .viewInsets
+                                          .bottom),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CommentContentForm(formKey: _formKey),
+                                      const SizedBox(height: 5),
+                                      Container(
+                                        width: 350,
+                                        height: 60,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                          ),
+                                          onPressed: () async {
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (context) =>
+                                                  const SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child: Center(
+                                                    child:
+                                                        CircularProgressIndicator()),
+                                              ),
+                                            );
+                                            final result = await ref
+                                                .read(
+                                                    createEditCommentController
+                                                        .notifier)
+                                                .uploadComment(
+                                                  formKey: _formKey,
+                                                  postPid: postKey.pid,
+                                                );
+                                            Navigator.of(context).pop();
+                                            if (result == true) {
+                                              await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 100));
+                                              Navigator.of(context).pop();
+                                              ref
+                                                  .read(commentListController(
+                                                          postKey.pid)
+                                                      .notifier)
+                                                  .pagingController
+                                                  .refresh();
+                                              ref
+                                                  .read(
+                                                      createEditCommentController
+                                                          .notifier)
+                                                  .commentContentController
+                                                  .clear();
+                                            } else {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content:
+                                                      Text("댓글을 올리는데 실패 했습니다."),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: const Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.comment,
+                                                  color: Colors.white),
+                                              Spacer(),
+                                              Text(
+                                                "글 작성",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10)
+                                    ],
+                                  ),
+                                ),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(25.0),
+                                  ),
+                                ),
+                                backgroundColor: Colors.white,
+                                isScrollControlled: true,
+                              );
+                            },
+                            child: const Text(
+                              "글 쓰기 ",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-        error: (error, stackTrace) => const Icon(Icons.error_outline),
-        loading: () => const Center(child: CircularProgressIndicator()));
+            );
+          },
+          error: (error, stackTrace) => const Icon(Icons.error_outline),
+          loading: () => const Center(child: CircularProgressIndicator()),
+        );
   }
 }

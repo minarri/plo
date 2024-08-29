@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:plo/common/providers/singlepost.dart';
-import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/state_model/create_edit_comment_model.dart';
 import 'package:plo/model/user_model.dart';
@@ -12,9 +10,7 @@ import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/comments/comments_controller.dart';
 import 'package:plo/views/comments/comments_widget/commentlists/commentlist_screen.dart';
 import 'package:plo/views/comments/comments_widget/commentlists/comments_list_controller.dart';
-import 'package:plo/views/comments/comments_widget/commentlists/comments_list_provider.dart';
 import 'package:plo/views/comments/comments_provider.dart';
-import 'package:plo/views/comments/comments_widget/comments_contentform.dart';
 
 final commentUploaderProvider =
     FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
@@ -75,15 +71,8 @@ class _CommentWriteScreenState extends ConsumerState<CommentScreen> {
           return Center(child: Text("댓글이 존재하지 않습니다"));
         }
         ref.watch(commentListController(post.pid));
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CommentListScreen(
-                postKey: post,
-              ),
-            ],
-          ),
+        return CommentListScreen(
+          postKey: post,
         );
       },
       loading: () => const SizedBox(

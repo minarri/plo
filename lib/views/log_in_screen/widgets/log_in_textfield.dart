@@ -42,10 +42,11 @@ class LogInTextFieldWidget extends ConsumerWidget {
             //     ),
             //     onChanged: (text) {}),
             textInputBox(
-                text: "이메일",
-                controller: ref.watch(loginController.notifier).emailController,
-                validator: (value) => Validator.validatePSUEmail(value),
-                hintText: "abc1234@psu.edu"),
+              text: "이메일",
+              controller: ref.watch(loginController.notifier).emailController,
+              validator: (value) => Validator.validatePSUEmail(value),
+              hintText: "abc1234@psu.edu",
+            ),
             const SizedBox(height: 25),
             defaultSpacing,
             passwordInputBox(

@@ -13,6 +13,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
       appBar: const BackButtonAppBar(),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             const Expanded(
               flex: 2,
@@ -46,6 +47,7 @@ class ForgotPasswordScreen extends ConsumerWidget {
               ),
             ),
             Expanded(
+              flex: 2,
               child: TextButton(
                 onPressed: () async {
                   showDialog(

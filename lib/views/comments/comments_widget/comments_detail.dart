@@ -30,8 +30,7 @@ class _CommentDetailWidgetState extends ConsumerState<CommentDetailWidget> {
   @override
   Widget build(BuildContext context) {
     final comment = ref.watch(singleCommentProvider(widget.commentKey));
-    final currentUser = ref.watch(currentUserProvider);
-    final isNotSignedUser = ref.watch(proceedWithoutLoginProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -50,8 +49,9 @@ class _CommentDetailWidgetState extends ConsumerState<CommentDetailWidget> {
         ),
         const SizedBox(height: 10),
         Text(
-          comment.commentContent,
+          '답글: ${comment.commentContent}',
           softWrap: true,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
