@@ -35,7 +35,6 @@ class _NavigationBarPostDetailScreenState
   }
 
   Widget build(BuildContext context) {
-    final post = ref.watch(singlePostProvider(widget.postKey));
     return Container();
   }
 }

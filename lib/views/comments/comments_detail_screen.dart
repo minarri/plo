@@ -74,20 +74,14 @@ class CommentDetailScreen extends ConsumerWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CommentProfileWidget(commentKey: commentKey)),
-              const SizedBox(width: 10),
               Expanded(
-                child: CommentDetailWidget(
-                  commentKey: commentKey,
-                  postKey: postKey,
-                ),
-              ),
+                  child: CommentProfileWidget(
+                commentKey: commentKey,
+                postKey: postKey,
+              )),
             ],
           ),
         );

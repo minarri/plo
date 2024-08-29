@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           //   return const CheckEmailAndUsermodelScreen();
           // }
           if (snapshot.hasData) {
-            return const SignInScreen();
+            return const CheckEmailAndUsermodelScreen();
           }
           return const SignInScreen();
         },

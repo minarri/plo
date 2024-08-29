@@ -50,7 +50,7 @@ class CommentsRepository {
 
   //이렇게 해보고 안 되면 String Pid 말고 아예 PostModel로 Controller도 바꿔주기.
   Future<List<CommentModel>?> fetchComments(String pid,
-      {int amountFetch = 10, Timestamp? lastCommentUploadTime = null}) async {
+      {int amountFetch = 10, Timestamp? lastCommentUploadTime}) async {
     try {
       final QuerySnapshot querySnapshot;
       final commentSubCollectionRef = _firestoreInstance
@@ -66,6 +66,8 @@ class CommentsRepository {
             .get();
         log("fetch 10 initial comments");
       } else {
+        log("Fetching more comments after: $lastCommentUploadTime");
+
         querySnapshot = await commentSubCollectionRef
             .orderBy(CommentModelFieldNameConstants.uploadTime,
                 descending: true)
@@ -84,6 +86,11 @@ class CommentsRepository {
           .cast<CommentModel>();
 
       log("fetched Comments successfully");
+      if (fetchedComments.isNotEmpty) {
+        final lastFetchedComment = fetchedComments.last;
+        lastCommentUploadTime = lastFetchedComment.uploadTime;
+        log("Last comment upload time updated to: $lastCommentUploadTime");
+      }
       return fetchedComments;
     } catch (error) {
       log("there was an error fetching comments from the firebase ${error.toString()}");

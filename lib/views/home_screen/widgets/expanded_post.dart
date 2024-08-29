@@ -21,7 +21,6 @@ class ExpandedPostWidget extends ConsumerWidget {
     // log('item widget photoUrls : ${item.photoUrls}');
     // final item = ref.watch(itemDetailProvider(item));
     final user = ref.watch(currentUserProvider);
-    final postKey = ref.watch(singlePostProvider(post));
     if (user == null) {
       log('important message! currentlySignedInUserProvider is null in PostWidget.');
     }

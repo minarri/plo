@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:plo/common/widgets/loading_widgets/expanded_loading_post.dart';
 import 'package:plo/common/widgets/loading_widgets/loading_expanded_comments.dart';
 import 'package:plo/common/widgets/loading_widgets/loading_expanded_post.dart';
@@ -28,50 +29,44 @@ class CommentListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(commentListController(postKey.pid));
+    // final state = ref.watch(commentListController(postKey.pid));
+    // final comments = ref.watch(commentListProvider(postKey.pid));
+    final controller = ref.watch(commentListController(postKey.pid).notifier);
     final comments = ref.watch(commentListProvider(postKey.pid));
     return RefreshIndicator(
       onRefresh: () async {
-        ref.refresh(commentListController(postKey.pid));
+        // Refresh the comments and controller
         ref.refresh(commentListProvider(postKey.pid));
+        ref.refresh(commentListController(postKey.pid));
       },
       child: ref.watch(commentListCurrentUserProvider).when(
             data: (currentUser) {
-              if (state.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              if (comments.isEmpty) {
-                return const NoCommentsFound();
+              if (controller.isCommentAllLoaded && comments.isEmpty) {
+                return const NoCommentsFound(); // Handle when no comments are found
               }
               return ListView.separated(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(8),
-                physics: const NeverScrollableScrollPhysics(),
-                controller: ref
-                    .read(commentListController(postKey.pid).notifier)
-                    .scrollController,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                controller: controller
+                    .scrollController, // Attach scroll controller for pagination
+                itemCount: comments.length +
+                    1, // +1 for loading indicator or "No More" widget
                 itemBuilder: (context, index) {
                   if (index >= comments.length) {
-                    return ref
-                            .read(commentListController(postKey.pid).notifier)
-                            .isCommentAllLoaded
-                        ? const SizedBox(height: 30, width: 30)
-                        : const LoadingExpandedCommentsWidget();
+                    // If it's the last item, show the "No More Comments" or Loading indicator
+                    return controller.isCommentAllLoaded
+                        ? const NoMoreComments() // All comments loaded, show "No More Comments"
+                        : const LoadingExpandedCommentsWidget(); // Still loading comments
                   }
-
+                  // Render each comment
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: CommentDetailScreen(
-                      commentKey: comments[index],
+                      commentKey: comments[index], // Display comment
                       postKey: postKey,
                     ),
                   );
                 },
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemCount: comments.length + 1,
               );
             },
             error: (error, stackTrace) => const Center(
@@ -84,3 +79,75 @@ class CommentListScreen extends ConsumerWidget {
     );
   }
 }
+    //           return Column(
+    //             children: [
+    //               Expanded(
+    //                 child: PagedListView<int, CommentModel>(
+    //                   pagingController: controller.pagingController,
+    //                   padding: const EdgeInsets.symmetric(horizontal: 8),
+    //                   builderDelegate: PagedChildBuilderDelegate<CommentModel>(
+    //                       firstPageProgressIndicatorBuilder: (context) =>
+    //                           const LoadingExpandedCommentsWidget(),
+    //                       noItemsFoundIndicatorBuilder: (context) =>
+    //                           const NoCommentsFound(),
+    //                       noMoreItemsIndicatorBuilder: (context) =>
+    //                           const NoMoreComments(),
+    //                       itemBuilder: (context, comment, index) {
+    //                         return Padding(
+    //                             padding:
+    //                                 const EdgeInsets.symmetric(vertical: 4.0),
+    //                             child: CommentDetailScreen(
+    //                               commentKey: comment,
+    //                               postKey: postKey,
+    //                             ));
+    //                       }),
+    //                 ),
+    //               ),
+    //             ],
+    //           );
+    //         },
+    //         error: (error, stackTrace) => const Center(
+    //           child: Text("An error occurred. Please try again."),
+    //         ),
+    //         loading: () => const Center(
+    //           child: CircularProgressIndicator(),
+    //         ),
+    //       ),
+    // // );
+    // return ref.watch(commentListCurrentUserProvider).when(
+    //       data: (currentUser) {
+    //         return Column(
+    //           children: [
+    //             Expanded(
+    //               child: PagedListView<int, CommentModel>(
+    //                 pagingController: controller.pagingController,
+    //                 padding: const EdgeInsets.symmetric(horizontal: 8),
+    //                 builderDelegate: PagedChildBuilderDelegate<CommentModel>(
+    //                   firstPageProgressIndicatorBuilder: (context) =>
+    //                       const LoadingExpandedCommentsWidget(),
+    //                   noItemsFoundIndicatorBuilder: (context) =>
+    //                       const NoCommentsFound(),
+    //                   noMoreItemsIndicatorBuilder: (context) =>
+    //                       const NoMoreComments(),
+    //                   itemBuilder: (context, comment, index) {
+    //                     return Padding(
+    //                       padding: const EdgeInsets.symmetric(vertical: 4.0),
+    //                       child: CommentDetailScreen(
+    //                         commentKey: comments[index],
+    //                         postKey: postKey,
+    //                       ),
+    //                     );
+    //                   },
+    //                 ),
+    //               ),
+    //             ),
+    //           ],
+    //         );
+    //       },
+    //       error: (error, stackTrace) => const Center(
+    //         child: Text("An error occurred. Please try again."),
+    //       ),
+    //       loading: () => const Center(
+    //         child: CircularProgressIndicator(),
+    //       ),
+    //     );

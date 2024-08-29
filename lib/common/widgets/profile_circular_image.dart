@@ -4,7 +4,8 @@ class DefaultProfileImageWidget extends StatefulWidget {
   static const String defaultImageurl = "default_profile_pic";
   final String imageUrl;
   final double radius;
-  const DefaultProfileImageWidget({super.key, required this.imageUrl, this.radius = 30});
+  const DefaultProfileImageWidget(
+      {super.key, required this.imageUrl, this.radius = 30});
 
   @override
   State<DefaultProfileImageWidget> createState() => _DefaultImageWidgetState();
@@ -25,14 +26,14 @@ class _DefaultImageWidgetState extends State<DefaultProfileImageWidget> {
                   padding: const EdgeInsets.all(10),
                   child: Image.asset("assets/images/profile_default.png"),
                 )
-              : ClipOval(
-                  child: Image.network(
-                    widget.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, url, error) => const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(Icons.error, size: 20),
-                    ),
+              : Image.network(
+                  widget.imageUrl,
+                  fit: BoxFit.cover,
+                  width: widget.radius * 0.2,
+                  height: widget.radius * 0.2,
+                  errorBuilder: (context, url, error) => const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Icon(Icons.error, size: 20),
                   ),
                 ),
         ),
