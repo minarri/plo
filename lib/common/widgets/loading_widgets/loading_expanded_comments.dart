@@ -8,7 +8,6 @@ class LoadingExpandedCommentsWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      height: 80, // Adjust the height as needed for your design
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [

@@ -20,13 +20,8 @@ class CommentListProvider extends StateNotifier<List<CommentModel>> {
   //     ...commentList.where((newComment) => !_commentExistInList(newComment))
   //   ];
   // }
-  void addListenToCommentList(List<CommentModel> commentList) {
-    final newComments = commentList
-        .where((newComment) => !_commentExistInList(newComment))
-        .toList();
-    if (newComments.isNotEmpty) {
-      state = [...state, ...newComments];
-    }
+  addListenToCommentList(List<CommentModel> commentList) {
+    state = [...state, ...commentList];
   }
 
   void updateSingleCommentInCommentList(CommentModel comment) {
@@ -47,15 +42,6 @@ class CommentListProvider extends StateNotifier<List<CommentModel>> {
     // Append the comment if it doesn't exist
     if (!_commentExistInList(comment)) {
       state = [...state, comment];
-    }
-  }
-
-  Timestamp? getLastUploadTime(CommentModel comment) {
-    if (state.isEmpty) {
-      return null; // No comments in the list
-    } else {
-      return state
-          .last.uploadTime; // Return the upload time of the last comment
     }
   }
 }

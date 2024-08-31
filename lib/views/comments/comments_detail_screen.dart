@@ -8,21 +8,21 @@ import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/comments/comments_widget/commentlists/comments_list_controller.dart';
 import 'package:plo/views/comments/comments_widget/comments_detail.dart';
 import 'package:plo/views/comments/comments_widget/comments_profile.dart';
+import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
 import 'package:plo/views/settings_screen/provider/non_login_provider.dart';
-
-final commentUploaderProvider =
-    FutureProvider.autoDispose.family<UserModel?, String>((ref, userId) async {
-  final userFetched =
-      await ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userId);
-  return userFetched;
-});
 
 final postDetailCurrentUserFutureProvider =
     FutureProvider.autoDispose<UserModel?>((ref) async {
   final user = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return user;
+});
+final commentUploaderProvider =
+    FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
+  final userFetched =
+      ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
+  return userFetched;
 });
 
 class CommentDetailScreen extends ConsumerWidget {

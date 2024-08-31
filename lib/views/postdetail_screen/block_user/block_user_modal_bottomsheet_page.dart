@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_button.dart';
@@ -23,9 +25,9 @@ class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
         children: [
           DefaultProfileImageWidget(
             imageUrl: blockingUser.profileImageUrl,
-            radius: 80,
+            radius: 50,
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 12),
           FittedBox(
             child: Text(
                 "정말 ${isBlocked ? "${blockingUser.userNickname}님을 차단 하시겠습니까?" : "${blockingUser.userNickname}님을 차단 해제 하시겠습니까?"}",
@@ -47,10 +49,13 @@ class BlockedUserModalBottomSheetBlockPage extends ConsumerWidget {
           CustomButton(
               text: isBlocked ? "차단" : "아니요",
               onPressed: () {
+                log("Button pressed to ${isBlocked ? 'block' : 'unblock'} the user");
+
                 ref
                     .watch(blockedUserModalBottomSheetIsBlockPressedProvider
                         .notifier)
                     .state = true;
+                log("State updated: ${ref.read(blockedUserModalBottomSheetIsBlockPressedProvider)}");
               })
         ],
       ),

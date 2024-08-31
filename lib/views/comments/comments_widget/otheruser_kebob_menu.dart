@@ -47,6 +47,7 @@ class CommentDetailOtherUserKebobIcon extends ConsumerWidget {
           ),
           ModalBottomSheetIcon(
               title: "댓글 쓴 유저 차단하기",
+              icon: Icon(Icons.block),
               onTap: () async {
                 Navigator.of(context).pop();
                 showModalBottomSheet(

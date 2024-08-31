@@ -4,7 +4,7 @@ import 'package:plo/common/widgets/modal_bottomsheet/default_modal_bottom.dart';
 import 'package:plo/model/types/return_type.dart';
 import 'package:plo/model/user_model.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
-import 'package:plo/views/comments/comments_widget/comments_screen.dart';
+import 'package:plo/views/comments/comments_detail_screen.dart';
 import 'package:plo/views/postdetail_screen/block_user/blocK_user_result_screen.dart';
 import 'package:plo/views/postdetail_screen/block_user/block_user_modal_bottomsheet_page.dart';
 import 'package:plo/views/postdetail_screen/postDetailScreen.dart';
@@ -36,12 +36,13 @@ class BlockCommentUserModalBottomsheet extends ConsumerWidget {
         ref.watch(blockedUserModalBottomSheetIsBlockPressedProvider);
     return DefaultModalBottomSheet(
       title: "차단/차단 해제",
+      fixedHeight: true,
       child: ref
           .watch(blockedUserModalBottomSheetCurrentUserFutureProvider)
           .when(
             data: (user) {
               if (user == null) {
-                return const Icon(Icons.error_outline, size: 30);
+                return const Icon(Icons.error_outline, size: 20);
               }
               return ref.watch(commentUploaderProvider(uploaderUserUid)).when(
                   data: (blockingUser) {
@@ -58,7 +59,7 @@ class BlockCommentUserModalBottomsheet extends ConsumerWidget {
                                 .contains(blockingUser.userUid));
                   },
                   error: (error, stackTrace) =>
-                      const Icon(Icons.error_outline, size: 50),
+                      const Icon(Icons.error_outline, size: 40),
                   loading: () => const Center(
                         child: CircularProgressIndicator(),
                       ));

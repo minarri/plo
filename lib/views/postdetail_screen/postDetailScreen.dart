@@ -401,12 +401,8 @@ class PostDetailScreen extends ConsumerWidget {
                                                   const Duration(
                                                       milliseconds: 100));
                                               Navigator.of(context).pop();
-                                              ref
-                                                  .read(commentListController(
-                                                          postKey.pid)
-                                                      .notifier)
-                                                  .pagingController
-                                                  .refresh();
+                                              ref.refresh(commentListController(
+                                                  postKey.pid));
                                               ref
                                                   .read(
                                                       createEditCommentController

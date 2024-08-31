@@ -67,6 +67,7 @@ dependencies:
   algolia_helper_flutter: ^1.0.0
   infinite_scroll_pagination: ^4.0.0
   shared_preferences: ^2.2.3
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +96,8 @@ flutter:
     - assets/images/profile_default.png
     - assets/images/profile_plus.png
     - assets/images/pennstate_logo.png
+    - assets/images/heart-svgrepo-com.svg
+    - assets/images/heart-empty-svgrepo-com.svg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

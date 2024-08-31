@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/profile_circular_image.dart';
 import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
+import 'package:plo/views/comments/comments_detail_screen.dart';
 import 'package:plo/views/comments/comments_widget/comments_detail.dart';
-import 'package:plo/views/comments/comments_widget/comments_screen.dart';
 import 'package:plo/views/comments/comments_widget/single_comment_provider.dart';
 import 'package:plo/views/postdetail_screen/postdetailProfile.dart';
 
