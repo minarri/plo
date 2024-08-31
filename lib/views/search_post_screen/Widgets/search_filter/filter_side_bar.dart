@@ -6,7 +6,7 @@ import 'package:plo/views/search_post_screen/Widgets/search_filter/category_shee
 
 import '../../../../common/widgets/custom_gridview.dart';
 import '../../Controllers/filter_options_controller.dart';
-//import 'sortby_sheet.dart';
+import 'sortby_sheet.dart';
 
 class FilterSideBar extends ConsumerStatefulWidget {
   final FilterOptions tempFilterOptions;
@@ -46,27 +46,27 @@ class _FilterPageState extends ConsumerState<FilterSideBar> {
                       "Filter Options",
                     ),
                     // spacing
-                    // FilterOptionWidget(
-                    //   filterTitle: "Sort",
-                    //   onPressed: () {
-                    //     showModalBottomSheet(
-                    //       isScrollControlled: true,
-                    //       showDragHandle: true,
-                    //       shape: const RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.only(
-                    //           topLeft: Radius.circular(10),
-                    //           topRight: Radius.circular(10),
-                    //         ),
-                    //       ),
-                    //       context: context,
-                    //       builder: (context) => const SortByBottomsheet(),
-                    //     );
-                    //   },
-                    //   filterStatusWidget: FilterStatusWidget(
-                    //     isSingleAttribute: true,
-                    //     filterStatusList: [tempFilterOptions.sortOptions.toString()],
-                    //   ),
-                    // ),
+                    FilterOptionWidget(
+                      filterTitle: "Sort",
+                      onPressed: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          showDragHandle: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                          ),
+                          context: context,
+                          builder: (context) => const SortByBottomsheet(),
+                        );
+                      },
+                      filterStatusWidget: FilterStatusWidget(
+                        isSingleAttribute: true,
+                        filterStatusList: [tempFilterOptions.sortOptions.toString()],
+                      ),
+                    ),
                     FilterOptionWidget(
                       filterTitle: "Category",
                       onPressed: () {
@@ -128,7 +128,7 @@ class FilterOptionWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(bottom: BorderSide()),
         ),
         child: Column(
@@ -145,8 +145,8 @@ class FilterOptionWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
-                Icon(Icons.arrow_forward_ios),
+                const Spacer(),
+                const Icon(Icons.arrow_forward_ios),
               ],
             ),
             if (filterStatusWidget != null) filterStatusWidget!,

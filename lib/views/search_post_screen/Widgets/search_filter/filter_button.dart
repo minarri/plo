@@ -32,16 +32,7 @@ class SearchFilterButton extends StatelessWidget {
           ),
         );
       },
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.filter_list_outlined),
-          Text(
-            "Filter",
-            style: TextStyle(color: Colors.black),
-          )
-        ],
-      ),
+      child: const Icon(Icons.filter_list_outlined),
     );
   }
 }

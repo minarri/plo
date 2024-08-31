@@ -41,6 +41,7 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                 tag: searchHeroTag,
                 child: SearchBar(
                   controller: searchQuery,
+                  autoFocus: true,
                   leading: const Icon(Icons.search),
                   trailing: [
                     IconButton(
@@ -58,17 +59,12 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                       });
                       return;
                     }
-                    ref
-                        .watch(searchPostsProvider.notifier)
-                        .saveSearchQuery(searchQuery.text);
+                    ref.watch(searchPostsProvider.notifier).saveSearchQuery(searchQuery.text);
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => SearchPostResult(
-                          searchHeroTag: searchHeroTag,
-                          searchQuery: searchQuery.text),
+                      builder: (context) => SearchPostResult(searchHeroTag: searchHeroTag, searchQuery: searchQuery.text),
                     ));
                   },
-                  autoFocus: true,
-                  // onTapOutside: (event) => FocusScope.of(context).unfocus(),
+                  onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 ),
               ),
               const SizedBox(height: 15),
@@ -81,9 +77,7 @@ class _SearchPostsHeroState extends ConsumerState<SearchPostsHero> {
                   ),
                   TextButton(
                     onPressed: () {
-                      ref
-                          .watch(searchPostsProvider.notifier)
-                          .deleteEntireSearchHistory();
+                      ref.watch(searchPostsProvider.notifier).deleteEntireSearchHistory();
                     },
                     child: const Text(
                       "Delete all",

@@ -36,35 +36,37 @@ class _FilterPageCategoryBottomSheetState extends ConsumerState<CategoryBottomSh
     final tempCategory = ref.watch(tempCategoryProvider);
     const categoryList = CategoryType.categoryOptions;
     return DefaultModalBottomSheet(
-        title: "Set the category",
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CategoryBottomSheetCategoryWidget(categoryType: categoryList[0], isAll: true),
-                CategoryBottomSheetCategoryWidget(
-                  categoryType: categoryList[0],
-                ),
-                CategoryBottomSheetCategoryWidget(
-                  categoryType: categoryList[1],
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            DefaultButtonWidget(
-                text: "Apply",
-                onPressed: () {
-                  // print("final $tempCategory");
-                  if (tempCategory.isEmpty) {
-                    ref.watch(tempFilterOptionsProvider.notifier).setCategorySelected(CategoryType.categoryOptions.toSet());
-                  } else {
-                    ref.watch(tempFilterOptionsProvider.notifier).setCategorySelected(tempCategory);
-                  }
-                  Navigator.pop(context);
-                })
-          ],
-        ));
+      title: "Set the category",
+      child: Column(
+        children: [
+          // ...CategoryType.values.map(
+          //   (categoryType) {
+          //     return CategoryBottomSheetCategoryWidget(categoryType: categoryType);
+          //   },
+          // ).toList(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(child: CategoryBottomSheetCategoryWidget(categoryType: categoryList[0])),
+              Flexible(child: CategoryBottomSheetCategoryWidget(categoryType: categoryList[1])),
+            ],
+          ),
+          const SizedBox(height: 10),
+          DefaultButtonWidget(
+            text: "Apply",
+            onPressed: () {
+              // print("final $tempCategory");
+              if (tempCategory.isEmpty) {
+                ref.watch(tempFilterOptionsProvider.notifier).setCategorySelected(CategoryType.categoryOptions.toSet());
+              } else {
+                ref.watch(tempFilterOptionsProvider.notifier).setCategorySelected(tempCategory);
+              }
+              Navigator.pop(context);
+            },
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -79,8 +81,9 @@ class CategoryBottomSheetCategoryWidget extends ConsumerWidget {
     final tempCategory = ref.watch(tempCategoryProvider);
     final isAllSelected = tempCategory.isEmpty;
     return Expanded(
-      child: InkWell(
-        onTap: () {
+      child: CheckboxListTile(
+        value: isChecked,
+        onChanged: (bool? newValue) {
           Set<CategoryType> set = {};
           for (int i = 0; i < tempCategory.length; i++) {
             set.add(tempCategory.elementAt(i));
@@ -100,43 +103,8 @@ class CategoryBottomSheetCategoryWidget extends ConsumerWidget {
             ref.watch(tempCategoryProvider.notifier).state = set;
           }
         },
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          height: 100,
-          // decoration: BoxDecoration(border: Border.all()),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 8,
-                child: isAll
-                    ? Padding(
-                        padding: EdgeInsets.zero,
-                        child: Text(
-                          "All",
-                          style:
-                              isChecked ? const TextStyle(color: Color.fromARGB(255, 60, 118, 231)) : const TextStyle(color: Colors.black),
-                        ))
-                    : Text(
-                        categoryType.name,
-                        style: isChecked ? const TextStyle(color: Color.fromARGB(255, 60, 118, 231)) : const TextStyle(color: Colors.black),
-                      ),
-              ),
-              Expanded(
-                flex: 2,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    isAll ? "All" : categoryType.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        title: Text(categoryType.name),
+        controlAffinity: ListTileControlAffinity.leading,
       ),
     );
   }
