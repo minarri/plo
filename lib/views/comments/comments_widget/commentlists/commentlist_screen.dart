@@ -29,9 +29,8 @@ class CommentListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(commentListController(postKey.pid));
+    final state = ref.watch(commentListController(postKey.pid));
     // final comments = ref.watch(commentListProvider(postKey.pid));
-    final controller = ref.watch(commentListController(postKey.pid).notifier);
     final comments = ref.watch(commentListProvider(postKey.pid));
     return RefreshIndicator(
       onRefresh: () async {
@@ -41,32 +40,45 @@ class CommentListScreen extends ConsumerWidget {
       },
       child: ref.watch(commentListCurrentUserProvider).when(
             data: (currentUser) {
-              if (controller.isCommentAllLoaded && comments.isEmpty) {
-                return const NoCommentsFound(); // Handle when no comments are found
-              }
-              return ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                controller: controller
-                    .scrollController, // Attach scroll controller for pagination
-                itemCount: comments.length +
-                    1, // +1 for loading indicator or "No More" widget
-                itemBuilder: (context, index) {
-                  if (index >= comments.length) {
-                    // If it's the last item, show the "No More Comments" or Loading indicator
-                    return controller.isCommentAllLoaded
-                        ? const NoMoreComments() // All comments loaded, show "No More Comments"
-                        : const LoadingExpandedCommentsWidget(); // Still loading comments
-                  }
-                  // Render each comment
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: CommentDetailScreen(
-                      commentKey: comments[index], // Display comment
-                      postKey: postKey,
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
+              return Container(
+                padding: EdgeInsets.all(8),
+                child: state.isLoading
+                    ? const LoadingExpandedCommentsWidget()
+                    : comments.length == 0
+                        ? Center(child: NoCommentsFound())
+                        : ListView.separated(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            controller: ref
+                                .watch(
+                                    commentListController(postKey.pid).notifier)
+                                .scrollController, // Attach scroll controller for pagination
+                            itemCount: comments.length +
+                                1, // +1 for loading indicator or "No More" widget
+                            itemBuilder: (context, index) {
+                              if (index >= comments.length) {
+                                // If it's the last item, show the "No More Comments" or Loading indicator
+                                return ref
+                                        .watch(
+                                            commentListController(postKey.pid)
+                                                .notifier)
+                                        .isCommentAllLoaded
+                                    ? const NoMoreComments() // All comments loaded, show "No More Comments"
+                                    : const LoadingExpandedCommentsWidget(); // Still loading comments
+                              }
+                              // Render each comment
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4.0),
+                                child: CommentDetailScreen(
+                                  commentKey:
+                                      comments[index], // Display comment
+                                  postKey: postKey,
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 8),
+                          ),
               );
             },
             error: (error, stackTrace) => const Center(

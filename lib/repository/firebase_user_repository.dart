@@ -94,6 +94,7 @@ class FirebaseUserRepository {
               .collection(FirebaseConstants.usercollectionName)
               .doc(_auth.currentUser!.uid)
               .update({"blockedUsers": blockedUsers});
+          log(" block/unblock operation successful");
           return SuccessReturnType(isSuccess: true, data: isUserBlocked);
         }
         return ErrorReturnType(message: "User is Null");

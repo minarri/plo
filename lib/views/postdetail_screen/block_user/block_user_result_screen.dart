@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:plo/common/widgets/custom_button.dart';
@@ -20,6 +22,8 @@ class BlockUserModalBottomSheetResultScreen extends ConsumerWidget {
           .watch(blockUserBottomSheetBlockUserFutureProvider(blockingUserUid))
           .when(
               data: (data) {
+                log("Block/Unblock result: $data");
+
                 return Column(
                   children: [
                     const Spacer(),

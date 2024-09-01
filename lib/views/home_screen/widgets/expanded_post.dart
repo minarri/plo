@@ -7,6 +7,7 @@ import 'package:plo/common/widgets/square_image_widget.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/types/category_type.dart';
 import 'package:plo/views/post_write/user_provider/user_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ExpandedPostWidget extends ConsumerWidget {
   final PostModel post;
@@ -168,8 +169,10 @@ class ExpandedPostWidget extends ConsumerWidget {
               children: [
                 //have to change this to different Icon where when user liked it it changes the heart to filled and if user is null or has not liked the post it should be an empty heart.
                 user == null || !user.likedPosts.contains(post.pid)
-                    ? const Icon(Icons.thumb_up_sharp)
-                    : const Icon(Icons.heart_broken),
+                    ? SvgPicture.asset(
+                        "assets/images/heart-empty-svgrepo-com.svg",
+                        height: 24)
+                    : SvgPicture.asset("assets/images/heart-svgrepo-com.svg"),
                 Text(post.postLikes == null ? '0' : post.postLikes.toString()),
                 const SizedBox(width: 10),
                 const Icon(Icons.comment),
