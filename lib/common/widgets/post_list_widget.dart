@@ -39,7 +39,7 @@ class PostListWidget extends ConsumerWidget {
                     ? const NoPostFound()
                     : ListView.separated(
                         shrinkWrap: true,
-                        itemCount: posts.length++,
+                        itemCount: posts.length,
                         itemBuilder: (context, index) {
                           final post = posts[index];
                           return InkWell(

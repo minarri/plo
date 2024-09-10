@@ -16,7 +16,7 @@ class SinglePostProvider extends StateNotifier<PostModel> {
   }
 
   Future<void> updatePostFromServer() async {
-    final post = await firebasePostRepository.fetchPostByPostUid(state.pid);
+    final post = await firebasePostRepository.fetchPostByPostPid(state.pid);
     if (post != null) {
       print("Updating post from Server");
       state = post;
@@ -24,12 +24,9 @@ class SinglePostProvider extends StateNotifier<PostModel> {
   }
 }
 
-final singlePostProvider = StateNotifierProvider.family
-    .autoDispose<SinglePostProvider, PostModel, PostModel>((ref, post) {
+final singlePostProvider = StateNotifierProvider.family.autoDispose<SinglePostProvider, PostModel, PostModel>((ref, post) {
   ref.onDispose(() {
     logToConsole("Single Post disposed");
   });
-  return SinglePostProvider(
-      firebasePostRepository: ref.watch(firebasePostRepositoryProvider),
-      post: post);
+  return SinglePostProvider(firebasePostRepository: ref.watch(firebasePostRepositoryProvider), post: post);
 });

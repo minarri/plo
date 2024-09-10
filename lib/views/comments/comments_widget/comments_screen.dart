@@ -12,19 +12,15 @@ import 'package:plo/views/comments/comments_widget/commentlists/commentlist_scre
 import 'package:plo/views/comments/comments_widget/commentlists/comments_list_controller.dart';
 import 'package:plo/views/comments/comments_provider.dart';
 
-final commentUploaderProvider =
-    FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
-  final userFetched =
-      ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
+final commentUploaderProvider = FutureProvider.autoDispose.family<UserModel?, String>((ref, userUid) async {
+  final userFetched = ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
   return userFetched;
 });
-final postDetailFutureProvider =
-    FutureProvider.autoDispose.family<PostModel?, String>((ref, postPid) async {
+final postDetailFutureProvider = FutureProvider.autoDispose.family<PostModel?, String>((ref, postPid) async {
   final firebasePostRepository = ref.watch(firebasePostRepositoryProvider);
-  return await firebasePostRepository.fetchPostByPostUid(postPid);
+  return await firebasePostRepository.fetchPostByPostPid(postPid);
 });
-final commentDetailCurrentUserFutureProvider =
-    FutureProvider.autoDispose<UserModel?>((ref) async {
+final commentDetailCurrentUserFutureProvider = FutureProvider.autoDispose<UserModel?>((ref) async {
   final user = await ref.watch(firebaseUserRepositoryProvider).fetchUser();
   return user;
 });
@@ -51,12 +47,8 @@ class _CommentWriteScreenState extends ConsumerState<CommentScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.editCommentInformation != null) {
-        ref
-            .watch(createEditCommentController.notifier)
-            .initFieldForEdit(widget.editCommentInformation!);
-        ref
-            .watch(createEditCommentStateProvider.notifier)
-            .initForEdit(widget.editCommentInformation!);
+        ref.watch(createEditCommentController.notifier).initFieldForEdit(widget.editCommentInformation!);
+        ref.watch(createEditCommentStateProvider.notifier).initForEdit(widget.editCommentInformation!);
       }
     });
   }
@@ -75,10 +67,7 @@ class _CommentWriteScreenState extends ConsumerState<CommentScreen> {
           postKey: post,
         );
       },
-      loading: () => const SizedBox(
-          width: 20,
-          height: 20,
-          child: Center(child: CircularProgressIndicator())),
+      loading: () => const SizedBox(width: 20, height: 20, child: Center(child: CircularProgressIndicator())),
       error: ((error, stackTrace) => Center(
             child: Text(
               "Error: ${error.toString()}",

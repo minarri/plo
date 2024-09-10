@@ -125,7 +125,7 @@ class FirebasePostRepository {
     }
   }
 
-  Future<PostModel?> fetchPostByPostUid(String pid) async {
+  Future<PostModel?> fetchPostByPostPid(String pid) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
           await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(pid).get();
@@ -136,6 +136,27 @@ class FirebasePostRepository {
       }
     } catch (error) {
       logToConsole("Fetch by singlePost error: ${error.toString()}");
+      return null;
+    }
+  }
+
+  Future<List<PostModel>?> fetchMultiplePostsFromHitList(List<String> pidList) async {
+    try {
+      List<PostModel> postModels = [];
+      for (int i = 0; i < pidList.length; i++) {
+        DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+            await firestoreinstance.collection(FirebaseConstants.postcollectionName).doc(pidList[i]).get();
+        logToConsole("document snapshot is: ${documentSnapshot.data()}");
+        if (documentSnapshot.exists) {
+          PostModel? post = PostModel().fromJson(documentSnapshot.data()!);
+          if (post != null) {
+            postModels.add(post);
+          }
+        }
+      }
+      return postModels;
+    } catch (err) {
+      logToConsole('fetchMultipleItemsFromHitList error: ${err.toString()}');
       return null;
     }
   }
@@ -260,28 +281,6 @@ class FirebasePostRepository {
       return usersPostList;
     } catch (error) {
       logToConsole("Error was occured ${error.toString()}");
-      return null;
-    }
-  }
-
-  Future<List<PostModel>?> fetchMultiplePostsFromHitList(List<String> uidList) async {
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot;
-    PostModel? post;
-    try {
-      List<PostModel> postModels = [];
-      for (int i = 0; i < uidList.length; i++) {
-        documentSnapshot = await FirebaseFirestore.instance.collection(FirebaseConstants.postcollectionName).doc(uidList[i]).get();
-        logToConsole("document snapshot is: ${documentSnapshot}");
-        if (documentSnapshot.data() != null) {
-          post = PostModel().fromJson(documentSnapshot.data()!);
-          if (post != null) {
-            postModels.add(post);
-          }
-        }
-      }
-      return postModels;
-    } catch (err) {
-      logToConsole('fetchMultipleItemsFromHitList error: ${err.toString()}');
       return null;
     }
   }
