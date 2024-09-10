@@ -376,8 +376,14 @@ class PostDetailScreen extends ConsumerWidget {
                                             if (result == true) {
                                               await Future.delayed(const Duration(milliseconds: 100));
                                               Navigator.of(context).pop();
-                                              ref.read(commentListController(postKey.pid).notifier).pagingController.refresh();
-                                              ref.read(createEditCommentController.notifier).commentContentController.clear();
+                                              ref.refresh(commentListController(
+                                                  postKey.pid));
+                                              ref
+                                                  .read(
+                                                      createEditCommentController
+                                                          .notifier)
+                                                  .commentContentController
+                                                  .clear();
                                             } else {
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 const SnackBar(

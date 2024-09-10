@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/model/comments_model.dart';
 import 'package:plo/model/post_model.dart';
 import 'package:plo/model/state_model/create_edit_comment_model.dart';
 import 'package:plo/model/user_model.dart';
+import 'package:plo/repository/firebase_comments_repository.dart';
 import 'package:plo/repository/firebase_post_repository.dart';
 import 'package:plo/repository/firebase_user_repository.dart';
 import 'package:plo/views/comments/comments_controller.dart';
@@ -16,7 +18,9 @@ final commentUploaderProvider = FutureProvider.autoDispose.family<UserModel?, St
   final userFetched = ref.watch(firebaseUserRepositoryProvider).fetchUserbyUid(userUid);
   return userFetched;
 });
-final postDetailFutureProvider = FutureProvider.autoDispose.family<PostModel?, String>((ref, postPid) async {
+final postDetailFutureProvider =
+    FutureProvider.autoDispose.family<PostModel?, String>((ref, postPid) async {
+
   final firebasePostRepository = ref.watch(firebasePostRepositoryProvider);
   return await firebasePostRepository.fetchPostByPostPid(postPid);
 });

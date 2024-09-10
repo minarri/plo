@@ -19,7 +19,6 @@ class CommentListController extends StateNotifier<AsyncValue<void>> {
   final CommentsRepository commentRepository;
   final FirebaseUserRepository firebaseUserRepository;
   final String pid;
-  late PagingController<int, CommentModel> pagingController;
 
   CommentListController(
       {required this.ref,
@@ -38,8 +37,8 @@ class CommentListController extends StateNotifier<AsyncValue<void>> {
     _scrollController.addListener(() async {
       log("Current Scroll Position: ${_scrollController.position.pixels}");
       log("Max Scroll Extent: ${_scrollController.position.maxScrollExtent}");
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 200 &&
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
           !_isCommentAllLoaded) {
         log('Reached the bottom of the list, fetching more comments');
 
@@ -48,7 +47,7 @@ class CommentListController extends StateNotifier<AsyncValue<void>> {
     });
   }
 
-  ScrollController get scrollController => _scrollController;
+  get scrollController => _scrollController;
   get isCommentAllLoaded => _isCommentAllLoaded;
 
   // Future<void> _fetchComments(int pageKey) async {
@@ -126,7 +125,7 @@ class CommentListController extends StateNotifier<AsyncValue<void>> {
       log("last UploadTime ${lastUploadTime}");
       List<CommentModel>? comments = await commentRepository.fetchComments(pid,
           amountFetch: amountFetch, lastCommentUploadTime: lastUploadTime);
-      if (comments == null || comments.isEmpty) {
+      if (comments == null) {
         state = AsyncValue.error("댓글을 더 가져오는 도중 에러가 났습니다", StackTrace.current);
       } else {
         if (comments.length < amountFetch) {
