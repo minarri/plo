@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:plo/common/widgets/custom_app_bar.dart';
 import 'package:plo/common/widgets/post_list_widget.dart';
 import 'package:plo/views/search_post_screen/Widgets/search_filter/filter_button.dart';
-import 'package:plo/views/search_post_screen/Widgets/search_filter/sort_button.dart';
 
 import '../../../model/post_model.dart';
 import '../../../model/state_model/search_filter_options_model.dart';
 import '../../../services/search_service.dart';
 import '../Controllers/filter_options_controller.dart';
 import '../Widgets/search_bar.dart';
-//import '../Widgets/search_sort.dart';
 
 final searchPostFutureProvider = FutureProvider.family.autoDispose<List<PostModel>?, FilterOptions>((ref, filterOptions) async {
   final posts = await ref.watch(searchServiceProvider).searchPost(filterOptions);
@@ -39,19 +38,16 @@ class _SearchPostResultState extends ConsumerState<SearchPostResult> {
     // final filterOptions = ref.watch(filterOptionsProvider);
     final filterOptions = ref.watch(filterOptionsProvider);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const HomeButtonAppBar(title: "홈으로"),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           child: Column(
             children: [
-              CustomSearchBar(searchQuery: widget.searchQuery),
-              const SizedBox(height: 15),
-              // filter selection widget
               Row(
                 children: [
+                  CustomSearchBar(searchQuery: widget.searchQuery),
                   SearchFilterButton(filterOptions: filterOptions),
-                  SearchSortButton(filterOptions: filterOptions),
                 ],
               ),
               const SizedBox(height: 15),

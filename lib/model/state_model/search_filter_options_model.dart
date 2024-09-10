@@ -1,3 +1,5 @@
+import 'package:plo/common/utils/log_util.dart';
+
 import '../post_model.dart';
 import '../types/category_type.dart';
 import '../types/sortby_type.dart';
@@ -30,9 +32,11 @@ class FilterOptions {
 
   List<String> getCategoryList() {
     List<String> categoryList = [];
+    // logToConsole("categorySelected: $categorySelected");
     for (var category in categorySelected) {
       categoryList.add("${PostModelFieldNameConstants.category}:${category.toString()}");
     }
+    // logToConsole("categoryList: $categoryList");
     return categoryList;
   }
 }

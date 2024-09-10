@@ -36,8 +36,9 @@ class SearchService {
         appId: AlgoliaConstants.algoliaAppId,
       );
 
-      logToConsole("SearchService: Searching posts with filter options: $filterOptions");
-
+      logToConsole(
+          "SearchService: Searching posts with filter options: ${filterOptions.sortOptions}, ${filterOptions.categorySelected}, ${filterOptions.searchQuery}");
+      // logToConsole("filterOptions.sortOptions.sortByAlgoliaIndexName(): ${filterOptions.sortOptions.sortByAlgoliaIndexName()}");
       final queryHits = SearchForHits(
         indexName: filterOptions.sortOptions.sortByAlgoliaIndexName(),
         query: filterOptions.searchQuery,
@@ -50,14 +51,14 @@ class SearchService {
       if (responseHits.hits.isEmpty) {
         return [];
       }
-      List<String> uidList = [];
+      List<String> pidList = [];
       for (var hit in responseHits.hits) {
-        uidList.add(hit[PostModelFieldNameConstants.uploadUserUid]);
+        pidList.add(hit[PostModelFieldNameConstants.pid]);
       }
 
-      logToConsole("SearchService: Fetching posts from Firebase with uids: $uidList");
+      logToConsole("SearchService: Fetching posts from Firebase with pids: $pidList");
 
-      final List<PostModel>? posts = await ref.watch(firebasePostRepositoryProvider).fetchMultiplePostsFromHitList(uidList);
+      final List<PostModel>? posts = await ref.watch(firebasePostRepositoryProvider).fetchMultiplePostsFromHitList(pidList);
 
       logToConsole("SearchService: Fetched ${posts?.length ?? 0} posts from Firebase");
 

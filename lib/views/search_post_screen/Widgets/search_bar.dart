@@ -17,6 +17,7 @@ class CustomSearchBar extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SearchPostsHero()));
           },
+          constraints: const BoxConstraints(maxHeight: 360, maxWidth: 275, minHeight: 50),
         ),
       ),
     );
